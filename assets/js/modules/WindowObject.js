@@ -179,6 +179,7 @@ export default class WindowObject {
      */
     setTitle(title) {
         this.title = title;
+        this.windowManager.desktopEnvironment.taskbar.render(); // this feels hacky
         this.windowElement.querySelector('.window-title').innerText = this.title;
     }
     /**

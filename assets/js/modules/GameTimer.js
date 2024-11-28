@@ -34,8 +34,8 @@ export default class GameTimer {
 
     formatTime(ms) {
         const totalSeconds = Math.floor(ms / 1000);
-        const milliseconds = ms % 1000;
-        return `${totalSeconds}.${this.pad(milliseconds, 3)}`;
+        const fractionSeconds = Math.floor(ms / 100) % 10;
+        return `${totalSeconds}.${this.pad(fractionSeconds, 1)}`;
     }
 
     pad(number, length) {
@@ -44,11 +44,11 @@ export default class GameTimer {
 }
 
 // Example usage:
-const timerDisplay = document.getElementById('timerDisplay');
-const gameTimer = new GameTimer((time) => {
-    timerDisplay.textContent = time;
-});
-
-document.getElementById('startButton').addEventListener('click', () => gameTimer.start());
-document.getElementById('pauseButton').addEventListener('click', () => gameTimer.pause());
-document.getElementById('stopButton').addEventListener('click', () => gameTimer.stop());
+//const timerDisplay = document.getElementById('timerDisplay');
+//const gameTimer = new GameTimer((time) => {
+//    timerDisplay.textContent = time;
+//});
+//
+//document.getElementById('startButton').addEventListener('click', () => gameTimer.start());
+//document.getElementById('pauseButton').addEventListener('click', () => gameTimer.pause());
+//document.getElementById('stopButton').addEventListener('click', () => gameTimer.stop());
