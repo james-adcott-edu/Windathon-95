@@ -20,17 +20,16 @@ export default class Minesweeper {
                 'New': () => this.reset(),
                 'Exit': () => this.windowObject.closeWindow(),
             },
-            //'Size': {
-            //    '2x2': () => this.setGameSize(2),
-            //    '3x3': () => this.setGameSize(3),
-            //    '4x4': () => this.setGameSize(4),
-            //    '5x5': () => this.setGameSize(5),
-            //},
+            'Difficulty': {
+                'Beginner': () => this.setGameSize(9,9,10), // 9x9, 10 mines
+                'Intermediate': () => this.setGameSize(16,16,40), // 16x16, 40 mines
+                'Expert': () => this.setGameSize(16,30,99), // 16x30, 99 mines
+            },
         });
 
         this.windowContent.innerHTML = `
         <div id="game-area">
-            <table oncontextmenu="return false;" id="board"> </table>
+            <div><table oncontextmenu="return false;" id="board"> </table></div>
             <div class="statusbar">
                 <div id="minesleft"></div>
                 <div id="timer"></div>
@@ -38,19 +37,11 @@ export default class Minesweeper {
         </div>
         `;
 
-        // FIXME
-        this.windowObject.setSize(22 * 32, 22 * 20 + 28);
-        //this.windowObject.setSize(
-        //    this.windowContent.querySelector('#game-area').offsetWidth,
-        //    this.windowContent.querySelector('#game-area').offsetHeight
-        //);
-
-
         this.windowObject.addStylesheet(css);
 
         this.gameSize = {
-            rows: 20,
-            cols: 32,
+            rows: 16,
+            cols: 30,
             mines: 99
         };
 
@@ -62,13 +53,17 @@ export default class Minesweeper {
     }
 
     setGameSize(rows, cols, mines) {
-        this.gameSize = {rows, cols, mines};
+        this.gameSize = {
+            rows: rows,
+            cols: cols,
+            mines: mines
+        };
         this.reset();
     }
 
     endGame(hasWon) {
         this.gameEnded = 1;
-        this.timer.stop();
+        this.timer.pause();
         let mineClass = 'flag';
         if (hasWon) {
             this.printRemaining(0);
@@ -184,7 +179,7 @@ export default class Minesweeper {
 
     printRemaining(s) {
         if (s===undefined) s = this.minesRemaining;
-        this.windowContent.querySelector('#minesleft').innerHTML = `Mines remaining: ${s}`;
+        this.windowContent.querySelector('#minesleft').innerHTML = `Mines: ${s}`;
     }
 
     printTime(t) {
@@ -231,6 +226,11 @@ export default class Minesweeper {
                 this.quickClick(x, y);
             });
         });
+        let boardDimensions = {
+            width: this.windowContent.querySelector('#game-area').offsetWidth,
+            height: this.windowContent.querySelector('#game-area').offsetHeight
+        };
+        this.windowObject.setSize(boardDimensions.width, boardDimensions.height);
     }
 
     revealCell(x, y) {
@@ -273,7 +273,7 @@ padding: 0;
 }
 
 #game-area {
-display: flex;
+display: inline-flex;
 flex-direction: column;
 }
 
@@ -302,9 +302,9 @@ color: #000;
 border: 3px outset #ccc;
 box-sizing: border-box;
 height: var(--cellsize);
-max-height: var(--cellsize);
+min-height: var(--cellsize);
 width: var(--cellsize);
-max-width: var(--cellsize);
+min-width: var(--cellsize);
 font-size: calc(var(--cellsize)*.8);
 line-height: .5;
 padding; 0;
