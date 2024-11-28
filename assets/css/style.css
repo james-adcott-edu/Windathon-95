@@ -199,12 +199,16 @@ body.development {
 }
 
 .desktop {
-    column-width: 140px;
+    column-width: 110px;
     column-count: auto;
     column-fill: auto;
     column-gap: 10px;
-    max-height: 100vh;
+    max-height: calc(100vh - 60px);
     padding: 10px;
+}
+
+.development .desktop {
+    max-height: calc(100vh - 90px);
 }
 
 .desktop .icon {
@@ -218,7 +222,7 @@ body.development {
 .desktop .icon img {
     width: 64px;
     height: 64px;
-    margin: 10px auto;
+    margin: 10px auto 5px;
 }
 
 .desktop .icon div {
