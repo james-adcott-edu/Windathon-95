@@ -2,7 +2,7 @@
 
 A faithful recreation of the Windows 95 operating system in vanilla JavaScript, running entirely in the browser.
 
-![Screenshot of the Windows 95 Web Clone](./assets/images/screenshot.png)
+![Screenshot of the Windows 95 Web Clone](./assets/images/showcase.png)
 
 ## 🚀 Features
 
