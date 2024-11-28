@@ -55,6 +55,9 @@ export default class Paint {
         this.zoomLevel = 1;
         this.minZoom = 0.1;  // Will be dynamically calculated
         this.maxZoom = 3;
+
+        // Add CSS
+        this.window.addStylesheet(css);
     }
 
     /**
@@ -509,3 +512,154 @@ export default class Paint {
         container.style.height = `${this.canvas.height * this.zoomLevel}px`;
     }
 }
+
+
+const css = `
+
+:root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    border: none;
+}
+
+.paint-toolbar {
+    display: flex;
+    padding: 4px;
+    gap: 8px;
+    background: var(--window-background-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.paint-toolbar .toolbar-section {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    border-right: 1px solid var(--border-color);
+}
+
+.paint-toolbar :is(button, input[type="color"], select) {
+border: 2px solid;
+border-color: var(--outset-border-color);
+}
+
+.paint-toolbar .tool-button {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    background: var(--window-background-color);
+    cursor: pointer;
+}
+
+.paint-toolbar .tool-button.active {
+    background: var(--highlight-bg);
+    color: var(--highlight-text);
+}
+
+.paint-toolbar .tool-button:hover {
+    background: var(--highlight-bg);
+    color: var(--highlight-text);
+}
+
+.paint-toolbar input[type="color"] {
+    width: 30px;
+    height: 20px;
+    padding: 0;
+}
+
+.paint-toolbar input[type="range"] {
+    width: 100px;
+}
+
+.paint-canvas-container {
+    overflow: auto;
+    position: relative;
+    flex: 1;
+    height: calc(100% - 40px);
+    border: 2px inset #bbb;
+    background: #fff;
+}
+
+.paint-canvas-container canvas {
+    background: white;
+}
+
+.paint-toolbar .brush-settings {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.paint-toolbar .size-container,
+.paint-toolbar .opacity-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.paint-toolbar .size-value,
+.paint-toolbar .opacity-value {
+    min-width: 30px;
+    text-align: right;
+}
+
+.paint-toolbar .brush-style {
+    height: 22px;
+    border: 1px solid var(--border-color);
+    background: var(--window-background-color);
+    cursor: pointer;
+}
+
+.paint-toolbar input[type="range"] {
+    width: 80px;
+}
+
+.paint-toolbar label {
+    font-size: 12px;
+    user-select: none;
+}
+
+.paint-toolbar .zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.paint-toolbar .zoom-controls button {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    background: var(--window-background-color);
+    cursor: pointer;
+}
+
+.paint-toolbar .zoom-controls .zoom-level {
+    min-width: 50px;
+    text-align: center;
+}
+
+.paint-canvas-container {
+    overflow: auto;
+    position: relative;
+}
+
+.paint-canvas-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.paint-toolbar {
+    flex-shrink: 0;
+    height: 40px;
+    padding: 4px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--window-background-color);
+}
+`;

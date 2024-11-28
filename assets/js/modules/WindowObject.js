@@ -54,6 +54,7 @@ export default class WindowObject {
         let newWindow = windowTemplate.content.cloneNode(true);
         return newWindow.querySelector('.window');
     }
+
     /**
      * Renders the window and sets up event listeners
      * @public
@@ -99,6 +100,7 @@ export default class WindowObject {
         this.setActive(true);
         document.body.appendChild(this.windowElement);
     }
+
     /**
      * Starts a program within the window
      * @param {Function} program - The program/application to run
@@ -135,27 +137,32 @@ export default class WindowObject {
         this.dialogs = this.dialogs.filter(d => d !== dialog);
         dialog.close();
     }
+
     /**
      * Minimizes the window
      */
     minimize() {
         this.isMinimized = true;
     }
+
     /**
      * Restores the window from minimized state
      */
     restore() {
         this.isMinimized = false;
     }
+
     /**
      * Sets the window close handler
      * @param {Function} callback - Function to call when close button is clicked
      */
     setCloseRequest(callback) {
-        this.windowElement.querySelector('.window-control-close').removeEventListener('click', this.closeRequest);
+        const closeButton = this.windowElement.querySelector('.window-control-close');
+        closeButton.removeEventListener('click', this.closeRequest);
         this.closeRequest = callback;
-        this.windowElement.querySelector('.window-control-close').addEventListener('click', this.closeRequest);
+        closeButton.addEventListener('click', this.closeRequest);
     }
+
     /**
      * Closes and removes the window
      */
@@ -171,6 +178,7 @@ export default class WindowObject {
         this.windowManager.remove(this);
         delete this;
     }
+
     /**
      * Sets the window's active state
      * @param {boolean} [focus=true] - Whether the window should have focus
@@ -178,6 +186,7 @@ export default class WindowObject {
     setActive(focus=true) {
         this.hasFocus = focus;
     }
+
     /**
      * Sets the window title
      * @param {string} title - The new window title
@@ -187,6 +196,7 @@ export default class WindowObject {
         this.windowManager.desktopEnvironment.taskbar.render(); // this feels hacky
         this.windowElement.querySelector('.window-title').innerText = this.title;
     }
+
     /**
      * Sets up the window's menu bar
      * @param {Object} menuItems - Menu configuration object
@@ -196,6 +206,7 @@ export default class WindowObject {
         new MenuBar(this, menuItems);
         return true;
     }
+
     /**
      * Sets the window position
      * @param {number} x - X coordinate in pixels
@@ -207,6 +218,7 @@ export default class WindowObject {
         this.windowElement.style.left = this.x + 'px';
         this.windowElement.style.top = this.y + 'px';
     }
+
     /**
      * Sets the window size
      * @param {number} width - Width in pixels
@@ -219,6 +231,10 @@ export default class WindowObject {
         this.windowElement.querySelector('.window-content').style.height = this.height + 'px';
     }
 
+    /**
+     * Adds a stylesheet to the window
+     * @param {string} cssStr - CSS string to add
+     */
     addStylesheet(cssStr) {
         this.stylesheetManager = new StylesheetManager(this, cssStr);
     }
