@@ -293,10 +293,6 @@ class Tile {
     }
 }
 
-//    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 10 10'><style>line{stroke:gray;stroke-width:4%}</style><line x1='0' y1='0' x2='100%' y2='100%'/><line x1='0' y1='100%' x2='100%' y2='0'/></svg>");
-//    background-repeat:no-repeat;
-//    background-position:center center;
-//    background-size: 100% 100%, auto;
 
 // Stylesheet for the Tetravex game
 
@@ -312,6 +308,10 @@ let stylesheet = `
     height: var(--tile-size);
     outline: 1px solid black;
     background-color: #999;
+    background-image: url(data:image/svg+xml;utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZlcnNpb249JzEuMScgcHJlc2VydmVBc3BlY3RSYXRpbz0nbm9uZScgdmlld0JveD0nMCAwIDEwIDEwJz48c3R5bGU+bGluZXtzdHJva2U6Z3JheTtzdHJva2Utd2lkdGg6NCV9PC9zdHlsZT48bGluZSB4MT0nMCcgeTE9JzAnIHgyPScxMDAlJyB5Mj0nMTAwJScvPjxsaW5lIHgxPScwJyB5MT0nMTAwJScgeDI9JzEwMCUnIHkyPScwJy8+PC9zdmc+);
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size: 100% 100%, auto;
     position: relative;
     user-select: none;
     cursor: move;
