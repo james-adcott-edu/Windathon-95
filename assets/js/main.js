@@ -2,6 +2,7 @@ import DesktopEnvironment from './modules/DesktopEnvironment.js';
 import { environment } from './Config.js';
 
 if (environment === 'development') {
+    document.title = 'Win95 Development Environment';
     document.body.classList.add('development');
 }
 
