@@ -1,3 +1,5 @@
+import { environment } from './Config.js';
+
 import TestGame from './modules/apps/TestGame.js';
 import Tetravex from './modules/apps/Tetravex.js';
 import Paint from './modules/apps/Paint.js';
@@ -27,18 +29,6 @@ import Minesweeper from './modules/apps/Minesweeper.js';
  * @type {Application[]}
  */
 const Applications = [
-    {
-        id: 'testgame',
-        name: "Test Game",
-        icon: "game.png",
-        windowArgs: {
-            width: 500,
-            height: 300,
-            x: 150,
-            y: 200
-        },
-        module: TestGame
-    },
     {
         id: 'tetravex',
         name: "Tetravex",
@@ -88,5 +78,20 @@ const Applications = [
         module: Minesweeper
     }
 ];
+
+if (environment === 'development') {
+    Applications.push({
+        id: 'testgame',
+        name: "Test Game",
+        icon: "testgame.png",
+        windowArgs: {
+            width: 800,
+            height: 600,
+            x: 100,
+            y: 100
+        },
+        module: TestGame
+    });
+}
 
 export default Applications;
