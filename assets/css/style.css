@@ -25,6 +25,10 @@ body {
     user-select: none;
 }
 
+body.development {
+    border-top: 30px solid red;
+}
+
 .window {
     position: absolute;
     background-color: var(--window-background-color);

@@ -1,5 +1,9 @@
 import DesktopEnvironment from './modules/DesktopEnvironment.js';
-import Paint from './modules/apps/Paint.js';
+import { environment } from './Config.js';
+
+if (environment === 'development') {
+    document.body.classList.add('development');
+}
 
 let de = new DesktopEnvironment();
 window.desktopEnvironment = de;
