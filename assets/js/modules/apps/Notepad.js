@@ -11,6 +11,8 @@ export default class Notepad {
         this.currentFile = null;
         this.isModified = false;
 
+        this.window.addStylesheet(stylesheet);
+
         // Set up window
         this.window.setTitle('Untitled - Notepad');
         
@@ -39,14 +41,6 @@ export default class Notepad {
      */
     setupTextArea() {
         this.textarea = document.createElement('textarea');
-        this.textarea.style.width = '100%';
-        this.textarea.style.height = '100%';
-        this.textarea.style.resize = 'none';
-        this.textarea.style.padding = '5px';
-        this.textarea.style.border = 'none';
-        this.textarea.style.outline = 'none';
-        this.textarea.style.fontFamily = 'monospace';
-        this.textarea.style.fontSize = '14px';
         
         this.textarea.addEventListener('input', () => {
             if (!this.isModified) {
@@ -748,3 +742,216 @@ export default class Notepad {
         this.textarea.focus();
     }
 }
+
+const stylesheet = `
+
+:root {
+display: flex;
+flex-direction: column;
+background: transparent;
+border: 0;
+padding: 0;
+}
+
+textarea {
+--padding: 5px;
+box-sizing: border-box;
+border: 2px inset #bbb;
+width: 100%;
+resize: none;
+padding: var(--padding);
+outline: none;
+font-family: monospace;
+font-size: 14px;
+flex-grow: 1;
+}
+
+
+.notepad-statusbar {
+flex-shrink: 0;
+display: grid;
+grid-template-columns: 1fr auto;
+}
+
+.notepad-statusbar > div {
+padding: 2px 5px;
+border: 1px solid;
+border-color: var(--inset-border-color);
+}
+
+.notepad-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--window-background-color);
+    border: 2px outset var(--border-color);
+    min-width: 300px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.notepad-dialog-titlebar {
+    background: var(--active-titlebar-background-color);
+    color: var(--active-titlebar-color);
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.notepad-dialog-close {
+    width: 16px;
+    height: 16px;
+    background: var(--window-background-color);
+    border: 1px outset var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.notepad-dialog-content {
+    padding: 16px;
+}
+
+/* Common Dialog Elements */
+.notepad-dialog-row {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.notepad-dialog-row input[type="text"],
+.notepad-dialog-row input[type="number"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 2px 4px;
+    border: 1px inset var(--border-color);
+}
+
+.notepad-dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background: var(--window-background-color);
+}
+
+.notepad-dialog-buttons button {
+    min-width: 75px;
+    padding: 4px 8px;
+    border: 2px outset var(--border-color);
+    background: var(--window-background-color);
+    color: var(--window-color);
+    cursor: pointer;
+}
+
+.notepad-dialog-buttons button:active {
+    border-style: inset;
+}
+
+/* Font Dialog Specific Styles */
+.notepad-font-section {
+    margin-bottom: 12px;
+}
+
+.notepad-font-section select {
+    width: 200px;
+    margin-top: 4px;
+    border: 1px inset var(--border-color);
+}
+
+.notepad-font-preview {
+    margin: 16px 0;
+    padding: 8px;
+    border: 1px inset var(--border-color);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+
+/* About Dialog Specific Styles */
+.notepad-about {
+    width: 400px;
+}
+
+.notepad-about-content {
+    text-align: center;
+    padding: 20px;
+    background: var(--window-background-color);
+}
+
+.notepad-about-logo {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 16px;
+}
+
+.notepad-about-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.notepad-about-version {
+    margin-bottom: 4px;
+    color: var(--window-color);
+}
+
+.notepad-about-copyright {
+    margin-bottom: 16px;
+    color: var(--window-color);
+}
+
+.notepad-about-description {
+    text-align: left;
+    margin-top: 16px;
+    padding: 8px;
+    border: 1px inset var(--border-color);
+    background: white;
+    color: var(--window-color);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Find/Replace Dialog Specific Styles */
+.notepad-find-replace {
+    width: 350px;
+}
+
+.notepad-find-replace-options {
+    display: flex;
+    gap: 16px;
+    margin: 12px 0;
+}
+
+.notepad-find-replace-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.notepad-find-replace-checkbox input[type="checkbox"] {
+    margin: 0;
+}
+
+/* Go To Dialog Specific Styles */
+.notepad-goto {
+    width: 300px;
+}
+
+.notepad-goto-input {
+    width: 100%;
+    padding: 2px 4px;
+    border: 1px inset var(--border-color);
+}
+
+
+`;
