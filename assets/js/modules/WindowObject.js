@@ -38,7 +38,12 @@ export default class WindowObject {
         }
         this.dialogs = [];
         this.stylesheetManager = null;
+        if (this.resizable) {
+            this.windowElement.querySelector('.window-content').style.overflow = 'auto';
+            this.windowElement.querySelector('.window-content').style.resize = 'both';
+        }
     }
+    
     /**
      * Creates the window DOM element from template
      * @private
