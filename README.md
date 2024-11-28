@@ -1,4 +1,4 @@
-# Windows 95 Web Clone
+# Windathon-95 - Our hackathon project
 
 A faithful recreation of the Windows 95 operating system in vanilla JavaScript, running entirely in the browser.
 
@@ -7,7 +7,7 @@ A faithful recreation of the Windows 95 operating system in vanilla JavaScript, 
 ## 🚀 Features
 
 - Classic Windows 95 UI with working windows, taskbar, and start menu
-- Multiple built-in applications:
+- Multiple built-in applications (found in the `assets/js/modules/apps/` directory):
   - Notepad (with full text editing capabilities)
   - MS-DOS Prompt (command-line interface)
   - Minesweeper
@@ -18,14 +18,12 @@ A faithful recreation of the Windows 95 operating system in vanilla JavaScript, 
 - Authentic Windows 95 styling and interactions
 
 ### Site Goals
-- Provide a faithful recreation of the Windows 95 experience
-- Offer a nostalgic and educational tool for users interested in retro operating systems
-- Ensure accessibility and ease of use for all users
+- Provide a semi-faithful recreation of the Windows 95 experience
+- Have fun building it!
 
 ### Design Choices
-- Classic Windows 95 styling for authenticity
-- Intuitive and familiar interface for easy navigation
-- Responsive design to accommodate various screen sizes
+- We tried to go as close to Windows-95 as possible.
+- We haven't focused on a mobile experience, as it's a desktop operating system.
 
 ### User Stories
 - As a user, I want to explore the Windows 95 interface to relive nostalgia.
@@ -65,6 +63,8 @@ This allows us to integrate the file system into the applications that we build.
 
 This is the component that handles the windows that are created. It allows us to create, move, and resize windows. It also handles the z-index of the windows, so that windows can be brought to the front by the user.
 
+This class handles the focus of windows, so that when a window is brought to the front, it becomes active and the previous window will be behind by dynamically updating the z-index.
+
 #### Application Framework
 
 This is the base class for all applications. It provides ways to accept arguments, interact with the desktop environment, and provides a base class for all applications to build upon.
@@ -87,6 +87,17 @@ This is the base class for all applications. It provides ways to accept argument
 - Classic Windows 95 Minesweeper game
 - Multiple difficulty levels
 - Timer and mine counter
+
+### Paint
+- Basic paint application
+- Drawing capabilities
+- Color picker
+
+### Tetravex
+- Classic puzzle game
+- 2D grid with numbered tiles
+- Drag and drop functionality
+- Offers different grid sizes
 
 ## 📦 Deployment
 
@@ -136,7 +147,7 @@ If deploying to a custom domain:
 
 ### Troubleshooting
 
-- If images don't load, check the `web_root` configuration
+- If images don't load, check the `web_root` configuration in `Config.js`
 - If storage doesn't work, ensure localStorage is enabled
 - For CORS issues, verify your server's security headers
 
@@ -147,10 +158,11 @@ If deploying to a custom domain:
 1. Create a new application class in `assets/js/modules/apps/`
 2. Register the application in `Applications.js`
 3. Add corresponding icon in `assets/images/`
+  - Please note, the icon full paths are handled by the desktop environment, so you don't need to worry about that.
 
 Example application structure:
 
-```
+```javascript
 export default class NewApp {
     constructor(windowObject, windowContent, args) {
         this.window = windowObject;
@@ -163,6 +175,8 @@ export default class NewApp {
 
     setupUI() {
         // Application-specific UI setup
+        // easily add HTML here
+        this.windowContent.innerHTML = '<h1>Hello World</h1>';
     }
 }
 ```
@@ -170,15 +184,13 @@ export default class NewApp {
 ## 🧪 Testing
 
 ### Manual Testing
-- Each application has been thoroughly tested for functionality and user interaction
-- Window management system tested for proper focus handling, dragging, and resizing
+- Each application has been thoroughly tested for functionality and user interaction, though some may be buggy.
+- Window management system tested for proper focus handling and dragging.
 - Start menu and taskbar interactions verified across different scenarios
 - File system operations tested for data persistence and proper error handling
 
 ### Responsive Testing
-- Interface tested across multiple screen sizes and resolutions
-- Window positioning and sizing adjusts appropriately to viewport
-- Touch input support verified on mobile devices
+- Interface tested across multiple screen sizes and resolutions, however the experience is not optimal on mobile devices. This is designed to be a retro desktop experience after all.
 
 ### User Story Testing
 | User Story | Test | Result |
@@ -196,15 +208,17 @@ export default class NewApp {
 - Window maximize behavior may be inconsistent on some screen sizes
 - Some keyboard shortcuts may conflict with browser defaults
 - File system has limited storage capacity due to localStorage limitations
+- Some application features may be buggy.
 
 ### Fixed Bugs
 - Resolved window focus issues when multiple windows are open
 - Fixed taskbar button alignment on smaller screens
 - Corrected file system path handling for case-sensitive operations
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+### Future Improvements
+- Add more applications, such as Internet Explorer (using an iframe)
+- Add a file explorer which can navigate the custom file system.
+- Allow windows to be resized at the users will.
 
 ## 📝 License
 
