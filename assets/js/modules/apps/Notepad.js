@@ -761,6 +761,7 @@ width: 100%;
 resize: none;
 padding: var(--padding);
 outline: none;
+overflow: scroll;
 font-family: monospace;
 font-size: 14px;
 flex-grow: 1;
