@@ -1,0 +1,623 @@
+:root {
+    --window-background-color: #bbb;
+    --window-color: #000;
+    --window-border: 2px outset #999;
+    --inactive-titlebar-background-color: #777;
+    --inactive-titlebar-color: #fff;
+    --active-titlebar-background-color: #007;
+    --active-titlebar-color: #fff;
+    --window-titlebar-height: 22px;
+    --outset-border-color: #fff #666 #666 #fff;
+    --inset-border-color: #666 #fff #fff #666;
+}
+
+.hidden {
+    display: none;
+}
+
+body {
+    background-color: #088;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.window {
+    position: absolute;
+    background-color: var(--window-background-color);
+    border: var(--window-border);
+    padding: 2px;
+    z-index: 1;
+}
+
+.window.dimmed > div {
+    opacity: 0.5;
+}
+
+.window.minimized {
+    display: none;
+}
+
+.window-focus {
+    z-index: 2;
+}
+
+.window-titlebar {
+    background-color: var(--inactive-titlebar-background-color);
+    color: var(--inactive-titlebar-color);
+    padding: 3px;
+    position: relative;
+    min-height: 22px;
+    font-weight: bold;
+}
+
+.window-focus .window-titlebar {
+    background-color: var(--active-titlebar-background-color);
+}
+
+.window-title {
+    line-height: 22px;
+}
+
+.window-controls {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
+.window-control {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--window-background-color);
+    color: var(--window-color);
+    border: 2px solid;
+    border-color: var(--outset-border-color);
+    margin-left: 2px;
+}
+
+.window-menubar {
+    display: flex;
+    flex-direction: row;
+    background: var(--window-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 2px 0;
+}
+
+.menu-item {
+    position: relative;
+    padding: 2px 8px;
+    cursor: default;
+}
+
+.menu-item:hover {
+    background: var(--highlight-bg);
+}
+
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 150px;
+    background-color: var(--window-background-color, #bbb);
+    border: 2px solid;
+    border-color: var(--outset-border-color);
+    padding: 2px;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+.menu-item.active .menu-dropdown {
+    display: block;
+}
+
+.menu-dropdown-item {
+    padding: 4px 20px;
+    white-space: nowrap;
+    margin: 1px;
+    background-color: var(--window-background-color, #bbb);
+}
+
+.menu-dropdown-item:hover {
+    background-color: var(--active-titlebar-background-color, #000080);
+    color: var(--active-titlebar-color, #ffffff);
+}
+
+.menu-dropdown-separator {
+    height: 1px;
+    background: var(--border-color);
+    margin: 2px 0;
+}
+
+.window-content {
+    position: relative;
+    padding: 2px;
+    background-color: #fff;
+    border: 2px inset #bbb;
+}
+
+.window-focus .window-content {
+    user-select: text;
+}
+
+.dialog .window-content {
+    background: transparent;
+    border: none;
+}
+
+.dialog .window-content > div {
+    padding: 10px 0;
+}
+
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--window-background-color);
+    color: var(--window-color);
+    padding: 2px;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-gap: 10px;
+}
+
+.taskbar-windowlist {
+    display: flex;
+    flex-direction: row;
+}
+
+.taskbar-windowbutton {
+    width: 250px;
+    padding: 5px;
+    margin: 0 2px;
+    cursor: pointer;
+    border: 2px solid;
+    border-color: var(--outset-border-color);
+}
+
+.taskbar-windowbutton[data-hasfocus="true"] {
+    border-color: var(--inset-border-color);
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.taskbar-clock {
+    border: 2px solid;
+    border-color: var(--inset-border-color);
+    padding: 5px;
+}
+
+.desktop {
+    column-width: 140px;
+    column-count: auto;
+    column-fill: auto;
+    column-gap: 10px;
+    max-height: 100vh;
+    padding: 10px;
+}
+
+.desktop .icon {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    break-inside: avoid;
+}
+
+.desktop .icon img {
+    width: 64px;
+    height: 64px;
+    margin: 10px auto;
+}
+
+.desktop .icon div {
+    color: #fff;
+    padding: 4px;
+    margin: 0 auto;
+}
+
+.desktop .icon.active div {
+    background-color: #007;
+}
+
+.startbutton {
+    padding: 5px;
+    margin: 0 2px;
+    cursor: pointer;
+    border: 2px solid;
+    border-color: var(--outset-border-color);
+    font-weight: 900;
+    font-style: italic;
+    font-size: 1.2em;
+    line-height: 1.2rem;
+}
+
+.startmenu {
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    background-color: var(--window-background-color);
+    color: var(--window-color);
+    padding: 2px;
+    z-index: 3;
+    flex-direction: column;
+}
+
+.startmenu-item {
+    padding: 5px;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.startmenu-item:hover {
+    background-color: #007;
+    color: #fff;
+}
+
+/* Paint-specific styles scoped to window content */
+/*
+.window-content .paint-toolbar {
+    display: flex;
+    padding: 4px;
+    gap: 8px;
+    background: var(--window-background-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.window-content .paint-toolbar .toolbar-section {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    border-right: 1px solid var(--border-color);
+}
+
+.window-content .paint-toolbar .tool-button {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    border: 1px solid var(--border-color);
+    background: var(--window-background-color);
+    cursor: pointer;
+}
+
+.window-content .paint-toolbar .tool-button.active {
+    background: var(--highlight-bg);
+    color: var(--highlight-text);
+}
+
+.window-content .paint-toolbar .tool-button:hover {
+    background: var(--highlight-bg);
+    color: var(--highlight-text);
+}
+
+.window-content .paint-toolbar input[type="color"] {
+    width: 30px;
+    height: 20px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+}
+
+.window-content .paint-toolbar input[type="range"] {
+    width: 100px;
+}
+
+.window-content .paint-canvas-container {
+    overflow: auto;
+    position: relative;
+    flex: 1;
+    height: calc(100% - 40px);
+    border: 1px solid var(--border-color);
+    background: #fff;
+}
+
+.window-content .paint-canvas-container canvas {
+    background: white;
+}
+*/
+/* Paint-specific brush settings styles */
+/*.window-content .paint-toolbar .brush-settings {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.window-content .paint-toolbar .size-container,
+.window-content .paint-toolbar .opacity-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.window-content .paint-toolbar .size-value,
+.window-content .paint-toolbar .opacity-value {
+    min-width: 30px;
+    text-align: right;
+}
+
+.window-content .paint-toolbar .brush-style {
+    height: 22px;
+    border: 1px solid var(--border-color);
+    background: var(--window-background-color);
+    cursor: pointer;
+}
+
+.window-content .paint-toolbar input[type="range"] {
+    width: 80px;
+}
+
+.window-content .paint-toolbar label {
+    font-size: 12px;
+    user-select: none;
+}
+
+.window-content .paint-toolbar .zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.window-content .paint-toolbar .zoom-controls button {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    border: 1px solid var(--border-color);
+    background: var(--window-background-color);
+    cursor: pointer;
+}
+
+.window-content .paint-toolbar .zoom-controls .zoom-level {
+    min-width: 50px;
+    text-align: center;
+}
+
+.window-content .paint-canvas-container {
+    overflow: auto;
+    position: relative;
+}
+
+.window-content .paint-canvas-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.window-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.window-content .paint-toolbar {
+    flex-shrink: 0;
+    height: 40px;
+    padding: 4px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--window-background-color);
+}
+*/
+/* Base Notepad Dialog Styles */
+.notepad-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--window-background-color);
+    border: 2px outset var(--border-color);
+    min-width: 300px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.notepad-dialog-titlebar {
+    background: var(--active-titlebar-background-color);
+    color: var(--active-titlebar-color);
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.notepad-dialog-close {
+    width: 16px;
+    height: 16px;
+    background: var(--window-background-color);
+    border: 1px outset var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.notepad-dialog-content {
+    padding: 16px;
+}
+
+/* Common Dialog Elements */
+.notepad-dialog-row {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.notepad-dialog-row input[type="text"],
+.notepad-dialog-row input[type="number"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 2px 4px;
+    border: 1px inset var(--border-color);
+}
+
+.notepad-dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background: var(--window-background-color);
+}
+
+.notepad-dialog-buttons button {
+    min-width: 75px;
+    padding: 4px 8px;
+    border: 2px outset var(--border-color);
+    background: var(--window-background-color);
+    color: var(--window-color);
+    cursor: pointer;
+}
+
+.notepad-dialog-buttons button:active {
+    border-style: inset;
+}
+
+/* Font Dialog Specific Styles */
+.notepad-font-section {
+    margin-bottom: 12px;
+}
+
+.notepad-font-section select {
+    width: 200px;
+    margin-top: 4px;
+    border: 1px inset var(--border-color);
+}
+
+.notepad-font-preview {
+    margin: 16px 0;
+    padding: 8px;
+    border: 1px inset var(--border-color);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+
+/* About Dialog Specific Styles */
+.notepad-about {
+    width: 400px;
+}
+
+.notepad-about-content {
+    text-align: center;
+    padding: 20px;
+    background: var(--window-background-color);
+}
+
+.notepad-about-logo {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 16px;
+}
+
+.notepad-about-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.notepad-about-version {
+    margin-bottom: 4px;
+    color: var(--window-color);
+}
+
+.notepad-about-copyright {
+    margin-bottom: 16px;
+    color: var(--window-color);
+}
+
+.notepad-about-description {
+    text-align: left;
+    margin-top: 16px;
+    padding: 8px;
+    border: 1px inset var(--border-color);
+    background: white;
+    color: var(--window-color);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Find/Replace Dialog Specific Styles */
+.notepad-find-replace {
+    width: 350px;
+}
+
+.notepad-find-replace-options {
+    display: flex;
+    gap: 16px;
+    margin: 12px 0;
+}
+
+.notepad-find-replace-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.notepad-find-replace-checkbox input[type="checkbox"] {
+    margin: 0;
+}
+
+/* Go To Dialog Specific Styles */
+.notepad-goto {
+    width: 300px;
+}
+
+.notepad-goto-input {
+    width: 100%;
+    padding: 2px 4px;
+    border: 1px inset var(--border-color);
+}
+
+.menu-dropdown-item.has-submenu {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-dropdown-item.has-submenu::after {
+    content: '►';
+    font-size: 10px;
+    margin-left: 8px;
+}
+
+.menu-dropdown-item.has-submenu > .menu-dropdown {
+    position: absolute;
+    display: none;
+    left: 100%;
+    top: 0;
+    min-width: 150px;
+    background: var(--window-background-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.menu-dropdown-item.has-submenu:hover > .menu-dropdown,
+.menu-dropdown-item.has-submenu > .menu-dropdown.active {
+    display: block;
+}
+
+.menu-dropdown-item span {
+    flex: 1;
+}
+
+/* Optional: Add a custom DOS font */
+@font-face {
+    font-family: 'DOS';
+    src: url('../fonts/Perfect-DOS-VGA-437.ttf') format('truetype');
+}
