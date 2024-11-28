@@ -193,8 +193,10 @@ export default class WindowObject {
      */
     setTitle(title) {
         this.title = title;
-        this.windowManager.desktopEnvironment.taskbar.render(); // this feels hacky
         this.windowElement.querySelector('.window-title').innerText = this.title;
+        // very hacky way to update the taskbar button text if it exists
+        let taskbarButton = document.querySelector(`.taskbar-windowbutton[data-uuid="${this.uuid}"]`);
+        if (taskbarButton) taskbarButton.innerText = this.title;
     }
 
     /**
