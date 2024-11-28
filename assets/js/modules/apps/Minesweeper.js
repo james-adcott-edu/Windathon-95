@@ -15,6 +15,19 @@ export default class Minesweeper {
         this.windowObject.setTitle('Minesweeper');
         this.windowObject.setCloseRequest(() => this.windowObject.closeWindow());
 
+        this.windowObject.setMenu({
+            'Game': {
+                'New': () => this.reset(),
+                'Exit': () => this.windowObject.closeWindow(),
+            },
+            //'Size': {
+            //    '2x2': () => this.setGameSize(2),
+            //    '3x3': () => this.setGameSize(3),
+            //    '4x4': () => this.setGameSize(4),
+            //    '5x5': () => this.setGameSize(5),
+            //},
+        });
+
         this.windowContent.innerHTML = `
         <div id="game-area">
             <table oncontextmenu="return false;" id="board"> </table>
