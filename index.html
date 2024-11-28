@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <script type="module" src="assets/js/main.js"></script>
+
+</head>
+<body>
+    
+<template id="window_template">
+    <div class="window">
+        <div class="window-titlebar">
+            <div class="window-title">Title</div>
+            <div class="window-controls">
+                <div class="window-control window-control-minimize">_</div>
+                <div class="window-control window-control-close">X</div>
+            </div>
+        </div>
+        <div class="window-menubar">
+            <!-- Menus will be dynamically inserted here -->
+        </div>
+        <div class="window-content"></div>
+    </div>
+</template>
+
+<template id="taskbar_template">
+    <div class="taskbar">
+        <div class="taskbar-start"></div>
+        <div class="taskbar-windowlist"></div>
+        <div class="taskbar-clock"></div>
+    </div>
+</template>
+
+</body>
+</html>
