@@ -1,3 +1,5 @@
+import GameTimer from '../GameTimer.js';
+
 /**
  * Minesweeper
  * @param {Window} windowObject - The window object
@@ -14,17 +16,24 @@ export default class Minesweeper {
         this.windowObject.setCloseRequest(() => this.windowObject.closeWindow());
 
         this.windowContent.innerHTML = `
-        <!--<div id="timer"></div>-->
-        <!--<button id="reset">reset</button>-->
-        <div id="minesleft"></div>
-        <table oncontextmenu="return false;" id="board"> </table>
+        <div id="game-area">
+            <table oncontextmenu="return false;" id="board"> </table>
+            <div class="statusbar">
+                <div id="minesleft"></div>
+                <div id="timer"></div>
+            </div>
+        </div>
         `;
 
+        // FIXME
+        this.windowObject.setSize(22 * 32, 22 * 20 + 28);
+        //this.windowObject.setSize(
+        //    this.windowContent.querySelector('#game-area').offsetWidth,
+        //    this.windowContent.querySelector('#game-area').offsetHeight
+        //);
+
+
         this.windowObject.addStylesheet(css);
-
-        this.windowObject.setSize(22 * 32, 22 * 20 + 20);
-
-        //this.windowContent.querySelector('#reset').addEventListener('click', () => this.reset());
 
         this.gameSize = {
             rows: 20,
@@ -32,21 +41,9 @@ export default class Minesweeper {
             mines: 99
         };
 
-        //this.timer = {
-        //    start() {
-        //        this.startTime = new Date();
-        //        this.interval = setInterval(() => {
-        //            this.time = Math.round(((new Date())-this.startTime)/100)/10;
-        //            //this.printTime(this.time);
-        //        }, 10);
-        //    },
-        //    stop() {
-        //        if (this.interval) clearInterval(this.interval);
-        //    },
-        //    getTime() {
-        //        return this.time;
-        //    }
-        //}
+        this.timer = new GameTimer((time) => {
+            this.printTime(time);
+        });
 
         this.init();
     }
@@ -58,7 +55,7 @@ export default class Minesweeper {
 
     endGame(hasWon) {
         this.gameEnded = 1;
-        //this.timer.stop();
+        this.timer.stop();
         let mineClass = 'flag';
         if (hasWon) {
             this.printRemaining(0);
@@ -173,12 +170,13 @@ export default class Minesweeper {
     }
 
     printRemaining(s) {
-        this.windowContent.querySelector('#minesleft').innerHTML = (s==undefined) ? this.minesRemaining : s;
+        if (s===undefined) s = this.minesRemaining;
+        this.windowContent.querySelector('#minesleft').innerHTML = `Mines remaining: ${s}`;
     }
 
-    //printTime(t) {
-    //    //this.windowContent.querySelector('#timer').innerHTML = t;
-    //}
+    printTime(t) {
+        this.windowContent.querySelector('#timer').innerHTML = `Time: ${t}`;
+    }
 
     quickClick(x, y) {
         if (!this.revealed[x][y]) return;
@@ -192,8 +190,8 @@ export default class Minesweeper {
         this.gameEnded = 0;
         this.cellsRemaining = this.gameSize.rows*this.gameSize.cols;
         this.minesRemaining = this.gameSize.mines;
-        //this.timer.stop();
-        //this.printTime(0);
+        this.timer.stop();
+        this.printTime(0);
         this.printRemaining(this.minesRemaining);
         this.mineLocations = [];
         [this.hints, this.flags, this.revealed].forEach(a => a.map(m => m.fill(0)));
@@ -206,7 +204,7 @@ export default class Minesweeper {
                 if (e.which == 1) {
                     if (this.firstClick) {
                         this.goodStart(x, y);
-                        //this.timer.start();
+                        this.timer.start();
                         this.firstClick = 0;
                     }
                     this.revealCell(x, y);
@@ -250,37 +248,33 @@ export default class Minesweeper {
     }
 }
 
-class GameTimer {
-    constructor(interval) {
-        this.interval = interval ?? 10;
-        this.func = () => {};
-    }
-
-    start() {
-        this.startTime = new Date();
-        this.interval = setInterval(() => {
-            this.time = Math.round(((new Date())-this.startTime)/100)/10;
-            this.func();
-        }, this.interval);
-    }
-
-    stop() {
-        if (this.interval) clearInterval(this.interval);
-    }
-
-    getTime() {
-        return this.time;
-    }
-}
-
 const css = `
 :root {
 background: transparent;
 border: none;
+padding: 0;
 --cellsize: 22px;
 --mineImg: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxzdHlsZT5saW5le3N0cm9rZTojMDAwO3N0cm9rZS13aWR0aDo2JX08L3N0eWxlPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0ibSIgY3g9IjMwJSIgY3k9IjM1JSI+PHN0b3Agb2Zmc2V0PSIxMCUiIHN0b3AtY29sb3I9IiNDQ0MiLz48c3RvcCBvZmZzZXQ9IjcwJSIgc3RvcC1jb2xvcj0iIzAwMCIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxsaW5lIHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiLz48bGluZSB4MT0iMCIgeTE9IjUwJSIgeDI9IjEwMCUiIHkyPSI1MCUiLz48bGluZSB4MT0iMTQuNjUlIiB5MT0iMTQuNjUlIiB4Mj0iODUuMzUlIiB5Mj0iODUuMzUlIi8+PGxpbmUgeDE9IjE0LjY1JSIgeTE9Ijg1LjM1JSIgeDI9Ijg1LjM1JSIgeTI9IjE0LjY1JSIvPjxjaXJjbGUgY3g9IjUwJSIgY3k9IjUwJSIgcj0iMzglIiBzdHlsZT0iZmlsbDp1cmwoI20pIi8+PC9zdmc+);
 --flagImg: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIGhlaWdodD0iMTAwIiB3aWR0aD0iMTAwIj48bGluZSB4MT0iNTAiIHkxPSIxMCIgeDI9IjUwIiB5Mj0iMTAwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJNIDAgMTAwIEEgNjAgNzAgMCAwIDEgMTAwIDEwMCIgZmlsbD0iIzAwMCIgLz48cGF0aCBkPSJNIDU1IDAgTCAwIDI1IEwgNTUgNTAiIGZpbGw9InJlZCIgLz48L3N2Zz4%3D);
 --errorImg: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxzdHlsZT5saW5le3N0cm9rZTpyZWQ7c3Ryb2tlLXdpZHRoOjEwJX08L3N0eWxlPjxsaW5lIHgxPScwJyB5MT0nMCcgeDI9JzEwMCUnIHkyPScxMDAlJy8+PGxpbmUgeDE9JzAnIHkxPScxMDAlJyB4Mj0nMTAwJScgeTI9JzAnLz48L3N2Zz4%3D);
+}
+
+#game-area {
+display: flex;
+flex-direction: column;
+}
+
+.statusbar {
+flex-shrink: 0;
+margin-top: 3px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+}
+
+.statusbar > div {
+padding: 2px 5px;
+border: 1px solid;
+border-color: var(--inset-border-color);
 }
 
 #board {
