@@ -1,3 +1,4 @@
+import GameTimer from '../GameTimer.js';
 
 // used to randomize the arrangement of the tiles
 Array.prototype.shuffle = function() {
@@ -35,6 +36,9 @@ export default class Tetravex {
         this.windowObject.setTitle("Tetravex");
         this.windowObject.setCloseRequest( () => {
             // do something before closing
+            if (this.timer) {
+                this.timer.stop();
+            }
             this.windowObject.closeWindow();
         });
 
@@ -74,6 +78,9 @@ export default class Tetravex {
         this.solution = [...Array(this.gameSize)].map(_=>Array(this.gameSize))
         this.tiles = [];
         this.generateSolution();
+        if (this.timer) {
+            this.timer.stop();
+        }
         
         // remove the game area if it exists and create a new one
         this.windowContent.querySelector('#game-area')?.remove();
@@ -145,6 +152,11 @@ export default class Tetravex {
                 }
             }
         });
+
+        this.timer = new GameTimer((time) => {
+            this.windowObject.setTitle(`Tetravex - ${time}`);
+        });
+        this.timer.start();
     }
 
     /**
@@ -231,6 +243,7 @@ export default class Tetravex {
                 }
             }
         }
+        this.timer.pause();
         const winDialog = this.windowObject.makeDialog(`
         <div style="text-align: center">
         <h1>You Win!</h1>
