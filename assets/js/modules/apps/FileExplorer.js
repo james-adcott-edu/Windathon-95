@@ -612,8 +612,6 @@ export default class FileExplorer {
      */
     static get styles() {
         return `
-            ${stylesheet}
-            
             .folder-item {
                 display: flex;
                 align-items: center;
@@ -976,8 +974,6 @@ export default class FileExplorer {
 
     static get styles() {
         return `
-            ${stylesheet}
-            
             .save-bar {
                 display: flex;
                 gap: 8px;
