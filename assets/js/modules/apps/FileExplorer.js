@@ -148,16 +148,23 @@ export default class FileExplorer {
      * @param {Object} args - Additional arguments including desktopEnvironment reference
      */
     constructor(windowObject, windowContent, args) {
+        /** @type {import('../WindowObject.js').default} */
         this.window = windowObject;
+        /** @type {HTMLElement} */
         this.windowContent = windowContent;
+        /** @type {Object} */
         this.args = args;
+        /** @type {import('../../DesktopEnvironment.js').default} */
         this.desktopEnvironment = args.desktopEnvironment;
         /** @type {import('../JsonFs.js').default} */
         this.fs = args.desktopEnvironment.fileSystem;
+        /** @type {string} */
         this.currentPath = 'C:';
         
         // Save mode specific setup
+        /** @type {string} */
         this.mode = args.mode || 'normal';
+        /** @type {Function | undefined} */
         this.onSelect = args.onSelect;
         
         if (this.mode === 'saveDialog') {

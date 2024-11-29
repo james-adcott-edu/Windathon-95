@@ -4,6 +4,8 @@ A faithful recreation of the Windows 95 operating system in vanilla JavaScript, 
 
 ![Screenshot of the Windows 95 Web Clone](./assets/images/showcase.png)
 
+You can view the live site [here](https://james-adcott-edu.github.io/Windathon-95/).
+
 ## 🚀 Features
 
 - Classic Windows 95 UI with working windows, taskbar, and start menu
@@ -13,6 +15,7 @@ A faithful recreation of the Windows 95 operating system in vanilla JavaScript, 
   - Minesweeper
   - Paint
   - Tetravex
+  - File Explorer
 - Draggable and resizable windows
 - File system simulation using localStorage
 - Authentic Windows 95 styling and interactions
@@ -99,6 +102,12 @@ This is the base class for all applications. It provides ways to accept argument
 - Drag and drop functionality
 - Offers different grid sizes
 
+### File Explorer
+- File system navigation
+- File operations (New, properties, delete)
+- File properties
+- Integration with other applications, such as Notepad.
+
 ## 📦 Deployment
 
 ### GitHub Pages Deployment
@@ -114,7 +123,7 @@ This is the base class for all applications. It provides ways to accept argument
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/[your-username]/windows95-clone.git
+git clone https://github.com/james-adcott-edu/Windathon-95
 ```
 
 2. Deploy using a local development server:

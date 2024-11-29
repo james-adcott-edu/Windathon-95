@@ -302,7 +302,6 @@ body.development {
     flex: 1;
 }
 
-/* Optional: Add a custom DOS font */
 @font-face {
     font-family: 'DOS';
     src: url('../fonts/Perfect-DOS-VGA-437.ttf') format('truetype');
