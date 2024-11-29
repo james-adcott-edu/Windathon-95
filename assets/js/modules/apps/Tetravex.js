@@ -30,6 +30,8 @@ export default class Tetravex {
         this.windowContent = windowContent;
         this.args = args;
         
+        this.disableChecking = false; // don't check the win condition if providing the solution
+
         // default game size is 3x3
         this.gameSize = 3;
 
@@ -45,6 +47,7 @@ export default class Tetravex {
         this.windowObject.setMenu({
             'Game': {
                 'New': () => this.init(),
+                'Show Solution': () => this.showSolution(),
                 'Exit': () => this.windowObject.closeWindow(),
             },
             'Size': {
@@ -81,6 +84,9 @@ export default class Tetravex {
         if (this.timer) {
             this.timer.stop();
         }
+
+        this.disableChecking = false;
+        this.windowContent.classList.remove('game-off');
         
         // remove the game area if it exists and create a new one
         this.windowContent.querySelector('#game-area')?.remove();
@@ -100,6 +106,7 @@ export default class Tetravex {
         draggableTiles.forEach(draggable => {
             let offsetX, offsetY;
             draggable.addEventListener('mousedown', (e) => {
+                if (this.disableChecking) return;
                 if (e.button !== 0) return;
                 draggable.style.position = 'absolute';
                 draggable.classList.add('dragging');
@@ -157,6 +164,31 @@ export default class Tetravex {
             this.windowObject.setTitle(`Tetravex - ${time}`);
         });
         this.timer.start();
+    }
+
+    
+    gameOff() {
+        this.timer.pause();
+        this.disableChecking = true;
+        this.windowContent.classList.add('game-off');
+    }
+
+    showSolution() {
+        this.gameOff();
+
+        const solutionRows = this.windowContent.querySelectorAll('#solutiontable tr');
+        this.solution.forEach((row, i) => {
+            row.forEach((cell, j) => {
+                cell.element.style.position = 'absolute';
+                cell.element.style.transition = 'all 1s';
+                cell.element.style.left = cell.element.offsetLeft + 'px';
+                cell.element.style.top = cell.element.offsetTop + 'px';
+                cell.element.style.left = solutionRows[i].childNodes[j].offsetLeft + 2 + 'px';
+                cell.element.style.top = solutionRows[i].childNodes[j].offsetTop + 2 + 'px';
+                cell.element.classList.add('off');
+                return;
+            });
+        });
     }
 
     /**
@@ -225,6 +257,8 @@ export default class Tetravex {
      * @returns {void}
      */
     checkWinCondition() {
+        if (this.disableChecking) return;
+
         const rows = this.windowContent.querySelectorAll('#solutiontable tr');
 
         for (let i = 0; i < rows.length; i++) {
@@ -243,7 +277,7 @@ export default class Tetravex {
                 }
             }
         }
-        this.timer.pause();
+        this.gameOff();
         const winDialog = this.windowObject.makeDialog(`
         <div style="text-align: center">
         <h1>You Win!</h1>
@@ -315,6 +349,10 @@ let stylesheet = `
     position: relative;
     user-select: none;
     cursor: move;
+}
+
+.tile.off, .game-off .tile {
+    cursor: default;
 }
 
 .dragging {
