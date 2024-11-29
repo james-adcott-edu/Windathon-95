@@ -605,7 +605,7 @@
                     if (parts.length > 1) {
                         parts.pop();
                         this.currentPath = parts.join('\\');
-                        this.updatePrompt();  // Update prompt after changing directory
+                        this.updatePrompt();
                     }
                     return;
                 }
@@ -614,12 +614,12 @@
                 if (path.includes(':')) {
                     if (this.fs.data[path]) {
                         this.currentPath = path;
-                        this.updatePrompt();  // Update prompt after changing directory
+                        this.updatePrompt();
                         return;
                     }
                 } else {
                     // Relative path - combine with current path
-                    const newPath = `${this.currentPath}\\${path.toUpperCase()}`;
+                    const newPath = `${this.currentPath}\\${path}`;
                     const driveContents = this.fs.data[this.currentPath.split('\\')[0]];
                     
                     // Navigate through the path parts to check if directory exists
@@ -627,14 +627,19 @@
                     const parts = newPath.split('\\').slice(1); // Skip drive letter
                     
                     for (const part of parts) {
-                        if (!current[part] || typeof current[part] !== 'object') {
+                        // Handle case-insensitive comparison for "PROGRAM FILES"
+                        const foundKey = Object.keys(current).find(
+                            key => key.toLowerCase() === part.toLowerCase()
+                        );
+                        
+                        if (!foundKey || typeof current[foundKey] !== 'object') {
                             throw new Error('Invalid directory');
                         }
-                        current = current[part];
+                        current = current[foundKey];
                     }
                     
                     this.currentPath = newPath;
-                    this.updatePrompt();  // Update prompt after changing directory
+                    this.updatePrompt();
                     return;
                 }
 
