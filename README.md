@@ -29,10 +29,8 @@ You can view the live site [here](https://james-adcott-edu.github.io/Windathon-9
 - We haven't focused on a mobile experience, as it's a desktop operating system.
 
 ### User Stories
-- As a user, I want to explore the Windows 95 interface to relive nostalgia.
-- As a new user, I want to easily navigate the system and access applications.
-- As a developer, I want to understand the architecture of a web-based OS simulation.
-- As a user, I want to save and load files using the simulated file system.
+
+We kept the user stories in the kanban board, which can be found [here](https://github.com/users/james-adcott-edu/projects/5).
 
 ### Wireframes
 - Initial wireframes were created to map out the desktop layout, taskbar, and application windows.
@@ -158,7 +156,7 @@ If deploying to a custom domain:
 
 - If images don't load, check the `web_root` configuration in `Config.js`
 - If storage doesn't work, ensure localStorage is enabled
-- For CORS issues, verify your server's security headers
+- For CORS issues, verify your server's security headers (or just install the no-cors extension for chrome)
 
 ## 🔧 Development
 
@@ -213,6 +211,12 @@ export default class NewApp {
 - CSS validated using W3C CSS Validator
 - HTML validated using W3C Markup Validator
 
+#### W3C HTML validation
+![W3C HTML validation](./assets/images/w3c-html-validation-result.png)
+
+#### W3C CSS validation
+![W3C CSS validation](./assets/images/w3c-css-validation-result.png)
+
 ### Known Bugs
 - Window maximize behavior may be inconsistent on some screen sizes
 - Some keyboard shortcuts may conflict with browser defaults
@@ -226,7 +230,6 @@ export default class NewApp {
 
 ### Future Improvements
 - Add more applications, such as Internet Explorer (using an iframe)
-- Add a file explorer which can navigate the custom file system.
 - Allow windows to be resized at the users will.
 
 ## 📝 License
@@ -238,3 +241,9 @@ This project is intended for educational purposes only. Windows 95 is a trademar
 - Microsoft for the original Windows 95
 - Contributors to the project
 - The web development community for resources and inspiration
+- Icons from Google Images, the specific sources are as follows:
+  - Wikipedia
+  - Logopedia
+  - Free Icons
+  - FreePik
+  - SVG Repo
