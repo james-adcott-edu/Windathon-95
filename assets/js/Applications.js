@@ -6,6 +6,7 @@ import Paint from './modules/apps/Paint.js';
 import Notepad from './modules/apps/Notepad.js';
 import Terminal from './modules/apps/Terminal.js';
 import Minesweeper from './modules/apps/Minesweeper.js';
+import DesktopSettings from './modules/apps/DesktopSettings.js';
 import Explorer from './modules/apps/FileExplorer.js';
 /**
  * @typedef {Object} WindowArgs
@@ -80,6 +81,18 @@ const Applications = [
         name: "Minesweeper",
         icon: "minesweeper.png",
         module: Minesweeper
+    },
+    {
+        id: 'desktopsettings',
+        name: "Desktop Settings",
+        icon: "desktopsettings.png",
+        windowArgs: {
+            width: 400,
+            height: 300,
+            x: 300,
+            y: 300
+        },
+        module: DesktopSettings
     },
     {
         id: 'explorer',
