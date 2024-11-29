@@ -121,6 +121,7 @@ button:active {
     left: 0;
     min-width: 150px;
     background-color: var(--window-background-color, #bbb);
+    color: var(--window-color, #000);
     border: 2px solid;
     border-color: var(--outset-border-color);
     padding: 2px;
@@ -384,8 +385,7 @@ button:active {
     top: 0;
     min-width: 150px;
     background: var(--window-background-color);
-    border: 1px solid var(--border-color);
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    color: var(--window-color);
 }
 
 .menu-dropdown-item.has-submenu:hover > .menu-dropdown,
