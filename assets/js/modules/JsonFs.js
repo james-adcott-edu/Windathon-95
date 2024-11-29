@@ -179,7 +179,18 @@ export default class JsonFs {
     createDefaultFileSystem() {
         const defaultStructure = {
             'C:': {
-                'WINDOWS': {},
+                'WINDOWS': {
+                    'SYSTEM32': {
+                        'DRIVERS': {
+                            'win95browser.sys': 'You are not permitted to view this file'
+                        },
+                        'CONFIG': {},
+                        'SHELL': {},
+                        'USER32': {},
+                        'USER': {},
+                        'WIN.INI': 'mode=browser\nsyscall=redirect-to-browser\ndxgi-calls=redirect-to-browser\n'
+                    }
+                },
                 'SYSTEM': {},
                 'PROGRAM FILES': {},
                 'USERS': {
