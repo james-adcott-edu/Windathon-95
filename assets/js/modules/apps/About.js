@@ -58,12 +58,17 @@ export default class About {
         `;
 
         const styles = `
+            :root {
+                background: transparent;
+                border: none;
+                padding: 0;
+            }
+
             .about-dialog {
                 padding: 16px;
                 font-family: 'MS Sans Serif', sans-serif;
-                background-color: #c0c0c0;
-                height: 100%;
                 display: flex;
+                height: 100%;
                 flex-direction: column;
                 box-sizing: border-box;
             }
@@ -138,7 +143,6 @@ export default class About {
             .about-footer button {
                 min-width: 75px;
                 padding: 4px 8px;
-                background: #c0c0c0;
                 border: 2px solid;
                 border-color: #ffffff #808080 #808080 #ffffff;
                 outline: 1px solid #000000;
