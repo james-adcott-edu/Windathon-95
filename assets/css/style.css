@@ -274,7 +274,7 @@ button:active {
     background-color: var(--window-background-color);
     color: var(--window-color);
     padding: 2px;
-    z-index: 3;
+    z-index: 9999;
     flex-direction: column;
     border: 2px outset #bbb;
     display: flex;
