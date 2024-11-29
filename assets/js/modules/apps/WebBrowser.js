@@ -78,11 +78,20 @@ export default class WebBrowser {
     }
 
     navigate() {
-        let url = this.addressBar.value;
-        // Add https if no protocol specified
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-            url = 'https://' + url;
+        let url = this.addressBar.value.trim();
+        
+        // Check if it's a valid URL
+        if (!url.match(/^(https?:\/\/)/i)) {
+            // Check if it contains spaces or doesn't contain a dot (likely a search term)
+            if (url.includes(' ') || !url.includes('.')) {
+                // Encode the search term for Google search
+                url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+            } else {
+                // Add https if it looks like a URL but missing protocol
+                url = 'https://' + url;
+            }
         }
+        
         this.iframe.src = url;
         this.addressBar.value = url;
     }
