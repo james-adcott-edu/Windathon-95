@@ -9,6 +9,7 @@ import Minesweeper from './modules/apps/Minesweeper.js';
 import DesktopSettings from './modules/apps/DesktopSettings.js';
 import Explorer from './modules/apps/FileExplorer.js';
 import About from './modules/apps/About.js';
+import Clock from './modules/apps/Clock.js';
 /**
  * @typedef {Object} WindowArgs
  * @property {number} width - The initial width of the window
@@ -113,6 +114,17 @@ const Applications = [
         icon: 'about.png',
         windowArgs: { width: 800, height: 600 },
         module: About
+    },
+    {
+        id: 'clock',
+        name: 'Clock',
+        icon: 'clock.png',
+        windowArgs: { 
+            width: 300, 
+            height: 400,
+            resizable: false
+        },
+        module: Clock
     }
 ];
 

@@ -9,12 +9,12 @@ if (environment === 'development') {
 let de = new DesktopEnvironment();
 window.desktopEnvironment = de;
 
-// Clean up when the page is unloaded
-window.addEventListener('unload', () => {
+// Clean up when the page is unloaded (onunload is deprecated, but still works in all browsers)
+window.onunload = () => {
     if (de) {
         de.destroy();
     }
-});
+};
 
 let windowManager = de.windowManager;
 
