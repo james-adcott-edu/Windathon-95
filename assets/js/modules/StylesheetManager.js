@@ -33,6 +33,7 @@ export default class StylesheetManager {
     }   
     
     addSheet() {
+        this.removeSheet();
         document.head.appendChild(this.sheet);
     }
 
