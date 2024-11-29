@@ -65,6 +65,7 @@ export default class About {
                 height: 100%;
                 display: flex;
                 flex-direction: column;
+                box-sizing: border-box;
             }
 
             .about-header {
@@ -96,6 +97,7 @@ export default class About {
                 flex-grow: 1;
                 overflow-y: auto;
                 padding: 0 8px;
+                box-sizing: border-box;
             }
 
             .about-content h2 {
