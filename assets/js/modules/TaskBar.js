@@ -17,7 +17,9 @@ export default class TaskBar {
      * @property {HTMLElement} taskbarWindowList - Container for window buttons
      */
     constructor(desktopEnvironment, windowManager) {
+        /** @type {import('./DesktopEnvironment.js').default} */
         this.desktopEnvironment = desktopEnvironment;
+        /** @type {import('./WindowManager.js').default} */
         this.windowManager = windowManager;
         this.tasks = [];
         // create taskbar from template
@@ -29,6 +31,15 @@ export default class TaskBar {
         this.clock = new Clock();
         this.taskbarElement.querySelector('.taskbar-clock').appendChild(this.clock.start());
         document.body.appendChild(this.taskbarElement);
+
+        this.taskbarElement.querySelector('.taskbar-clock')
+            .addEventListener('click', () => {
+                const processExists = this.windowManager.processExists('clock');
+                // Don't start the clock if it is already running.
+                if (processExists === false) {
+                    this.windowManager.startProcess('clock');
+                }
+            });
     }
     
     /**

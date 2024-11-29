@@ -13,7 +13,10 @@ export default class WindowManager {
      * @property {WindowObject[]} windows - Array of active window objects
      */
     constructor(desktopEnvironment) {
+        /** @type {import('./DesktopEnvironment.js').default} */
         this.desktopEnvironment = desktopEnvironment;
+
+        /** @type {WindowObject[]} */
         this.windows = [];
     }
 
@@ -47,6 +50,10 @@ export default class WindowManager {
     startProcess(moduleName, moduleArgs = {}, windowArgs = {}) {
         const module = Applications.find(app => app.id === moduleName).module;
         return this.start(module, moduleArgs, windowArgs);
+    }
+
+    processExists(windowTitle) {
+        return this.windows.some(win => win.title.toLowerCase() === windowTitle.toLowerCase());
     }
 
     /**
