@@ -229,6 +229,7 @@ body.development {
     color: #fff;
     padding: 4px;
     margin: 0 auto;
+    text-shadow: 1px 1px 0 #000;
 }
 
 .desktop .icon.active div {
