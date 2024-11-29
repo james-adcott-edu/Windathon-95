@@ -52,7 +52,7 @@ export default class About {
                     </p>
                 </div>
                 <div class="about-footer">
-                    <button onclick="this.closest('.window').querySelector('.window-control-close').click()">OK</button>
+                    <button>OK</button>
                 </div>
             </div>
         `;
@@ -143,14 +143,10 @@ export default class About {
             .about-footer button {
                 min-width: 75px;
                 padding: 4px 8px;
+                background: transparent;
                 border: 2px solid;
-                border-color: #ffffff #808080 #808080 #ffffff;
-                outline: 1px solid #000000;
+                border-color: var(--outset-border-color);
                 font-family: 'MS Sans Serif', sans-serif;
-            }
-
-            .about-footer button:active {
-                border-color: #808080 #ffffff #ffffff #808080;
             }
         `;
 
