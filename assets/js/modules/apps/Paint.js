@@ -101,6 +101,18 @@ export default class Paint {
         const toolbar = document.createElement('div');
         toolbar.classList.add('paint-toolbar');
 
+        // File Section
+        const fileSection = document.createElement('div');
+        fileSection.classList.add('toolbar-section');
+
+        const saveButton = document.createElement('button');
+        saveButton.className = 'tool-button';
+        saveButton.title = 'Save';
+        saveButton.innerHTML = '💾';  // Floppy disk emoji
+        saveButton.addEventListener('click', () => this.saveCanvas());
+
+        fileSection.appendChild(saveButton);
+
         // Tools Section
         const toolsSection = document.createElement('div');
         toolsSection.classList.add('toolbar-section');
@@ -237,7 +249,7 @@ export default class Paint {
         toolbar.appendChild(zoomSection);
 
         // Append all sections to toolbar
-        toolbar.append(toolsSection, brushSection);
+        toolbar.append(fileSection, toolsSection, brushSection);
         this.windowContent.insertBefore(toolbar, this.windowContent.firstChild);
     }
 
@@ -538,6 +550,28 @@ export default class Paint {
         container.style.width = `${this.canvas.width * this.zoomLevel}px`;
         container.style.height = `${this.canvas.height * this.zoomLevel}px`;
     }
+
+    /**
+     * Saves the canvas as a bitmap file
+     * @private
+     */
+    saveCanvas() {
+        // Convert canvas to blob
+        this.canvas.toBlob((blob) => {
+            // Create a download link
+            const link = document.createElement('a');
+            link.download = 'paint.bmp';  // Default filename
+            link.href = URL.createObjectURL(blob);
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            
+            // Cleanup
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }, 'image/bmp');
+    }
 }
 
 
@@ -579,6 +613,10 @@ border-color: var(--outset-border-color);
     padding: 2px;
     background: var(--window-background-color);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
 }
 
 .paint-toolbar .tool-button.active {
