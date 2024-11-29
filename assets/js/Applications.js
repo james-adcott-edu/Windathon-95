@@ -11,7 +11,7 @@ import Explorer from './modules/apps/FileExplorer.js';
 import About from './modules/apps/About.js';
 import Clock from './modules/apps/Clock.js';
 import Calculator from './modules/apps/Calculator.js';
-
+import WebBrowser from './modules/apps/WebBrowser.js';
 /**
  * @typedef {Object} WindowArgs
  * @property {number} width - The initial width of the window
@@ -140,6 +140,12 @@ const Applications = [
             y: 100
         },
         module: Calculator
+    },
+    {
+        id: 'webbrowser',
+        name: 'Web Browser',
+        icon: 'webbrowser.png',
+        module: WebBrowser
     }
 ];
 
