@@ -1,4 +1,5 @@
 import WindowObject from './WindowObject.js';
+import Applications from '../Applications.js';
 
 /**
  * Manages all window operations including creation, focus, minimization, and removal
@@ -33,6 +34,19 @@ export default class WindowManager {
         this.windows.push(window);
         this.desktopEnvironment.taskbar.addTask(window);
         return window;
+    }
+
+    /**
+     * Starts a process with the specified module name, so that other applications
+     * can easily start other applications.
+     * @param {string} moduleName - The name of the module to start
+     * @param {Object} moduleArgs - Arguments to pass to the module
+     * @param {Object} windowArgs - Configuration options for the window
+     * @returns {WindowObject} The created window object
+     */
+    startProcess(moduleName, moduleArgs = {}, windowArgs = {}) {
+        const module = Applications.find(app => app.id === moduleName).module;
+        return this.start(module, moduleArgs, windowArgs);
     }
 
     /**
