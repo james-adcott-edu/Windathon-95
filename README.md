@@ -73,38 +73,74 @@ This is the base class for all applications. It provides ways to accept argument
 ## 💻 Applications
 
 ### Notepad
+![Notepad screenshot](./assets/images/showcase/notepad.png)
+
 - Full text editing capabilities
 - File operations (New, Open, Save, Save As)
 - Find/Replace functionality
 - Word wrap and font settings
+- Integrates with the file system using explorer.
+- Status bar showing cursor position, and file size.
+- Common insert options (date, time, paste, cut, copy, undo, redo)
 
 ### MS-DOS Prompt
+![MS-DOS Prompt screenshot](./assets/images/showcase/terminal.png)
 - Command-line interface
-- Basic DOS commands
+- Many DOS commands available
 - File system navigation
 - File operations
+- List of commands available
+  - `cls` - Clears the screen
+  - `dir` - Lists files in the current directory
+  - `cd` - Changes the current directory
+  - `md` - Creates a directory
+  - `mkdir` - Creates a directory
+  - `type` - Displays the contents of a file
+  - `help` - Displays the help menu
+  - `ver` - Displays the version of the DOS prompt
+  - `exit` - Exits the DOS prompt
+  - `start` - Starts a new application
+  - `tasklist` - Lists running tasks
+  - `taskkill` - Ends a running task
+  - `echo` - Displays a message
+  - `programs` - Lists all installed applications
+
+The terminal interacts soley with the JsonFs, and does not have any knowledge of the file system outside of that.
 
 ### Minesweeper
+![Minesweeper screenshot](./assets/images/showcase/minesweeper.png)
 - Classic Windows 95 Minesweeper game
-- Multiple difficulty levels
-- Timer and mine counter
+- Multiple difficulty levels, including beginner, intermediate, and expert.
+- Timer and mine counter using the status bar.
+- Full functionality, including the ability to flag mines.
+- Game logic written from scratch by james.
 
 ### Paint
+![Paint screenshot](./assets/images/showcase/paint.png)
 - Basic paint application
 - Drawing capabilities
 - Color picker
+- Zoom functionality
+- Undo/Redo functionality
+- Drawing logic written from scratch by deeton.
+- Change size and opacity of the brush, with different brush types.
 
 ### Tetravex
+![Tetravex screenshot](./assets/images/showcase/tetravex.png)
 - Classic puzzle game
 - 2D grid with numbered tiles
 - Drag and drop functionality
 - Offers different grid sizes
+- Game logic written from scratch by james.
 
 ### File Explorer
+![File Explorer screenshot](./assets/images/showcase/explorer.png)
 - File system navigation
 - File operations (New, properties, delete)
 - File properties
 - Integration with other applications, such as Notepad.
+- Full functionality, including the ability to create new files and directories.
+- Explorer also integrates with the JsonFs, and does not have any knowledge of the file system outside of that.
 
 ## 📦 Deployment
 
