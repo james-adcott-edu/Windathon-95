@@ -1,4 +1,3 @@
-import Applications from '../../Applications.js';
 import { web_root } from '../../Config.js';
 
 /**
@@ -155,7 +154,7 @@ export default class FileExplorer {
         this.windowContent = windowContent;
         /** @type {Object} */
         this.args = args;
-        /** @type {import('../../DesktopEnvironment.js').default} */
+        /** @type {import('../DesktopEnvironment.js').default} */
         this.desktopEnvironment = args.desktopEnvironment;
         /** @type {import('../JsonFs.js').default} */
         this.fs = args.desktopEnvironment.fileSystem;
