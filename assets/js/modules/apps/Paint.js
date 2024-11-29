@@ -218,12 +218,14 @@ export default class Paint {
         zoomSection.classList.add('toolbar-section', 'zoom-controls');
 
         const zoomOutButton = document.createElement('button');
-        zoomOutButton.innerHTML = '🔍-';
+        zoomOutButton.innerHTML = '−';
+        zoomOutButton.className = 'zoom-button zoom-out';
         zoomOutButton.title = 'Zoom Out';
         zoomOutButton.addEventListener('click', () => this.adjustZoom(-0.1));
 
         const zoomInButton = document.createElement('button');
-        zoomInButton.innerHTML = '🔍+';
+        zoomInButton.innerHTML = '+';
+        zoomInButton.className = 'zoom-button zoom-in';
         zoomInButton.title = 'Zoom In';
         zoomInButton.addEventListener('click', () => this.adjustZoom(0.1));
 
@@ -305,13 +307,17 @@ export default class Paint {
     handleMouseDown(event) {
         const pos = this.getMousePos(event);
         this.isDrawing = true;
+        
+        // Store the starting position
+        this.startX = pos.x;
+        this.startY = pos.y;
         this.lastX = pos.x;
         this.lastY = pos.y;
-        
-        // Save state before starting new drawing
+
+        // Save the current state before starting to draw
         this.saveState();
 
-        // Start path for freehand drawing
+        // Start a new path for drawing
         this.ctx.beginPath();
         this.ctx.moveTo(pos.x, pos.y);
         
@@ -358,8 +364,13 @@ export default class Paint {
      * @param {MouseEvent} event
      */
     handleMouseUp() {
-        this.isDrawing = false;
-        this.ctx.closePath();
+        if (this.isDrawing) {
+            this.isDrawing = false;
+            this.ctx.closePath();
+            
+            // Save the state after completing the drawing
+            this.saveState();
+        }
     }
 
     /**
@@ -406,16 +417,16 @@ export default class Paint {
         if (lastState) {
             const img = new Image();
             img.src = lastState;
-            img.onload = () => {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.drawImage(img, 0, 0);
-                
-                // Draw the new line
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.lastX, this.lastY);
-                this.ctx.lineTo(pos.x, pos.y);
-                this.ctx.stroke();
-            };
+            
+            // Draw immediately without waiting for onload
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.drawImage(img, 0, 0);
+            
+            // Draw the new line
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.startX, this.startY); // Use startX/Y instead of lastX/Y
+            this.ctx.lineTo(pos.x, pos.y);
+            this.ctx.stroke();
         }
     }
 
@@ -429,14 +440,18 @@ export default class Paint {
         if (lastState) {
             const img = new Image();
             img.src = lastState;
-            img.onload = () => {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.drawImage(img, 0, 0);
-                
-                const width = pos.x - this.lastX;
-                const height = pos.y - this.lastY;
-                this.ctx.strokeRect(this.lastX, this.lastY, width, height);
-            };
+            
+            // Draw immediately without waiting for onload
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.drawImage(img, 0, 0);
+            
+            // Calculate width and height from start position
+            const width = pos.x - this.startX;
+            const height = pos.y - this.startY;
+            
+            // Draw the new rectangle
+            this.ctx.beginPath();
+            this.ctx.strokeRect(this.startX, this.startY, width, height);
         }
     }
 
@@ -637,41 +652,37 @@ border-color: var(--outset-border-color);
 .paint-toolbar .zoom-controls {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
+    padding: 0 4px;
 }
 
-.paint-toolbar .zoom-controls button {
-    width: 28px;
-    height: 28px;
-    padding: 2px;
-    background: var(--window-background-color);
-    cursor: pointer;
-}
-
-.paint-toolbar .zoom-controls .zoom-level {
-    min-width: 50px;
-    text-align: center;
-}
-
-.paint-canvas-container {
-    overflow: auto;
-    position: relative;
-}
-
-.paint-canvas-container canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.paint-toolbar {
-    flex-shrink: 0;
-    height: 40px;
-    padding: 4px;
-    border-bottom: 1px solid var(--border-color);
+.zoom-button {
+    width: 20px;
+    height: 20px;
+    padding: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: var(--window-background-color);
+    justify-content: center;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+}
+
+.zoom-button:active {
+    border-color: #808080 #ffffff #ffffff #808080;
+    padding: 1px 0 0 1px;
+}
+
+.zoom-level {
+    min-width: 45px;
+    text-align: center;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 11px;
 }
 `;
