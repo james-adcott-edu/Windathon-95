@@ -131,9 +131,12 @@ export default class WebBrowser {
         navbar.appendChild(goButton);
 
         // Create iframe for web content
+        const iframeDiv = document.createElement('div');
+        iframeDiv.classList.add('browser-content-container');
         this.iframe = document.createElement('iframe');
         this.iframe.className = 'browser-content';
         this.iframe.src = 'https://example.com';
+        iframeDiv.appendChild(this.iframe);
 
         // Handle address bar submission
         this.addressBar.addEventListener('keypress', (e) => {
@@ -142,9 +145,13 @@ export default class WebBrowser {
             }
         });
 
+        const appDiv = document.createElement('div');
+        appDiv.className = 'app';
+        appDiv.appendChild(navbar);
+        appDiv.appendChild(iframeDiv);
+
         // Add elements to window
-        this.windowContent.appendChild(navbar);
-        this.windowContent.appendChild(this.iframe);
+        this.windowContent.appendChild(appDiv);
     }
 
     loadUrl(url) {
@@ -312,20 +319,31 @@ export default class WebBrowser {
 }
 
 const css = `
-.web-browser {
+:root {
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
+.app {
     display: flex;
     flex-direction: column;
+    background: transparent;
+    border: 0;
+    padding: 0;
     height: 100%;
-    background: var(--window-background-color);
     box-sizing: border-box;
 }
 
 .browser-navbar {
+    flex-shrink: 0;
     display: flex;
     gap: 4px;
     padding: 4px;
-    background: var(--window-background-color);
-    border-bottom: 1px solid var(--border-color);
+}
+
+.browser-content-container {
+    flex-grow: 1;
 }
 
 .browser-navbar button {
@@ -333,9 +351,9 @@ const css = `
     height: 22px;
     font-family: "MS Sans Serif", sans-serif;
     font-size: 12px;
-    background: #c0c0c0;
+    background: inherit;
     border: 2px solid;
-    border-color: #ffffff #808080 #808080 #ffffff;
+    border-color: var(--outset-border-color);
     cursor: pointer;
     padding: 0;
     display: flex;
@@ -344,7 +362,7 @@ const css = `
 }
 
 .browser-navbar button:active {
-    border-color: #808080 #ffffff #ffffff #808080;
+    border-color: var(--inset-border-color);
     padding: 1px 0 0 1px;
 }
 
@@ -363,19 +381,19 @@ const css = `
     font-size: 12px;
     padding: 0 4px;
     background: #fff;
-    border: 2px inset #808080;
+    border: 2px inset #bbb;
     color: #000;
     box-sizing: border-box;
 }
 
 .browser-content {
     flex: 1;
-    border: 2px inset #808080;
+    border: 2px inset #bbb;
     background: #fff;
-    margin: 4px;
+    margin: 0;
     box-sizing: border-box;
-    width: calc(100% - 8px);
-    height: calc(100% - 38px); /* navbar height (30px) + margin (8px) */
+    width: 100%;
+    height: calc(100% - 4px);
 }
 
 .browser-navbar button:disabled {
@@ -384,7 +402,7 @@ const css = `
 }
 
 .browser-navbar button:disabled:active {
-    border-color: #ffffff #808080 #808080 #ffffff;
+    border-color: var(--outset-border-color);
     padding: 0;
 }
 `; 

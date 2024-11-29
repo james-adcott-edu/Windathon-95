@@ -145,6 +145,9 @@ const Applications = [
         id: 'webbrowser',
         name: 'Web Browser',
         icon: 'webbrowser.png',
+        windowArgs: {
+            resizable: true,
+        },
         module: WebBrowser
     }
 ];
