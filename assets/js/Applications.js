@@ -6,6 +6,7 @@ import Paint from './modules/apps/Paint.js';
 import Notepad from './modules/apps/Notepad.js';
 import Terminal from './modules/apps/Terminal.js';
 import Minesweeper from './modules/apps/Minesweeper.js';
+import Explorer from './modules/apps/FileExplorer.js';
 /**
  * @typedef {Object} WindowArgs
  * @property {number} width - The initial width of the window
@@ -76,6 +77,18 @@ const Applications = [
         name: "Minesweeper",
         icon: "minesweeper.png",
         module: Minesweeper
+    },
+    {
+        id: 'explorer',
+        name: "File Explorer",
+        icon: "explorer.webp",
+        windowArgs: {
+            width: 800,
+            height: 600,
+            x: 100,
+            y: 100
+        },
+        module: Explorer
     }
 ];
 

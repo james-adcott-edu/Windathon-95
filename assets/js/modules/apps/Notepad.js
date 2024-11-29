@@ -8,14 +8,27 @@ export default class Notepad {
     constructor(windowObject, windowContent, args) {
         this.window = windowObject;
         this.windowContent = windowContent;
-        this.currentFile = null;
-        this.isModified = false;
+        
+        /** @type {string|null} Path to the current file */
+        this.currentPath = args.path || null;
 
-        this.window.addStylesheet(stylesheet);
-
-        // Set up window
+        /** @type {import('../DesktopEnvironment.js').default} */
+        this.desktopEnvironment = args.desktopEnvironment;
+        
+        /** @type {import('../JsonFs.js').default} */
+        this.fs = args.desktopEnvironment.fileSystem;
+        
         this.window.setTitle('Untitled - Notepad');
         
+        this.setupUi();
+        
+        // If a path was provided, load the file
+        if (this.currentPath) {
+            this.loadFile(this.currentPath);
+        }
+    }
+
+    setupUi() {
         // Add font settings
         this.fontSettings = {
             family: 'Consolas',
@@ -23,11 +36,13 @@ export default class Notepad {
             wordWrap: true
         };
 
+        this.window.addStylesheet(stylesheet);
+        
         // Initialize UI
         this.setupTextArea();
         this.setupStatusBar();
         this.setupMenuBar();
-
+        
         // Set up close handler
         this.window.setCloseRequest(() => {
             if (!this.checkSave()) return;
@@ -407,7 +422,9 @@ export default class Notepad {
      * @private
      */
     updateTitle() {
-        const fileName = this.currentFile ? this.currentFile.name : 'Untitled';
+        const fileName = this.currentPath ? 
+            this.currentPath.split('\\').pop() : 
+            'Untitled';
         const modified = this.isModified ? '*' : '';
         this.window.setTitle(`${fileName}${modified} - Notepad`);
     }
@@ -420,7 +437,7 @@ export default class Notepad {
         if (!this.checkSave()) return;
         
         this.textarea.value = '';
-        this.currentFile = null;
+        this.currentPath = null;
         this.isModified = false;
         this.updateTitle();
     }
@@ -443,7 +460,7 @@ export default class Notepad {
             try {
                 const text = await file.text();
                 this.textarea.value = text;
-                this.currentFile = file;
+                this.currentPath = file.name;
                 this.isModified = false;
                 this.updateTitle();
             } catch (error) {
@@ -459,49 +476,47 @@ export default class Notepad {
      * Saves the current file
      * @private
      */
-    async saveFile() {
-        if (this.currentFile) {
-            await this.saveContent(this.currentFile);
-        } else {
-            await this.saveFileAs();
+    saveFile() {
+        if (!this.currentPath) {
+            // Implement save dialog here
+            return;
         }
-    }
 
-    /**
-     * Opens save dialog and saves file with new name
-     * @private
-     */
-    async saveFileAs() {
-        const suggestedName = this.currentFile ? this.currentFile.name : 'untitled.txt';
-        const handle = await window.showSaveFilePicker({
-            suggestedName,
-            types: [{
-                description: 'Text Files',
-                accept: {'text/plain': ['.txt']},
-            }],
-        });
-
-        await this.saveContent(handle);
-    }
-
-    /**
-     * Saves content to a file
-     * @private
-     * @param {FileSystemFileHandle} handle - File handle to save to
-     */
-    async saveContent(handle) {
         try {
-            const writable = await handle.createWritable();
-            await writable.write(this.textarea.value);
-            await writable.close();
-            
-            this.currentFile = handle;
+            this.fs.writeFile(this.currentPath, this.textarea.value);
             this.isModified = false;
             this.updateTitle();
         } catch (error) {
             console.error('Error saving file:', error);
             alert('Error saving file');
         }
+    }
+
+    /**
+     * Opens save dialog using File Explorer
+     * @private
+     */
+    async saveFileAs() {
+        // Start File Explorer in save mode
+        const fileExplorer = this.desktopEnvironment.windowManager.startProcess('explorer', {
+            mode: 'saveDialog',
+            onSelect: (path) => {
+                try {
+                    this.fs.writeFile(path, this.textarea.value);
+                    this.currentPath = path;
+                    this.isModified = false;
+                    this.updateTitle();
+                    fileExplorer.closeWindow();
+                } catch (error) {
+                    const dialog = this.window.makeDialog({
+                        title: 'Error',
+                        content: `Could not save file: ${error.message}`,
+                        buttons: ['OK']
+                    });
+                    dialog.show();
+                }
+            }
+        });
     }
 
     /**
@@ -610,8 +625,8 @@ export default class Notepad {
 
     /**
      * Checks if there are unsaved changes and prompts user to save
-     * @private
      * @returns {boolean} True if it's safe to proceed, false if operation should be cancelled
+     * @private
      */
     checkSave() {
         if (this.isModified) {
@@ -619,7 +634,6 @@ export default class Notepad {
             if (response === null) return false;
             if (response) {
                 this.saveFile();
-                return false;
             }
         }
         return true;
@@ -740,6 +754,24 @@ export default class Notepad {
 
         this.textarea.setSelectionRange(position, position);
         this.textarea.focus();
+    }
+
+    /**
+     * Loads a file from the virtual filesystem
+     * @param {string} path - Full path to the file
+     * @private
+     */
+    loadFile(path) {
+        try {
+            const content = this.fs.readFile(path);
+            this.textarea.value = content;
+            this.currentPath = path;
+            this.isModified = false;
+            this.updateTitle();
+        } catch (error) {
+            console.error('Error loading file:', error);
+            alert('Error loading file');
+        }
     }
 }
 
@@ -954,5 +986,40 @@ border-color: var(--inset-border-color);
     border: 1px inset var(--border-color);
 }
 
+.save-dialog {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px;
+}
+
+.save-dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.save-dialog-header input {
+    flex: 1;
+    height: 21px;
+    border: 1px inset #fff;
+    padding: 2px 4px;
+    font-family: 'MS Sans Serif', sans-serif;
+    font-size: 11px;
+}
+
+.save-dialog-explorer {
+    flex: 1;
+    border: 1px inset #fff;
+    background: #fff;
+    margin-bottom: 16px;
+}
+
+.save-dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
 
 `;
