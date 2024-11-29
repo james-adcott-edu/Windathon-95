@@ -41,6 +41,7 @@ const Applications = [
         name: "Paint",
         icon: "paint.webp",
         windowArgs: {
+            resizable: true,
             width: 800,
             height: 600,
             x: 100,
@@ -53,6 +54,7 @@ const Applications = [
         name: "Notepad",
         icon: "notepad.png",
         windowArgs: {
+            resizable: true,
             width: 600,
             height: 400,
             x: 120,
@@ -65,6 +67,7 @@ const Applications = [
         name: "MS-DOS Prompt",
         icon: "terminal.svg",
         windowArgs: {
+            resizable: true,
             width: 640,
             height: 400,
             x: 100,
