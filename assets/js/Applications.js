@@ -10,6 +10,8 @@ import DesktopSettings from './modules/apps/DesktopSettings.js';
 import Explorer from './modules/apps/FileExplorer.js';
 import About from './modules/apps/About.js';
 import Clock from './modules/apps/Clock.js';
+import Calculator from './modules/apps/Calculator.js';
+
 /**
  * @typedef {Object} WindowArgs
  * @property {number} width - The initial width of the window
@@ -125,6 +127,19 @@ const Applications = [
             resizable: false
         },
         module: Clock
+    },
+    {
+        id: 'calculator',
+        name: 'Calculator',
+        icon: 'calculator.png',
+        windowArgs: {
+            width: 220,
+            height: 160,
+            resizable: false,
+            x: 100,
+            y: 100
+        },
+        module: Calculator
     }
 ];
 
