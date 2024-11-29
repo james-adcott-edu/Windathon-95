@@ -113,7 +113,11 @@ export default class Notepad {
                 'Save': () => this.saveFile(),
                 'Save As...': () => this.saveFileAs(),
                 'Page Setup...': () => this.pageSetup(),
-                'Print...': () => this.print()
+                'Print...': () => this.print(),
+                'Close': () => {
+                    if (!this.checkSave()) return;
+                    this.window.closeWindow()
+                }
             },
             'Edit': {
                 'Undo': () => this.textarea.undo?.(),
