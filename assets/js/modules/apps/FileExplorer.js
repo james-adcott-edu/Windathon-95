@@ -6,11 +6,16 @@ import { web_root } from '../../Config.js';
  * Defines layout and appearance for the explorer window, toolbar, file list, and folder tree
  */
 const stylesheet = `
+    :root {
+        background: transparent;
+        border: 0;
+        padding: 0;
+    }
+
     .file-explorer {
         display: flex;
         flex-direction: column;
         height: 100%;
-        background: #c0c0c0;
         font-family: 'MS Sans Serif', sans-serif;
     }
 
@@ -18,7 +23,6 @@ const stylesheet = `
         display: flex;
         padding: 4px;
         border-bottom: 1px solid #808080;
-        background: #c0c0c0;
     }
 
     .toolbar-button {
@@ -49,8 +53,6 @@ const stylesheet = `
         display: flex;
         align-items: center;
         padding: 4px;
-        background-color: #c0c0c0;
-        border-bottom: 1px solid #808080;
     }
 
     .address-bar label {
@@ -62,7 +64,7 @@ const stylesheet = `
     .address-bar input {
         flex: 1;
         height: 21px;
-        border: 1px inset #fff;
+        border: 2px inset #bbb;
         background: #fff;
         padding: 2px 4px;
         font-family: 'MS Sans Serif', sans-serif;
@@ -73,8 +75,7 @@ const stylesheet = `
         display: flex;
         flex: 1;
         background: #fff;
-        border: 1px inset #fff;
-        margin: 2px;
+        border: 2px inset #bbb;
     }
 
     .folder-tree {
@@ -975,13 +976,12 @@ export default class FileExplorer {
                 gap: 8px;
                 padding: 8px;
                 background: #c0c0c0;
-                border-top: 1px solid #808080;
             }
             
             .filename-input {
                 flex: 1;
                 height: 21px;
-                border: 1px inset #fff;
+                border: 2px inset #bbb;
                 padding: 2px 4px;
                 font-family: 'MS Sans Serif', sans-serif;
                 font-size: 11px;
