@@ -69,7 +69,11 @@ export default class Paint {
             'File': {
                 'New': () => this.clearCanvas(),
                 'Open': () => this.openImage(),
-                'Save': () => this.saveCanvas()
+                'Save': () => this.saveCanvas(),
+                'Close': () => {
+                    if (!this.cleanup()) return;
+                    this.window.closeWindow()
+                }
             },
             'Edit': {
                 'Undo': () => this.undo(),

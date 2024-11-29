@@ -242,7 +242,8 @@ export default class FileExplorer {
                     'Folder': () => this.createNewFolder()
                 },
                 'Delete': () => this.deleteSelected(),
-                'Properties': () => this.showProperties()
+                'Properties': () => this.showProperties(),
+                'Close': () => this.window.closeWindow()
             },
             'View': {
                 'Refresh': () => this.refreshView()
