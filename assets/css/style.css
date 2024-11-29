@@ -29,6 +29,17 @@ body.development {
     border-top: 30px solid red;
 }
 
+button {
+    background-color: var(--window-background-color);
+    border: 2px solid;
+    border-color: var(--outset-border-color);
+    padding: 3px 12px;
+}
+
+button:active {
+    outline: 1px solid #000;
+}
+
 .window {
     position: absolute;
     background-color: var(--window-background-color);
@@ -317,7 +328,6 @@ body.development {
     align-items: center;
     gap: 2px;
     padding: 0 4px;
-    border-right: 1px solid #808080;
 }
 
 .tray-icon {

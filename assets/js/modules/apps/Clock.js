@@ -6,6 +6,7 @@ export default class Clock {
         this.window = windowObject;
         /** @type {HTMLElement} */
         this.windowContent = windowContent;
+        this.width = 300; 
         
         this.window.setTitle('Clock');
         this.setupUI();
@@ -15,45 +16,33 @@ export default class Clock {
             this.stopwatch.stop();
             this.window.closeWindow();
         });
+
+        this.window.setSize(this.width, this.windowContent.querySelector('.clock-app').clientHeight);
+
     }
 
     setupUI() {
         const content = `
-            <div class="clock-app">
-                <div class="clock-section">
-                    <h2>Current Time</h2>
-                    <div id="current-time" class="digital-display"></div>
-                </div>
-                
-                <div class="stopwatch-section">
-                    <h2>Stopwatch</h2>
-                    <div id="stopwatch-display" class="digital-display">0.0</div>
-                    <div class="controls">
-                        <button id="start-stop">Start</button>
-                        <button id="reset">Reset</button>
-                    </div>
-                </div>
+        <div class="clock-app">
+        <fieldset> 
+            <legend> Current Time </legend>
+            <div id="current-time" class="digital-display"></div>
+        </fieldset>
+        <fieldset>
+            <legend> Stopwatch </legend>
+            <div id="stopwatch-display" class="digital-display">0.0</div>
+            <div class="controls">
+                <button id="start-stop">Start</button>
+                <button id="reset">Reset</button>
             </div>
-        `;
+        </fieldset>
+        </div>
+            `;
 
         const styles = `
-            .clock-app {
-                padding: 16px;
-                font-family: 'MS Sans Serif', sans-serif;
-            }
-
-            .clock-section,
-            .stopwatch-section {
-                margin-bottom: 20px;
-                padding: 16px;
-                border: 2px solid;
-                border-color: #808080 #ffffff #ffffff #808080;
-            }
-
-            h2 {
-                margin: 0 0 16px 0;
-                font-size: 14px;
-                font-weight: bold;
+            :root {
+                background: transparent;
+                border: none;
             }
 
             .digital-display {
@@ -64,29 +53,17 @@ export default class Clock {
                 padding: 8px 16px;
                 text-align: center;
                 margin-bottom: 16px;
-                border: 2px solid #808080;
+                border: 2px solid var(--inset-border-color);
             }
 
             .controls {
                 display: flex;
-                gap: 8px;
                 justify-content: center;
+                gap: 16px;
             }
 
-            button {
-                min-width: 75px;
-                padding: 4px 8px;
-                background: #c0c0c0;
-                border: 2px solid;
-                border-color: #ffffff #808080 #808080 #ffffff;
-                outline: 1px solid #000000;
-                font-family: 'MS Sans Serif', sans-serif;
-            }
-
-            button:active {
-                border-color: #808080 #ffffff #ffffff #808080;
-            }
         `;
+
 
         this.window.addStylesheet(styles);
         this.windowContent.innerHTML = content;
