@@ -322,12 +322,21 @@
         /**
          * Processes a command entered by the user
          * @private
-         * @param {string} command - The command to process
+         * @param {string} commandLine - The command to process
          */
-        processCommand(command) {
-            const [cmd, ...args] = command.toLowerCase().split(' ');
+        processCommand(commandLine) {
+            // Parse command line with quotes support
+            const args = this.parseCommandLine(commandLine);
+            if (args.length === 0) return;
+
+            const cmd = args[0].toLowerCase();
+            const cmdArgs = args.slice(1);
             
             switch (cmd) {
+                case 'cd':
+                    this.changeDirectory(cmdArgs[0]);
+                    break;
+
                 case 'cls':
                     this.output.innerHTML = '';
                     break;
@@ -371,11 +380,11 @@
                     break;
 
                 case 'start':
-                    if (args.length === 0) {
+                    if (cmdArgs.length === 0) {
                         this.writeOutput('ERROR: Please specify a program name');
                         break;
                     }
-                    this.startProgram(args[0], args.slice(1));
+                    this.startProgram(cmdArgs[0], cmdArgs.slice(1));
                     break;
 
                 case 'tasklist':
@@ -383,11 +392,11 @@
                     break;
 
                 case 'taskkill':
-                    if (args.length === 0) {
+                    if (cmdArgs.length === 0) {
                         this.writeOutput('ERROR: Please specify a program name');
                         break;
                     }
-                    this.killTask(args[0]);
+                    this.killTask(cmdArgs[0]);
                     break;
 
                 case 'programs':
@@ -398,39 +407,49 @@
                     this.window.closeWindow();
                     break;
 
-                case 'cd':
-                    this.changeDirectory(args[0]);
-                    break;
-
                 case 'type':
-                    this.typeFile(args[0]);
+                    this.typeFile(cmdArgs[0]);
                     break;
 
                 case 'md':
                 case 'mkdir':
-                    this.makeDirectory(args[0]);
+                    this.makeDirectory(cmdArgs[0]);
                     break;
 
                 // TODO: This doesn't work correctly.
                 case 'copy':
-                    if (args[0]?.toLowerCase() === 'con') {
-                        this.startFileCreation(args[1]);
+                    if (cmdArgs[0]?.toLowerCase() === 'con') {
+                        this.startFileCreation(cmdArgs[1]);
                     } else {
                         this.writeOutput('Syntax error');
                     }
                     break;
 
                 case 'echo':
-                    if (args[0] === '.' && args[1]?.startsWith('>')) {
-                        const filename = args[1].substring(1);
+                    if (cmdArgs[0] === '.' && cmdArgs[1]?.startsWith('>')) {
+                        const filename = cmdArgs[1].substring(1);
                         this.createEmptyFile(filename);
                     } else {
-                        this.writeOutput(args.join(' '));
+                        this.writeOutput(cmdArgs.join(' '));
                     }
                     break;
 
                 default:
-                    this.writeOutput('Bad command or file name');
+                    // Check if it's an executable in Program Files
+                    const programPath = `C:\\PROGRAM FILES\\${cmd.toUpperCase()}`;
+                    if (this.fs.data['C:']?.['PROGRAM FILES']?.[cmd.toUpperCase()]) {
+                        this.writeOutput(`Executing ${cmd}...`);
+                        // Start the program if it exists in our Applications list
+                        const appName = cmd.toLowerCase().replace(/\s+/g, '');
+                        const app = this.availableApps.get(appName);
+                        if (app) {
+                            this.startProgram(appName, cmdArgs);
+                        } else {
+                            this.writeOutput(`Error: ${cmd} is not a valid application`);
+                        }
+                    } else {
+                        this.writeOutput('Bad command or file name');
+                    }
                     break;
             }
 
@@ -439,7 +458,43 @@
         }
 
         /**
-         * Starts a program through the terminal
+         * Parses a command line string into an array of arguments, respecting quotes
+         * @private
+         * @param {string} commandLine - The command line to parse
+         * @returns {string[]} Array of parsed arguments
+         */
+        parseCommandLine(commandLine) {
+            const args = [];
+            let currentArg = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < commandLine.length; i++) {
+                const char = commandLine[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                    continue;
+                }
+                
+                if (char === ' ' && !inQuotes) {
+                    if (currentArg) {
+                        args.push(currentArg);
+                        currentArg = '';
+                    }
+                } else {
+                    currentArg += char;
+                }
+            }
+            
+            if (currentArg) {
+                args.push(currentArg);
+            }
+            
+            return args;
+        }
+
+        /**
+         * Starts a program through the terminal with quoted arguments support
          * @private
          * @param {string} programName - Name of the program to start
          * @param {string[]} args - Arguments to pass to the program
@@ -452,6 +507,7 @@
                 try {
                     this.writeOutput(`Starting ${app.name}...`);
                     if (this.desktopEnvironment && this.desktopEnvironment.windowManager) {
+                        // Pass the parsed arguments to the program
                         this.desktopEnvironment.windowManager.start(
                             app.module,
                             { ...app.moduleArgs, terminalArgs: args },
