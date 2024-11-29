@@ -29,10 +29,8 @@ You can view the live site [here](https://james-adcott-edu.github.io/Windathon-9
 - We haven't focused on a mobile experience, as it's a desktop operating system.
 
 ### User Stories
-- As a user, I want to explore the Windows 95 interface to relive nostalgia.
-- As a new user, I want to easily navigate the system and access applications.
-- As a developer, I want to understand the architecture of a web-based OS simulation.
-- As a user, I want to save and load files using the simulated file system.
+
+We kept the user stories in the kanban board, which can be found [here](https://github.com/users/james-adcott-edu/projects/5).
 
 ### Wireframes
 - Initial wireframes were created to map out the desktop layout, taskbar, and application windows.
@@ -75,38 +73,74 @@ This is the base class for all applications. It provides ways to accept argument
 ## 💻 Applications
 
 ### Notepad
+![Notepad screenshot](./assets/images/showcase/notepad.png)
+
 - Full text editing capabilities
 - File operations (New, Open, Save, Save As)
 - Find/Replace functionality
 - Word wrap and font settings
+- Integrates with the file system using explorer.
+- Status bar showing cursor position, and file size.
+- Common insert options (date, time, paste, cut, copy, undo, redo)
 
 ### MS-DOS Prompt
+![MS-DOS Prompt screenshot](./assets/images/showcase/terminal.png)
 - Command-line interface
-- Basic DOS commands
+- Many DOS commands available
 - File system navigation
 - File operations
+- List of commands available
+  - `cls` - Clears the screen
+  - `dir` - Lists files in the current directory
+  - `cd` - Changes the current directory
+  - `md` - Creates a directory
+  - `mkdir` - Creates a directory
+  - `type` - Displays the contents of a file
+  - `help` - Displays the help menu
+  - `ver` - Displays the version of the DOS prompt
+  - `exit` - Exits the DOS prompt
+  - `start` - Starts a new application
+  - `tasklist` - Lists running tasks
+  - `taskkill` - Ends a running task
+  - `echo` - Displays a message
+  - `programs` - Lists all installed applications
+
+The terminal interacts soley with the JsonFs, and does not have any knowledge of the file system outside of that.
 
 ### Minesweeper
+![Minesweeper screenshot](./assets/images/showcase/minesweeper.png)
 - Classic Windows 95 Minesweeper game
-- Multiple difficulty levels
-- Timer and mine counter
+- Multiple difficulty levels, including beginner, intermediate, and expert.
+- Timer and mine counter using the status bar.
+- Full functionality, including the ability to flag mines.
+- Game logic written from scratch by james.
 
 ### Paint
+![Paint screenshot](./assets/images/showcase/paint.png)
 - Basic paint application
 - Drawing capabilities
 - Color picker
+- Zoom functionality
+- Undo/Redo functionality
+- Drawing logic written from scratch by deeton.
+- Change size and opacity of the brush, with different brush types.
 
 ### Tetravex
+![Tetravex screenshot](./assets/images/showcase/tetravex.png)
 - Classic puzzle game
 - 2D grid with numbered tiles
 - Drag and drop functionality
 - Offers different grid sizes
+- Game logic written from scratch by james.
 
 ### File Explorer
+![File Explorer screenshot](./assets/images/showcase/explorer.png)
 - File system navigation
 - File operations (New, properties, delete)
 - File properties
 - Integration with other applications, such as Notepad.
+- Full functionality, including the ability to create new files and directories.
+- Explorer also integrates with the JsonFs, and does not have any knowledge of the file system outside of that.
 
 ## 📦 Deployment
 
@@ -158,7 +192,7 @@ If deploying to a custom domain:
 
 - If images don't load, check the `web_root` configuration in `Config.js`
 - If storage doesn't work, ensure localStorage is enabled
-- For CORS issues, verify your server's security headers
+- For CORS issues, verify your server's security headers (or just install the no-cors extension for chrome)
 
 ## 🔧 Development
 
@@ -213,6 +247,12 @@ export default class NewApp {
 - CSS validated using W3C CSS Validator
 - HTML validated using W3C Markup Validator
 
+#### W3C HTML validation
+![W3C HTML validation](./assets/images/w3c-html-validation-result.png)
+
+#### W3C CSS validation
+![W3C CSS validation](./assets/images/w3c-css-validation-result.png)
+
 ### Known Bugs
 - Window maximize behavior may be inconsistent on some screen sizes
 - Some keyboard shortcuts may conflict with browser defaults
@@ -226,7 +266,6 @@ export default class NewApp {
 
 ### Future Improvements
 - Add more applications, such as Internet Explorer (using an iframe)
-- Add a file explorer which can navigate the custom file system.
 - Allow windows to be resized at the users will.
 
 ## 📝 License
@@ -238,3 +277,9 @@ This project is intended for educational purposes only. Windows 95 is a trademar
 - Microsoft for the original Windows 95
 - Contributors to the project
 - The web development community for resources and inspiration
+- Icons from Google Images, the specific sources are as follows:
+  - Wikipedia
+  - Logopedia
+  - Free Icons
+  - FreePik
+  - SVG Repo
