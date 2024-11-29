@@ -211,6 +211,12 @@ export default class NewApp {
 - CSS validated using W3C CSS Validator
 - HTML validated using W3C Markup Validator
 
+#### W3C HTML validation
+![W3C HTML validation](./assets/images/w3c-html-validation-result.png)
+
+#### W3C CSS validation
+![W3C CSS validation](./assets/images/w3c-css-validation-result.png)
+
 ### Known Bugs
 - Window maximize behavior may be inconsistent on some screen sizes
 - Some keyboard shortcuts may conflict with browser defaults
