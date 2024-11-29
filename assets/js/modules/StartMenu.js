@@ -48,7 +48,7 @@ export default class StartMenu {
 
         const sidebar = document.createElement('div');
         sidebar.classList.add('startmenu-sidebar');
-        sidebar.innerHTML = '<span>Windows</span><span>95</span>';
+        sidebar.innerHTML = '<span>Windathon</span><span>95</span>';
         startMenu.appendChild(sidebar);
 
         const menuArea = document.createElement('div');
