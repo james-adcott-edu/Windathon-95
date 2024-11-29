@@ -142,6 +142,28 @@ The terminal interacts soley with the JsonFs, and does not have any knowledge of
 - Full functionality, including the ability to create new files and directories.
 - Explorer also integrates with the JsonFs, and does not have any knowledge of the file system outside of that.
 
+### Web Browser
+![Web Browser screenshot](./assets/images/showcase/webbrowser.png)
+- Basic web browser with Google search built in.
+- Navigate to websites that allow themselves to be embedded.
+- Search the web
+- Inception mode, which allows you to navigate to this very site, inside the browser itself!
+
+### Calculator
+![Calculator screenshot](./assets/images/showcase/calculator.png)
+- Basic calculator with a sleek Windows 95 design.
+- Performs addition, subtraction, multiplication, and division.
+
+### Clock
+![Clock screenshot](./assets/images/showcase/clock.png)
+- A simple clock application that shows the current time and date.
+- Has a stopwatch feature, which can be started and stopped.
+- Opens when clicking on the clock in the system tray.
+
+### About
+![About screenshot](./assets/images/showcase/about.png)
+- A simple about application that shows information about the operating system.
+
 ## 📦 Deployment
 
 ### GitHub Pages Deployment
