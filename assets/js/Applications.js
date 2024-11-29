@@ -67,7 +67,7 @@ const Applications = [
     {
         id: 'terminal',
         name: "MS-DOS Prompt",
-        icon: "terminal.svg",
+        icon: "msdos.png",
         windowArgs: {
             resizable: true,
             width: 640,
