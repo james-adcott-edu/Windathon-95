@@ -281,4 +281,72 @@ export default class JsonFs {
             throw new Error('Invalid path format');
         }
     }
+
+    /**
+     * Deletes a file from the file system
+     * @param {string} path - Full path to the file
+     * @throws {Error} If file doesn't exist or is a directory
+     */
+    deleteFile(path) {
+        console.log('[jsonfs] Deleting file:', path);
+        this.validatePath(path);
+
+        const { parent, name } = this.getParentAndName(path);
+        
+        if (!parent[name]) {
+            throw new Error('File not found');
+        }
+        
+        if (typeof parent[name] === 'object') {
+            throw new Error('Cannot delete directory as file');
+        }
+        
+        delete parent[name];
+        this.save();
+    }
+
+    /**
+     * Deletes a directory and all its contents
+     * @param {string} path - Full path to the directory
+     * @throws {Error} If directory doesn't exist or is a file
+     */
+    deleteDirectory(path) {
+        console.log('[jsonfs] Deleting directory:', path);
+        this.validatePath(path);
+
+        const { parent, name } = this.getParentAndName(path);
+        
+        if (!parent[name]) {
+            throw new Error('Directory not found');
+        }
+        
+        if (typeof parent[name] !== 'object') {
+            throw new Error('Cannot delete file as directory');
+        }
+        
+        delete parent[name];
+        this.save();
+    }
+
+    /**
+     * Gets the parent directory object and name for a path
+     * @private
+     * @param {string} path - Full path
+     * @returns {{parent: Object, name: string}} Parent directory and item name
+     */
+    getParentAndName(path) {
+        const parts = path.split('\\');
+        const name = parts.pop();
+        let parent = this.data[parts[0]]; // Start at drive root
+        
+        // Navigate to parent directory
+        for (let i = 1; i < parts.length; i++) {
+            parent = parent[parts[i]];
+            if (!parent || typeof parent !== 'object') {
+                throw new Error('Invalid path');
+            }
+        }
+        
+        return { parent, name };
+    }
 }
