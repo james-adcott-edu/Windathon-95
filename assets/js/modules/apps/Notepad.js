@@ -483,7 +483,7 @@ export default class Notepad {
         }
 
         try {
-            this.fs.writeFile(this.currentPath, this.textarea.value);
+            this.fs.createFile(this.currentPath, this.textarea.value);
             this.isModified = false;
             this.updateTitle();
         } catch (error) {
