@@ -16,6 +16,7 @@ const stylesheet = `
         flex-direction: column;
         height: 100%;
         font-family: 'MS Sans Serif', sans-serif;
+        user-select: none;
     }
 
     .explorer-toolbar {
@@ -68,6 +69,7 @@ const stylesheet = `
         padding: 2px 4px;
         font-family: 'MS Sans Serif', sans-serif;
         font-size: 11px;
+        user-select: text;
     }
 
     .explorer-container {
