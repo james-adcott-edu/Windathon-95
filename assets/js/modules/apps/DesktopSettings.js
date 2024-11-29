@@ -24,23 +24,72 @@ export default class DesktopSettings {
         });
 
         this.windowContent.querySelector("#apply").addEventListener("click", () => {
-            // apply settings
+            this.applyBackground(
+                document.body,
+                this.windowContent.querySelector("#color").value,
+                this.windowContent.querySelector("#wallpaper").value,
+                this.windowContent.querySelector("#wallpaper-behaviour").value
+            );
             this.windowObject.closeWindow();
         });
 
-        const demo = this.windowContent.querySelector("#demo");
-        const windowScale = ~~(100 * demo.clientWidth / window.screen.width);
+        this.demoWindow = this.windowContent.querySelector("#demo");
 
-        this.windowContent.querySelector("#color").addEventListener("change", (event) => {
-            this.windowContent.querySelector("#demo").style.backgroundColor = event.target.value;
+        this.windowContent.querySelector("#color").addEventListener("input", (event) => {
+            this.applyBackground(
+                this.demoWindow,
+                event.target.value,
+                this.windowContent.querySelector("#wallpaper").value,
+                this.windowContent.querySelector("#wallpaper-behaviour").value
+            );
         });
 
-        this.windowContent.querySelector("#wallpaper").addEventListener("change", (event) => {
-            console.log(windowScale);
-            this.windowContent.querySelector("#demo").style.backgroundImage = `url(${web_root}/assets/images/wallpapers/${event.target.value})`;
-            this.windowContent.querySelector("#demo").style.backgroundSize = "100%";
+        this.windowContent.querySelector("#wallpaper").addEventListener("input", (event) => {
+            this.applyBackground(
+                this.demoWindow,
+                this.windowContent.querySelector("#color").value,
+                event.target.value,
+                this.windowContent.querySelector("#wallpaper-behaviour").value
+            );
+        });
+
+        this.windowContent.querySelector("#wallpaper-behaviour").addEventListener("input", (event) => {
+            this.applyBackground(
+                this.demoWindow,
+                this.windowContent.querySelector("#color").value,
+                this.windowContent.querySelector("#wallpaper").value,
+                event.target.value
+            );
         });
     }
+
+    applyBackground(target, color, img, behaviour) {
+        target.style.backgroundColor = color;
+        if (img === "none") {
+            target.style.backgroundImage = "none";
+            return;
+        }
+        target.style.backgroundImage = `url(${web_root}/assets/images/wallpapers/${img})`;
+
+        switch (behaviour) {
+            case "tile":
+                target.style.backgroundSize = "auto";
+                target.style.backgroundRepeat = "repeat";
+                break;
+            case "center":
+                target.style.backgroundSize = "auto";
+                target.style.backgroundRepeat = "no-repeat";
+                target.style.backgroundPosition = "center";
+                break;
+            case "stretch":
+                target.style.backgroundSize = "100% 100%";
+                break;
+            default:
+                console.error("Unknown behaviour", behaviour);
+                break;
+        }
+    }
+
 }
 
 const html = `
@@ -69,10 +118,9 @@ const html = `
         <td>Behaviour</td>
         <td>
             <select id="wallpaper-behaviour">
-                <option value="repeat">Repeat</option>
+                <option value="tile" selected>Tile</option>
                 <option value="center">Center</option>
-                <option value="stretch" selected>Stretch</option>
-                <option value="tile">Tile</option>
+                <option value="stretch">Stretch</option>
             </select>
         </td>
     </tr>

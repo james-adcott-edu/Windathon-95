@@ -87,7 +87,7 @@ const Applications = [
     {
         id: 'desktopsettings',
         name: "Desktop Settings",
-        icon: "desktopsettings.png",
+        icon: "displaysettings.png",
         windowArgs: {
             width: 400,
             height: 300,
