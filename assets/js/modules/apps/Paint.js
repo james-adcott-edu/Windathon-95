@@ -253,8 +253,13 @@ export default class Paint {
         canvasContainer.appendChild(this.canvas);
         this.windowContent.appendChild(canvasContainer);
         
-        // Initial zoom to fit
-        this.adjustZoom(0); // This will calculate and set the initial zoom level
+        // Wait for next frame to ensure container is rendered,
+        // this prevents the initial state of the zoom level from being `NaN%`
+        requestAnimationFrame(() => {
+            // Set initial zoom level to 1 before calculating fit
+            this.zoomLevel = 1;
+            this.adjustZoom(0);
+        });
     }
 
     /**
@@ -480,6 +485,11 @@ export default class Paint {
         const container = this.windowContent.querySelector('.paint-canvas-container');
         const containerRect = container.getBoundingClientRect();
         
+        // Ensure we have valid dimensions
+        if (containerRect.width === 0 || containerRect.height === 0) {
+            return; // Skip zoom adjustment if container isn't properly sized yet
+        }
+        
         // Calculate minimum zoom to fit canvas in container
         this.minZoom = Math.min(
             containerRect.width / this.canvas.width,
@@ -494,7 +504,9 @@ export default class Paint {
             
             // Update zoom label
             const zoomLabel = this.windowContent.querySelector('.zoom-level');
-            zoomLabel.textContent = `${Math.round(this.zoomLevel * 100)}%`;
+            if (zoomLabel) {
+                zoomLabel.textContent = `${Math.round(this.zoomLevel * 100)}%`;
+            }
         }
     }
 
