@@ -270,6 +270,56 @@ body.development {
     color: #fff;
 }
 
+.taskbar-right-section {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    border-left: 1px solid #808080;
+    padding: 2px;
+}
+
+.system-tray {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 4px;
+    border-right: 1px solid #808080;
+}
+
+.tray-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.tray-icon:hover {
+    background-color: #dfdfdf;
+}
+
+.audio-slider {
+    position: absolute;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    padding: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.audio-slider input[type="range"] {
+    width: 100px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    background: #c0c0c0;
+    border: 2px inset #c0c0c0;
+}
+
 .menu-dropdown-item.has-submenu {
     position: relative;
     display: flex;
