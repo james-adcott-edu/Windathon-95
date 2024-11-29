@@ -1,5 +1,5 @@
 :root {
-    --window-background-color: #bbb;
+    --window-background-color: #c0c0c0;
     --window-color: #000;
     --window-border: 2px outset #999;
     --inactive-titlebar-background-color: #777;
@@ -171,6 +171,7 @@ body.development {
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-gap: 10px;
+    border-top: 2px solid #FFF;
 }
 
 .taskbar-windowlist {
@@ -248,6 +249,11 @@ body.development {
     line-height: 1.2rem;
 }
 
+.startbutton:has(~ :not(.hidden)) {
+    border-color: var(--inset-border-color);
+    outline: 1px solid #000;
+}
+
 .startmenu {
     position: absolute;
     bottom: 36px;
@@ -257,6 +263,35 @@ body.development {
     padding: 2px;
     z-index: 3;
     flex-direction: column;
+    border: 2px outset #bbb;
+    display: flex;
+    flex-direction: row;
+}
+
+.startmenu-sidebar {
+    background-color: #777;
+    color: #fff;
+    padding: 2px;
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 26px;
+    padding-bottom: 10px;
+}
+
+.startmenu.hidden {
+    display: none;
+}
+
+.startmenu-sidebar span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 26px;
+    line-height: 26px;
+}
+
+.startmenu-sidebar span:first-child {
+    font-weight: 900;
 }
 
 .startmenu-item {
@@ -275,7 +310,6 @@ body.development {
     align-items: center;
     margin-left: auto;
     border-left: 1px solid #808080;
-    padding: 2px;
 }
 
 .system-tray {
