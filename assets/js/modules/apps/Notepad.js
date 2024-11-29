@@ -483,7 +483,7 @@ export default class Notepad {
         }
 
         try {
-            this.fs.writeFile(this.currentPath, this.textarea.value);
+            this.fs.createFile(this.currentPath, this.textarea.value);
             this.isModified = false;
             this.updateTitle();
         } catch (error) {
@@ -502,18 +502,13 @@ export default class Notepad {
             mode: 'saveDialog',
             onSelect: (path) => {
                 try {
-                    this.fs.writeFile(path, this.textarea.value);
+                    this.fs.createFile(path, this.textarea.value);
                     this.currentPath = path;
                     this.isModified = false;
                     this.updateTitle();
                     fileExplorer.closeWindow();
                 } catch (error) {
-                    const dialog = this.window.makeDialog({
-                        title: 'Error',
-                        content: `Could not save file: ${error.message}`,
-                        buttons: ['OK']
-                    });
-                    dialog.show();
+                    console.error('Error saving file:', error);
                 }
             }
         });

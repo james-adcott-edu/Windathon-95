@@ -349,4 +349,15 @@ export default class JsonFs {
         
         return { parent, name };
     }
+
+    /**
+     * Checks if a file or directory exists
+     * @param {string} path - Full path to the file or directory
+     * @returns {boolean} True if the file or directory exists, false otherwise
+     */
+    exists(path) {
+        this.validatePath(path);
+        const { parent, name } = this.getParentAndName(path);
+        return !!parent[name];
+    }
 }

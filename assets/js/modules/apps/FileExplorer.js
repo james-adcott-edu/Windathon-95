@@ -152,6 +152,7 @@ export default class FileExplorer {
         this.windowContent = windowContent;
         this.args = args;
         this.desktopEnvironment = args.desktopEnvironment;
+        /** @type {import('../JsonFs.js').default} */
         this.fs = args.desktopEnvironment.fileSystem;
         this.currentPath = 'C:';
         
@@ -227,7 +228,10 @@ export default class FileExplorer {
     setupMenuBar() {
         this.window.setMenu({
             'File': {
-                'New': () => this.newItem(),
+                'New': {
+                    'Text Document': () => this.createNewFile(),
+                    'Folder': () => this.createNewFolder()
+                },
                 'Delete': () => this.deleteSelected(),
                 'Properties': () => this.showProperties()
             },
@@ -320,6 +324,7 @@ export default class FileExplorer {
         const buttons = [
             { icon: 'up', text: 'Up', action: () => this.navigateUp() },
             { separator: true },
+            { icon: 'new', text: 'New', action: () => this.newItem() },
             { icon: 'delete', text: 'Delete', action: () => this.deleteSelected() },
             { icon: 'properties', text: 'Properties', action: () => this.showProperties() }
         ];
@@ -520,6 +525,11 @@ export default class FileExplorer {
      */
     openFile(filename) {
         const fullPath = `${this.currentPath}\\${filename}`;
+        if (this.mode === 'saveDialog') {
+            this.onSelect?.(fullPath);
+            this.window.closeWindow();
+            return;
+        }
         try {
             // Start Notepad with the file path
             this.desktopEnvironment.windowManager.startProcess('notepad', { 
@@ -633,14 +643,54 @@ export default class FileExplorer {
      * @private
      */
     newItem() {
-        // Create submenu for New
-        const menu = {
-            'Folder': () => this.createNewFolder(),
-            'Text Document': () => this.createNewFile()
-        };
+        const content = `
+            <div style="padding: 16px;">
+                <div class="menu-item" id="new-folder">
+                    <img src="${web_root}/assets/images/folder.png" alt="Folder" width="16" height="16">
+                    <span>Folder</span>
+                </div>
+                <div class="menu-item" id="new-text">
+                    <img src="${web_root}/assets/images/file.png" alt="Text Document" width="16" height="16">
+                    <span>Text Document</span>
+                </div>
+            </div>
+        `;
 
-        // Show context menu at mouse position
-        this.window.showContextMenu(menu);
+        const dialog = this.window.makeDialog(content, {
+            title: 'New',
+            width: 200,
+            height: 100
+        });
+
+        // Add click handlers
+        dialog.dialogElement.querySelector('#new-folder').addEventListener('click', () => {
+            this.window.closeDialog(dialog);
+            this.createNewFolder();
+        });
+
+        dialog.dialogElement.querySelector('#new-text').addEventListener('click', () => {
+            this.window.closeDialog(dialog);
+            this.createNewFile();
+        });
+
+        // Add styles for menu items
+        this.window.addStylesheet(`
+            .menu-item {
+                display: flex;
+                align-items: center;
+                padding: 4px 8px;
+                cursor: default;
+            }
+            .menu-item:hover {
+                background: #000080;
+                color: #fff;
+            }
+            .menu-item img {
+                margin-right: 8px;
+            }
+        `);
+
+        dialog.render();
     }
 
     /**
@@ -670,10 +720,17 @@ export default class FileExplorer {
 
         try {
             const path = `${this.currentPath}\\${name}`;
-            this.fs.writeFile(path, '');
+            
+            // Check if file already exists
+            if (this.fs.exists(path)) {
+                throw new Error('A file with that name already exists');
+            }
+
+            // Create the file with empty content
+            this.fs.createFile(path, '');
             this.refreshView();
         } catch (error) {
-            alert(`Could not create file: ${error.message}`);
+            this.showErrorDialog(`Could not create file: ${error.message}`);
         }
     }
 
