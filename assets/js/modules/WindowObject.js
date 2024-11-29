@@ -67,7 +67,7 @@ export default class WindowObject {
         this.setTitle(this.title);
 
         // Window Dragging
-        let titleBar = this.windowElement.querySelector('.window-titlebar');
+        let titleBar = this.windowElement.querySelector('.window-title');
         titleBar.addEventListener('mousedown', e => {
             let oldx = e.clientX;
             let oldy = e.clientY;
