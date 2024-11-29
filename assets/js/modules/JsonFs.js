@@ -182,7 +182,7 @@ export default class JsonFs {
                 'WINDOWS': {
                     'SYSTEM32': {
                         'DRIVERS': {
-                            'win95browser.sys': 'You are not permitted to view this file'
+                            'WIN95BROWSER.SYS': 'You are not permitted to view this file'
                         },
                         'CONFIG': {},
                         'SHELL': {},
@@ -278,29 +278,36 @@ export default class JsonFs {
      * @throws {Error} If the file doesn't exist or is a directory
      */
     readFile(absolutePath) {
-
         // Handle root directory case
         if (absolutePath.includes('\\')) {
             const pathParts = absolutePath.split('\\');
-            const fileName = pathParts.pop().toUpperCase(); // Convert to uppercase
-            const drive = pathParts[0].toUpperCase();  // Convert to uppercase
-                        
-            // Access the file directly from the drive object
-            const driveContents = this.data[drive];
-            if (!driveContents) {
+            const fileName = pathParts.pop().toUpperCase(); // Get and convert filename to uppercase
+            const drive = pathParts.shift().toUpperCase(); // Get and store drive letter
+            
+            // Access the drive
+            let currentDir = this.data[drive];
+            if (!currentDir) {
                 throw new Error(`Drive not found: ${drive}`);
             }
 
-            // Case-insensitive file lookup
-            const actualFileName = Object.keys(driveContents).find(
-                key => key.toUpperCase() === fileName
-            );
+            // Traverse through directories
+            for (const part of pathParts) {
+                const upperPart = part.toUpperCase();
+                currentDir = currentDir[upperPart];
+                if (!currentDir) {
+                    throw new Error(`Directory not found: ${part}`);
+                }
+                if (typeof currentDir !== 'object') {
+                    throw new Error(`${part} is not a directory`);
+                }
+            }
 
-            if (!actualFileName) {
+            // Find the file in the final directory
+            if (!(fileName in currentDir)) {
                 throw new Error(`File not found: ${fileName}`);
             }
 
-            const fileContent = driveContents[actualFileName];
+            const fileContent = currentDir[fileName];
             if (typeof fileContent === 'object') {
                 throw new Error(`${fileName} is a directory`);
             }
