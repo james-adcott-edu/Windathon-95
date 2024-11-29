@@ -199,8 +199,26 @@ export default class JsonFs {
                         'DOCUMENTS': {},
                     }
                 },
-                'AUTOEXEC.BAT': 'echo off\npath C:\\WINDOWS;C:\\SYSTEM\n',
-                'CONFIG.SYS': 'FILES=40\nBUFFERS=40\n',
+                // This is obviously not real, just a fun easter egg
+                'AUTOEXEC.BAT': `
+                export PATH=C:\\WINDOWS\\SYSTEM32;C:\\SYSTEM\\
+                export PROMPT=$P$G
+
+                for %%F in (PROGRAMS -f *.COM) do @echo %%F >> AUTOEXEC.BAT
+
+                start -S %SYSTEMROOT%\\DRIVERS\\WIN95BROWSER.SYS
+                verify -Q win95browser --message Failed to load windows 95!
+
+                # Run autoexec.bat
+                start -U %SYSTEMROOT%\\AUTOEXEC.BAT
+
+                # The system has now loaded, we need to initialize the desktop environment
+                start -S %SYSTEMROOT%\\SHELL\\SHELL.EXE
+                verify -Q shell --message Failed to load shell!
+
+                shell -c "start desktopenv"
+                `,
+                'CONFIG.SYS': 'Binary contents cannot be displayed',
                 'COMMAND.COM': '[SYSTEM]'
             }
         };
