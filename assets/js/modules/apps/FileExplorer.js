@@ -520,6 +520,11 @@ export default class FileExplorer {
      */
     openFile(filename) {
         const fullPath = `${this.currentPath}\\${filename}`;
+        if (this.mode === 'saveDialog') {
+            this.onSelect?.(fullPath);
+            this.window.closeWindow();
+            return;
+        }
         try {
             // Start Notepad with the file path
             this.desktopEnvironment.windowManager.startProcess('notepad', { 
