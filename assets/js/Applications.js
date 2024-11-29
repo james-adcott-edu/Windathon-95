@@ -7,6 +7,7 @@ import Notepad from './modules/apps/Notepad.js';
 import Terminal from './modules/apps/Terminal.js';
 import Minesweeper from './modules/apps/Minesweeper.js';
 import Explorer from './modules/apps/FileExplorer.js';
+import About from './modules/apps/About.js';
 /**
  * @typedef {Object} WindowArgs
  * @property {number} width - The initial width of the window
@@ -92,6 +93,13 @@ const Applications = [
             y: 100
         },
         module: Explorer
+    },
+    {
+        id: 'about',
+        name: 'About',
+        icon: 'about.png',
+        windowArgs: { width: 800, height: 600 },
+        module: About
     }
 ];
 
