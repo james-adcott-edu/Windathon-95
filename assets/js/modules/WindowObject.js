@@ -50,9 +50,20 @@ export default class WindowObject {
      * @returns {HTMLElement} The window element
      */
     createWindowElement() {
-        let windowTemplate = document.getElementById('window_template');
-        let newWindow = windowTemplate.content.cloneNode(true);
-        return newWindow.querySelector('.window');
+        const win = document.createElement('div');
+        win.className = 'window';
+        win.innerHTML = `
+        <div class="window-titlebar">
+            <div class="window-title">Title</div>
+            <div class="window-controls">
+                <div class="window-control window-control-minimize">_</div>
+                <div class="window-control window-control-close">X</div>
+            </div>
+        </div>
+        <div class="window-menubar"> </div>
+        <div class="window-content"></div>
+        `;
+        return win;
     }
 
     /**
