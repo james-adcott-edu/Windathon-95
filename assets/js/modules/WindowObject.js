@@ -28,9 +28,11 @@ export default class WindowObject {
         this.resizable = false;
         this.hasFocus = true;
         this.isMinimized = false;
+        this.isMaximized = false;
         this.windowElement = this.createWindowElement();
         this.uuid = 'window-'+self.crypto.randomUUID();
         this.windowManager = windowManager;
+        this.windowContent = this.windowElement.querySelector('.window-content');
         if (windowArgs) {
             for (let key in windowArgs) {
                 this[key] = windowArgs[key];
@@ -39,8 +41,8 @@ export default class WindowObject {
         this.dialogs = [];
         this.stylesheetManager = null;
         if (this.resizable) {
-            this.windowElement.querySelector('.window-content').style.overflow = 'hidden';
-            this.windowElement.querySelector('.window-content').style.resize = 'both';
+            this.windowContent.style.overflow = 'hidden';
+            this.windowContent.style.resize = 'both';
         }
     }
     
@@ -110,6 +112,39 @@ export default class WindowObject {
         this.windowManager.setFocus(this);
         this.setActive(true);
         document.body.appendChild(this.windowElement);
+
+
+
+        // test
+        titleBar.addEventListener('dblclick', e => {
+            if (this.resizable) {
+                this.maximize();
+            }
+        });
+    }
+
+    maximize() {
+        const offset = (() => {
+            let windowContentRect = this.windowContent.getBoundingClientRect();
+            let windowRect = this.windowElement.getBoundingClientRect();
+            let menuBarRect = this.windowElement.querySelector('.window-menubar').getBoundingClientRect();
+            console.log(windowRect, windowContentRect, menuBarRect);
+            let rtnoffset = {
+                x: windowRect.width - windowContentRect.width,
+                y: windowRect.height - windowContentRect.height
+            }
+            console.log(rtnoffset);
+            return rtnoffset;
+        })();
+
+        this.windowElement.style.left = '0';
+        this.windowElement.style.top = '0';
+
+        const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        const viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+        const taskbarHeight = document.querySelector('.taskbar').offsetHeight;
+        this.windowContent.style.width = (viewportWidth - offset.x) + 'px';
+        this.windowContent.style.height = (viewportHeight - taskbarHeight - offset.y) + 'px';
     }
 
     /**
@@ -159,7 +194,7 @@ export default class WindowObject {
     /**
      * Restores the window from minimized state
      */
-    restore() {
+    show() {
         this.isMinimized = false;
     }
 
