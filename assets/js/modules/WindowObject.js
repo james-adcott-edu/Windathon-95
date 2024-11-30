@@ -40,11 +40,21 @@ export default class WindowObject {
         }
         this.dialogs = [];
         this.stylesheetManager = null;
+        this.enableResizing();
+    }
+
+    enableResizing() {
         if (this.resizable) {
             this.windowContent.style.overflow = 'hidden';
             this.windowContent.style.resize = 'both';
         }
     }
+
+    disableResizing() {
+        this.windowContent.style.overflow = 'auto';
+        this.windowContent.style.resize = 'none';
+    }
+
     
     /**
      * Creates the window DOM element from template
@@ -126,6 +136,10 @@ export default class WindowObject {
         });
     }
 
+    /**
+     * Maximizes the window to fill the screen
+     * @public
+     */
     maximize() {
         let windowRect = this.windowElement.getBoundingClientRect();
         let windowContentRect = this.windowContent.getBoundingClientRect();
@@ -150,13 +164,19 @@ export default class WindowObject {
         this.windowContent.style.width = (viewportWidth - offset.x) + 'px';
         this.windowContent.style.height = (viewportHeight - taskbarHeight - offset.y) + 'px';
 
+        this.disableResizing();
         this.isMaximized = true;
     }
 
+    /**
+     * Restores the window to its previous size from maximized state
+     * @public
+     */
     restore() {
         this.setPosition(this.x, this.y);
         this.setSize(this.width, this.height);
         this.isMaximized = false;
+        this.enableResizing();
     }
 
     /**
