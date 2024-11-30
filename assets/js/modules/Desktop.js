@@ -21,7 +21,11 @@ export default class Desktop {
         try {
             this.currentSettings = JSON.parse(this.fs.readFile("C:\\settings\\desktop.ini"));
             document.body.style.backgroundColor = this.currentSettings.color;
-            document.body.style.backgroundImage = `url(${web_root}/assets/images/wallpapers/${this.currentSettings.wallpaper})`;
+            if (this.currentSettings.wallpaper === "none") {
+                document.body.style.backgroundImage = "none";
+            } else {
+                document.body.style.backgroundImage = `url(${web_root}/assets/images/wallpapers/${this.currentSettings.wallpaper})`;
+            }
             switch (this.currentSettings.behaviour) {
                 case "tile":
                     document.body.style.backgroundSize = "auto";
