@@ -154,6 +154,7 @@ button:active {
 
 .window-content {
     position: relative;
+    box-sizing: border-box;
     padding: 2px;
     background-color: #fff;
     border: 2px inset #bbb;
