@@ -15,7 +15,7 @@ export default class WebBrowser {
         this.setupSearchShortcuts();
 
         this.window.setTitle('Web Browser');
-        this.windowContent.className = 'web-browser';
+        this.windowContent.classList.add('web-browser');
         this.window.addStylesheet(css);
 
         this.setupBrowser();
