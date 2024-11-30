@@ -368,6 +368,18 @@ button:active {
     border: 2px inset #c0c0c0;
 }
 
+.network-icon {
+    font-family: 'Segoe UI Symbol', sans-serif;
+    font-size: 14px;
+    margin-right: 8px;
+    cursor: help;
+}
+
+.tray-icon {
+    display: inline-block;
+    padding: 0 4px;
+}
+
 .menu-dropdown-item.has-submenu {
     position: relative;
     display: flex;

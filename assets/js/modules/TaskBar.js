@@ -131,7 +131,18 @@ export default class TaskBar {
         const systemTray = document.createElement('div');
         systemTray.className = 'system-tray';
 
-        // Audio Icon (using Unicode speaker symbol)
+        // Network Icon
+        const networkIcon = document.createElement('div');
+        networkIcon.className = 'tray-icon network-icon';
+        networkIcon.innerHTML = '🖧';
+        networkIcon.title = 'Network Status';
+        this.updateNetworkStatus(networkIcon);
+
+        // Add network status listener
+        window.addEventListener('online', () => this.updateNetworkStatus(networkIcon));
+        window.addEventListener('offline', () => this.updateNetworkStatus(networkIcon));
+
+        // Audio Icon (existing)
         const audioIcon = document.createElement('div');
         audioIcon.className = 'tray-icon audio-icon';
         audioIcon.innerHTML = '🔊';
@@ -139,6 +150,7 @@ export default class TaskBar {
         audioIcon.addEventListener('click', (e) => this.toggleAudioSlider(e));
 
         // Add icons to system tray
+        systemTray.appendChild(networkIcon);
         systemTray.appendChild(audioIcon);
 
         // Add system tray and clock to right section
@@ -147,6 +159,16 @@ export default class TaskBar {
 
         // Add right section to taskbar
         this.taskbarElement.appendChild(rightSection);
+    }
+
+    updateNetworkStatus(networkIcon) {
+        if (navigator.onLine) {
+            networkIcon.style.color = '#0000FF';
+            networkIcon.title = 'Connected to Network';
+        } else {
+            networkIcon.style.color = '#FF0000';
+            networkIcon.title = 'No Network Connection';
+        }
     }
 
     /**

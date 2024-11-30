@@ -57,6 +57,13 @@ We kept the user stories in the kanban board, which can be found [here](https://
 
 This is the main component that orchestrates the desktop environment. It manages the taskbar, start menu, and the overall layout of the desktop. It's essentially a monolithic class that handles all the interactions and updates the DOM accordingly.
 
+This includes a start menu, which is a simple menu in the bottom left of the screen.
+![Start menu screenshot](./assets/images/showcase/start-menu.png)
+
+We also have a taskbar, which includes a clock, with active applications pinned to it.
+If the clock is clicked, the clock application will open. It also contains a system tray, which includes an audio slider (which doesn't do anything), and a network indicator. The network indicator will turn red if you're offline, and grey if you're online.
+![Taskbar screenshot](./assets/images/showcase/task-bar.png)
+
 #### Scoped CSS
 
 We use scoped CSS to allow applications to add their own styles without affecting the global styles. This is useful for applications to have their own look and feel, while still being part of the Windows 95 theme.
