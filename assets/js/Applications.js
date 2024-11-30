@@ -38,7 +38,7 @@ const Applications = [
     {
         id: 'about',
         name: 'About',
-        icon: 'about.png',
+        icon: 'question.png',
         windowArgs: {
             x: 250,
             width: 630,
