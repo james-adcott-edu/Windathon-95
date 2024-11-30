@@ -15,6 +15,23 @@ export default class StartMenu {
     constructor(desktopEnvironment) {
         this.desktopEnvironment = desktopEnvironment;
         this.applicationList = Applications;
+        /** @type {HTMLDivElement | null} */
+        this.startMenu = null;
+        /** @type {HTMLDivElement | null} */
+        this.startMenuDiv = null;
+    }
+
+    toggleVisibility() {
+        this.startMenu.classList.toggle('hidden');
+        // If the start menu is not hidden, add an event listener to close it when clicking outside
+        if (!this.startMenu.classList.contains('hidden')) {
+            document.addEventListener('click', this.handleOutsideClick = (event) => {
+                if (!this.startMenuDiv.contains(event.target)) {
+                    this.startMenu.classList.add('hidden');
+                    document.removeEventListener('click', this.handleOutsideClick);
+                }
+            });
+        }
     }
 
     /**
@@ -22,25 +39,16 @@ export default class StartMenu {
      * @returns {HTMLDivElement} The complete start menu container element
      */
     render() {
-        let startMenuDiv = document.createElement('div');
+        let startMenuDiv = this.startMenuDiv = document.createElement('div');
         let startMenuButton = document.createElement('div');
-        let startMenu = document.createElement('div');
+        let startMenu = this.startMenu = document.createElement('div');
 
         startMenuDiv.classList.add('taskbar-start');
 
         startMenuButton.classList.add('startbutton');
         startMenuButton.innerHTML = '<img src="assets/images/windows-logo.png" alt="Windows Logo" height="16" width="16"> Start';
         startMenuButton.addEventListener('click', (e) => {
-            startMenu.classList.toggle('hidden');
-            // If the start menu is not hidden, add an event listener to close it when clicking outside
-            if (!startMenu.classList.contains('hidden')) {
-                document.addEventListener('click', this.handleOutsideClick = (event) => {
-                    if (!startMenuDiv.contains(event.target)) {
-                        startMenu.classList.add('hidden');
-                        document.removeEventListener('click', this.handleOutsideClick);
-                    }
-                });
-            }
+            this.toggleVisibility();
         });
         startMenuDiv.appendChild(startMenuButton);
 

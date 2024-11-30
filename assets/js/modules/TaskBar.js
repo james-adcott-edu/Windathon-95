@@ -22,6 +22,8 @@ export default class TaskBar {
         /** @type {import('./WindowManager.js').default} */
         this.windowManager = windowManager;
         this.tasks = [];
+        /** @type {import('./StartMenu.js').default | null} */
+        this.startMenu = null;
         // create taskbar from template
         let taskbarTemplate = document.getElementById('taskbar_template');
         let newTaskbar = taskbarTemplate.content.cloneNode(true);
@@ -67,9 +69,9 @@ export default class TaskBar {
      * @private
      */
     addStartMenu() {
-        let startMenu = new StartMenu(this.desktopEnvironment);
+        this.startMenu = new StartMenu(this.desktopEnvironment);
         let startDiv = this.taskbarElement.querySelector('.taskbar-start');
-        startDiv.appendChild(startMenu.render());
+        startDiv.appendChild(this.startMenu.render());
     }
 
     /**

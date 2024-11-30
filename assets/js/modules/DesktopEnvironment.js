@@ -65,7 +65,7 @@ export default class DesktopEnvironment {
         // Example: Windows key for start menu
         if (event.key === 'Meta') {
             event.preventDefault();
-            console.log("Meta - Toggle Start Menu?");
+            this.taskbar.startMenu.toggleVisibility();
         }
     }
 
