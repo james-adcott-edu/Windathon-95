@@ -54,17 +54,27 @@ We kept the user stories in the kanban board, which can be found [here](https://
 
 This is the main component that orchestrates the desktop environment. It manages the taskbar, start menu, and the overall layout of the desktop. It's essentially a monolithic class that handles all the interactions and updates the DOM accordingly.
 
+#### Scoped CSS
+
+We use scoped CSS to allow applications to add their own styles without affecting the global styles. This is useful for applications to have their own look and feel, while still being part of the Windows 95 theme.
+
+This was implemented by James, and works by assigning the window a unique ID, and then adding that ID to the style tag for that window. This allows the styles to be scoped to the window, and not affect the global styles.
+
 #### File System (jsonfs)
 
 This is a simple file system that uses localStorage to store the file data. It's a basic implementation of a file system and is not a full-fledged file system like the one in Windows 95. It's just a simple way to simulate a file system in the browser.
 
 This allows us to integrate the file system into the applications that we build. Creating true saving functionality, and the ability to load previous states of applications.
 
+We represent the file system with a JavaScript object. Any entry in the object that is another object is treated as a directory, and any entry that is a string is treated as a file. The file system is not case-sensitive, and will automatically convert file paths to lower case.
+
 #### Window Manager
 
 This is the component that handles the windows that are created. It allows us to create, move, and resize windows. It also handles the z-index of the windows, so that windows can be brought to the front by the user.
 
 This class handles the focus of windows, so that when a window is brought to the front, it becomes active and the previous window will be behind by dynamically updating the z-index.
+
+The window manager is also in charge of starting applications, pushing them to the taskbar, and handling the processes that are running.
 
 #### Application Framework
 
@@ -74,6 +84,10 @@ This is the base class for all applications. It provides ways to accept argument
 
 ### Notepad
 ![Notepad screenshot](./assets/images/showcase/notepad.png)
+
+The notepad is a simple text editor that allows you to create and edit text files. It integrates tightly with Explorer, and allows you to open explorer in a different mode to select files to open/save.
+
+It's just a `textarea` element, but with some added functionality to save and open files.
 
 - Full text editing capabilities
 - File operations (New, Open, Save, Save As)
@@ -85,6 +99,11 @@ This is the base class for all applications. It provides ways to accept argument
 
 ### MS-DOS Prompt
 ![MS-DOS Prompt screenshot](./assets/images/showcase/terminal.png)
+
+The MS-DOS prompt is a command-line interface that attempts to mimic the MS-DOS prompt as closely as possible. It supports many original commands, and integrates with the custom filesystem.
+
+It uses custom command parsing to accept string arguments, so that directorys like `Program Files` are correctly parsed.
+
 - Command-line interface
 - Many DOS commands available
 - File system navigation
@@ -109,6 +128,9 @@ The terminal interacts soley with the JsonFs, and does not have any knowledge of
 
 ### Minesweeper
 ![Minesweeper screenshot](./assets/images/showcase/minesweeper.png)
+
+Minesweeper is a classic game that allows you to clear cells by revealing what is underneath. If you reveal a mine, you lose! James implemented the game logic from scratch, and it works flawlessly, even allowing you to flag mines to help you solve the puzzle.
+
 - Classic Windows 95 Minesweeper game
 - Multiple difficulty levels, including beginner, intermediate, and expert.
 - Timer and mine counter using the status bar.
@@ -117,6 +139,11 @@ The terminal interacts soley with the JsonFs, and does not have any knowledge of
 
 ### Paint
 ![Paint screenshot](./assets/images/showcase/paint.png)
+
+This is a basic paint application, implemented using the canvas element. It allows you to draw on the canvas with a brush, and has a color picker to change the color of the brush.
+
+It also has tools like undo, line tools and square tools.
+
 - Basic paint application
 - Drawing capabilities
 - Color picker
@@ -127,6 +154,11 @@ The terminal interacts soley with the JsonFs, and does not have any knowledge of
 
 ### Tetravex
 ![Tetravex screenshot](./assets/images/showcase/tetravex.png)
+
+Tetravex is a puzzle game where you must rearrange the tiles to match the target grid. It's a classic puzzle game that is easy to pick up and play, but difficult to master.
+
+The algorithm was written by James, and it even includes logic to solve the puzzle automatically!
+
 - Classic puzzle game
 - 2D grid with numbered tiles
 - Drag and drop functionality
@@ -135,6 +167,13 @@ The terminal interacts soley with the JsonFs, and does not have any knowledge of
 
 ### File Explorer
 ![File Explorer screenshot](./assets/images/showcase/explorer.png)
+
+The file explorer is a basic file system navigator that allows you to navigate the file system, create new files and directories, and delete files and directories.
+
+It simply recurses through the file system object, and displays all the files and directories.
+
+Double clicking on a file will open it in Notepad, and double clicking on a directory will open it in Explorer.
+
 - File system navigation
 - File operations (New, properties, delete)
 - File properties
@@ -144,21 +183,24 @@ The terminal interacts soley with the JsonFs, and does not have any knowledge of
 
 ### Web Browser
 ![Web Browser screenshot](./assets/images/showcase/webbrowser.png)
+
+This is a simple web browser that uses an iframe to load websites. It saves history, and allows you to search Google directly from the browser.
+
 - Basic web browser with Google search built in.
 - Navigate to websites that allow themselves to be embedded.
 - Search the web
 - Inception mode, which allows you to navigate to this very site, inside the browser itself!
+- DuckDuckGo search syntax is supported, so you can easily search from certain websites using the `!` prefix. Example: `Cat video !y` will search youtube for "Cat video".
 
 ### Calculator
 ![Calculator screenshot](./assets/images/showcase/calculator.png)
-- Basic calculator with a sleek Windows 95 design.
-- Performs addition, subtraction, multiplication, and division.
+
+This is a basic calculator with a sleek Windows 95 design. It performs addition, subtraction, multiplication, and division.
 
 ### Clock
 ![Clock screenshot](./assets/images/showcase/clock.png)
-- A simple clock application that shows the current time and date.
-- Has a stopwatch feature, which can be started and stopped.
-- Opens when clicking on the clock in the system tray.
+
+This is a simple clock application that shows the current time and date. It has a stopwatch feature, which can be started and stopped. It opens when clicking on the clock in the system tray.
 
 ### About
 ![About screenshot](./assets/images/showcase/about.png)
@@ -234,7 +276,15 @@ export default class NewApp {
         this.windowContent = windowContent;
         this.args = args;
 
+        // Provides a way to dynamically set the title of the window
         this.window.setTitle('My New App');
+        this.window.setCloseRequest(() => {
+            // This is called when the user clicks the close button
+            // You can use this to save data, etc. (its effectively a destructor)
+            this.window.closeWindow();
+        });
+        // Add scoped styles to the window
+        this.window.addStylesheet('.custom-style { color: red; }');
         this.setupUI();
     }
 
@@ -297,11 +347,11 @@ This project is intended for educational purposes only. Windows 95 is a trademar
 ## 🙏 Acknowledgments
 
 - Microsoft for the original Windows 95
-- Contributors to the project
+- Contributors to the project (james and deeton)
 - The web development community for resources and inspiration
 - Icons from Google Images, the specific sources are as follows:
-  - Wikipedia
-  - Logopedia
-  - Free Icons
-  - FreePik
-  - SVG Repo
+  - [Wikipedia](https://en.wikipedia.org)
+  - [Logopedia](https://logos.fandom.com/wiki/Logopedia)
+  - [Free Icons](https://freeicons.io)
+  - [FreePik](https://freepik.com)
+  - [SVG Repo](https://www.svgrepo.com)

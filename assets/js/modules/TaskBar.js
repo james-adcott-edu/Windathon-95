@@ -31,6 +31,8 @@ export default class TaskBar {
         <div class="taskbar-clock"></div>
         `;
 
+        /** @type {import('./StartMenu.js').default | null} */
+        this.startMenu = null;
         this.taskbarWindowList = this.taskbarElement.querySelector('.taskbar-windowlist');
         this.addStartMenu();
         this.clock = new Clock();
@@ -72,9 +74,9 @@ export default class TaskBar {
      * @private
      */
     addStartMenu() {
-        let startMenu = new StartMenu(this.desktopEnvironment);
+        this.startMenu = new StartMenu(this.desktopEnvironment);
         let startDiv = this.taskbarElement.querySelector('.taskbar-start');
-        startDiv.appendChild(startMenu.render());
+        startDiv.appendChild(this.startMenu.render());
     }
 
     /**
