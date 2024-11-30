@@ -142,6 +142,7 @@ export default class DesktopSettings {
 const wallpapers = [
     { img: "none", name: "none" },
     { img: "black_thatch.png", name: "Black Thatch" },
+    { img: "Bliss.jpg", name: "Bliss (Win XP)" },
     { img: "blue_rivets.webp", name: "Blue Rivets" },
     { img: "boilding_point.jpg", name: "Boiling Point" },
     { img: "bubbles.webp", name: "Bubbles" },
