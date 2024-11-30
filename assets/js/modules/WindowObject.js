@@ -113,6 +113,7 @@ export default class WindowObject {
         // Window Dragging
         let titleBar = this.windowElement.querySelector('.window-title');
         titleBar.addEventListener('mousedown', e => {
+            if (this.isMaximized) return;
             let oldx = e.clientX;
             let oldy = e.clientY;
             let mousemove = f => {
