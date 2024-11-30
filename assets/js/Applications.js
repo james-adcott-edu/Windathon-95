@@ -149,7 +149,7 @@ const Applications = [
         icon: 'clock.png',
         windowArgs: { 
             width: 300, 
-            height: 400,
+            height: 250,
             resizable: false
         },
         module: Clock
