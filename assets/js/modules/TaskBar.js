@@ -99,7 +99,7 @@ export default class TaskBar {
                     return;
                 }
                 if (task.isMinimized) {
-                    task.restore();
+                    task.show();
                 }
                 this.windowManager.setFocus(task);
             });

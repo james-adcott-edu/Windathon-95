@@ -89,8 +89,9 @@ export default class WindowObject {
         <div class="window-titlebar">
             <div class="window-title">Title</div>
             <div class="window-controls">
-                <div class="window-control window-control-minimize">_</div>
-                <div class="window-control window-control-close">X</div>
+                <div class="window-control window-control-minimize"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 21v-2h12v2z"/></svg></div>
+                <div class="window-control window-control-maximize"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16v16H4zm2 4v10h12V8z"/></svg></div>
+                <div class="window-control window-control-close"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z"/></svg></div>
             </div>
         </div>
         <div class="window-menubar"> </div>
@@ -145,17 +146,25 @@ export default class WindowObject {
         this.setActive(true);
         document.body.appendChild(this.windowElement);
 
+        const maximizeButton = this.windowElement.querySelector('.window-control-maximize');
 
-
-        // test
-        titleBar.addEventListener('dblclick', e => {
+        const maximizeHandler = e => {
             if (!this.resizable) return;
             if (this.isMaximized === false) {
                 this.maximize();
+                maximizeButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 8h4V4h12v12h-4v4H4zm12 0v6h2V6h-8v2zM6 12v6h8v-6z"/></svg>';
                 return;
             }
             this.restore();
-        });
+            maximizeButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16v16H4zm2 4v10h12V8z"/></svg>';
+        }
+
+        if (!this.resizable) {
+            maximizeButton.remove();
+        }
+
+        titleBar.addEventListener('dblclick', maximizeHandler);
+        maximizeButton.addEventListener('click', maximizeHandler);
     }
 
     /**
