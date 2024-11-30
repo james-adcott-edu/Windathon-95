@@ -1,3 +1,4 @@
+import Dialog from '../Dialog.js';
 import GameTimer from '../GameTimer.js';
 
 // used to randomize the arrangement of the tiles
@@ -44,6 +45,19 @@ export default class Tetravex {
             this.windowObject.closeWindow();
         });
 
+        const aboutDialog = this.windowObject.makeDialog(`
+        <div style="text-align: center">
+        <h1>About Tetravex</h1>
+        </div>
+        <p>Tetravex is a puzzle game where you must arrange the tiles so that the numbers on the edges match up.</p>
+        <p>You may think of it like a jig-saw puzzle, but with numbers. The difference is that whilst a jig-saw has a single solution, Tetravex is non-deterministic and therefore has one or more possible solutions.</p>
+        <p>Every puzzle is solvable, but some may be more difficult than others. If you get stuck, you can always show the solution (option in File menu)</p>
+        <div style="text-align: center"><button id="close-about">Close</button></div>
+        `);
+        aboutDialog.getContent().querySelector('#close-about').addEventListener('click', () => {
+            this.windowObject.closeDialog(aboutDialog);
+        });
+
         this.windowObject.setMenu({
             'Game': {
                 'New': () => this.init(),
@@ -55,6 +69,9 @@ export default class Tetravex {
                 '3x3': () => this.setGameSize(3),
                 '4x4': () => this.setGameSize(4),
                 '5x5': () => this.setGameSize(5),
+            },
+            'Help': {
+                'About': () => aboutDialog.render(),
             },
         });
 

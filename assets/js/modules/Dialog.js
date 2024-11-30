@@ -30,13 +30,20 @@ export default class Dialog {
     }
 
     createDialogElement() {
-        let windowTemplate = document.getElementById('window_template');
-        let newWindow = windowTemplate.content.cloneNode(true);
-        newWindow.querySelector('.window').classList.add('dialog');
-        newWindow.querySelector('.window').classList.add('window-focus');
-        newWindow.querySelector('.window-menubar').remove();
-        newWindow.querySelector('.window-control-minimize').remove();
-        return newWindow.querySelector('.window');
+        const win = document.createElement('div');
+        win.className = 'window';
+        win.classList.add('dialog');
+        win.classList.add('window-focus');
+        win.innerHTML = `
+        <div class="window-titlebar">
+            <div class="window-title">Title</div>
+            <div class="window-controls">
+                <div class="window-control window-control-close"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z"/></svg></div>
+            </div>
+        </div>
+        <div class="window-content"></div>
+        `;
+        return win;
     }
 
     render() {
