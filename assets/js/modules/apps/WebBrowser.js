@@ -35,8 +35,11 @@ export default class WebBrowser {
             this.history = this.history.slice(0, this.currentHistoryIndex + 1);
         }
         
-        this.history.push(url);
-        this.currentHistoryIndex++;
+        // Only add to history if it's different from the current URL
+        if (this.history.length === 0 || url !== this.history[this.currentHistoryIndex]) {
+            this.history.push(url);
+            this.currentHistoryIndex = this.history.length - 1;
+        }
         
         // Update navigation buttons
         this.updateNavigationButtons();
@@ -113,11 +116,24 @@ export default class WebBrowser {
             this.navigate();
         });
 
+        // Security indicator
+        this.securityIndicator = document.createElement('div');
+        this.securityIndicator.className = 'security-indicator';
+        this.securityIndicator.title = 'Connection Status';
+        this.updateSecurityIndicator('win95://home');
+
+        // Address bar container
+        const addressContainer = document.createElement('div');
+        addressContainer.className = 'address-container';
+        
         // Address bar
         this.addressBar = document.createElement('input');
         this.addressBar.type = 'text';
         this.addressBar.className = 'address-bar';
         this.addressBar.value = 'https://example.com';
+
+        addressContainer.appendChild(this.securityIndicator);
+        addressContainer.appendChild(this.addressBar);
 
         // Go button
         const goButton = document.createElement('button');
@@ -129,7 +145,7 @@ export default class WebBrowser {
         navbar.appendChild(this.forwardButton);
         navbar.appendChild(homeButton);
         navbar.appendChild(inceptionButton);
-        navbar.appendChild(this.addressBar);
+        navbar.appendChild(addressContainer);
         navbar.appendChild(goButton);
 
         // Create iframe for web content
@@ -139,6 +155,25 @@ export default class WebBrowser {
         this.iframe.className = 'browser-content';
         this.iframe.src = 'https://example.com';
         iframeDiv.appendChild(this.iframe);
+
+        // Listen for iframe load events to update address bar
+        this.iframe.addEventListener('load', () => {
+            try {
+                // Only update if we can access the URL (same-origin policy)
+                const newUrl = this.iframe.contentWindow.location.href;
+                if (newUrl !== 'about:blank') {
+                    this.addressBar.value = newUrl;
+                    this.addToHistory(newUrl);
+                }
+            } catch (e) {
+                // If we can't access the URL due to same-origin policy,
+                // we can at least update with the src attribute
+                if (this.iframe.src !== 'about:blank') {
+                    this.addressBar.value = this.iframe.src;
+                    this.addToHistory(this.iframe.src);
+                }
+            }
+        });
 
         // Handle address bar submission
         this.addressBar.addEventListener('keypress', (e) => {
@@ -156,12 +191,34 @@ export default class WebBrowser {
         this.windowContent.appendChild(appDiv);
     }
 
+    updateSecurityIndicator(url) {
+        let icon = '🔒';
+        let color = '#00a000';
+        let tooltip = 'Secure Connection';
+
+        if (url.startsWith('http://')) {
+            icon = '⚠️';
+            color = '#a00000';
+            tooltip = 'Insecure Connection';
+        } else if (url.startsWith('win95://')) {
+            icon = '💻';
+            color = '#000000';
+            tooltip = 'Local System';
+        }
+
+        this.securityIndicator.textContent = icon;
+        this.securityIndicator.style.color = color;
+        this.securityIndicator.title = tooltip;
+    }
+
     loadUrl(url) {
         if (url === 'win95://home') {
             this.renderHomePage();
-        } else {
-            this.iframe.src = url;
+            this.updateSecurityIndicator(url);
+            return;
         }
+        this.iframe.src = url;
+        this.updateSecurityIndicator(url);
     }
 
     navigate() {
@@ -383,14 +440,27 @@ const css = `
     font-size: 14px;
 }
 
+.address-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    background: #fff;
+    border: 2px inset #bbb;
+}
+
+.security-indicator {
+    padding: 0 4px;
+    font-size: 14px;
+    cursor: help;
+}
+
 .address-bar {
     flex: 1;
     height: 22px;
     font-family: "MS Sans Serif", sans-serif;
     font-size: 12px;
     padding: 0 4px;
-    background: #fff;
-    border: 2px inset #bbb;
+    border: none;
     color: #000;
     box-sizing: border-box;
 }
