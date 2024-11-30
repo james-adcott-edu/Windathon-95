@@ -7,6 +7,25 @@ export default class DesktopSettings {
         this.windowContent = windowContent;
         this.args = args;
 
+        // Add reference to desktop environment
+        /** @type {import('../DesktopEnvironment.js').default} */
+        this.desktopEnvironment = args.desktopEnvironment;
+        
+        /** @type {import('../JsonFs.js').default} */
+        this.fs = args.desktopEnvironment.fileSystem;
+
+        this.filename = "C:\\settings\\desktop.ini";
+        this.currentSettings = {
+            color: "#008888",
+            wallpaper: "none",
+            behaviour: "tile"
+        };
+        try {
+            this.currentSettings = JSON.parse(this.fs.readFile(this.filename));
+        } catch (e) {
+            console.log("Error reading settings", e);
+        }
+
         this.windowObject.setTitle("Desktop Settings");
         this.windowObject.setCloseRequest( () => {
             // do something before closing
@@ -16,6 +35,21 @@ export default class DesktopSettings {
         this.windowObject.addStylesheet(css);
 
         this.windowContent.innerHTML = html;
+
+        this.windowContent.querySelector("#color").value = this.currentSettings.color;
+        this.windowContent.querySelector(`#wallpaper option[value="${this.currentSettings.wallpaper}"]`).selected = true;
+        this.windowContent.querySelector(`#wallpaper-behaviour option[value="${this.currentSettings.behaviour}"]`).selected = true;
+
+        this.demoWindow = this.windowContent.querySelector("#demo");
+
+
+        this.applyBackground(
+            this.demoWindow,
+            this.currentSettings.color,
+            this.currentSettings.wallpaper,
+            this.currentSettings.behaviour
+        );
+
         let app = this.windowContent.querySelector("#app");
         this.windowObject.setSize(app.offsetWidth, app.offsetHeight);
 
@@ -30,10 +64,9 @@ export default class DesktopSettings {
                 this.windowContent.querySelector("#wallpaper").value,
                 this.windowContent.querySelector("#wallpaper-behaviour").value
             );
+            this.saveSettings();
             this.windowObject.closeWindow();
         });
-
-        this.demoWindow = this.windowContent.querySelector("#demo");
 
         this.windowContent.querySelector("#color").addEventListener("input", (event) => {
             this.applyBackground(
@@ -61,6 +94,20 @@ export default class DesktopSettings {
                 event.target.value
             );
         });
+    }
+
+    saveSettings() {
+        try {
+            this.fs.createDirectory('C:\\settings');
+        } catch (e) {
+            console.log("Settings directory already exists");
+        }
+        const fileContents = JSON.stringify({
+            color: this.windowContent.querySelector("#color").value,
+            wallpaper: this.windowContent.querySelector("#wallpaper").value,
+            behaviour: this.windowContent.querySelector("#wallpaper-behaviour").value
+        });
+        this.fs.createFile(this.filename, fileContents);
     }
 
     applyBackground(target, color, img, behaviour) {
@@ -92,6 +139,23 @@ export default class DesktopSettings {
 
 }
 
+const wallpapers = [
+    { img: "none", name: "none" },
+    { img: "black_thatch.png", name: "Black Thatch" },
+    { img: "blue_rivets.webp", name: "Blue Rivets" },
+    { img: "boilding_point.jpg", name: "Boiling Point" },
+    { img: "bubbles.webp", name: "Bubbles" },
+    { img: "carved_stone.webp", name: "Carved Stone" },
+    { img: "circles.webp", name: "Circles" },
+    { img: "clouds.png", name: "Clouds" },
+    { img: "forest.png", name: "Forest" },
+    { img: "purple_sponge.jpg", name: "Purple Sponge" },
+    { img: "sandstone.png", name: "Sandstone" },
+    { img: "water_color.jpg", name: "Water Color" }
+];
+
+
+
 const html = `
 <div id="app">
 <div id="demo"></div>
@@ -106,11 +170,7 @@ const html = `
         <td>Image</td>
         <td>
             <select id="wallpaper">
-                <option value="none">None</option>
-                <option value="clouds.png">Clouds</option>
-                <option value="black_thatch.png">Black Thatch</option>
-                <option value="bubbles.webp">Bubbles</option>
-                <option value="sandstone.png">Sandstone</option>
+            ${wallpapers.map(w => `<option value="${w.img}">${w.name}</option>`).join("")}
             </select>
         </td>
     </tr>
@@ -118,9 +178,7 @@ const html = `
         <td>Behaviour</td>
         <td>
             <select id="wallpaper-behaviour">
-                <option value="tile" selected>Tile</option>
-                <option value="center">Center</option>
-                <option value="stretch">Stretch</option>
+            ${["tile", "center", "stretch"].map(b => `<option value="${b}">${b}</option>`).join("")}
             </select>
         </td>
     </tr>

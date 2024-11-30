@@ -16,7 +16,33 @@ export default class Desktop {
         this.applicationList = Applications;
         this.icons = new Map(); // Track icon elements
         this.desktopElement = null;
-        
+
+        this.fs = desktopEnvironment.fileSystem;
+        try {
+            this.currentSettings = JSON.parse(this.fs.readFile("C:\\settings\\desktop.ini"));
+            document.body.style.backgroundColor = this.currentSettings.color;
+            document.body.style.backgroundImage = `url(${web_root}/assets/images/wallpapers/${this.currentSettings.wallpaper})`;
+            switch (this.currentSettings.behaviour) {
+                case "tile":
+                    document.body.style.backgroundSize = "auto";
+                    document.body.style.backgroundRepeat = "repeat";
+                    break;
+                case "center":
+                    document.body.style.backgroundSize = "auto";
+                    document.body.style.backgroundRepeat = "no-repeat";
+                    document.body.style.backgroundPosition = "center";
+                    break;
+                case "stretch":
+                    document.body.style.backgroundSize = "100% 100%";
+                    break;
+                default:
+                    console.error("Unknown behaviour", this.currentSettings.behaviour);
+                    break;
+            }
+        } catch (e) {
+            console.log("Error reading desktop settings");
+        }
+
         this.render();
     }
 
