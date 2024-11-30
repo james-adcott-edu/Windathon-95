@@ -22,12 +22,17 @@ export default class TaskBar {
         /** @type {import('./WindowManager.js').default} */
         this.windowManager = windowManager;
         this.tasks = [];
+
+        this.taskbarElement = document.createElement('div');
+        this.taskbarElement.className = 'taskbar';
+        this.taskbarElement.innerHTML = `
+        <div class="taskbar-start"></div>
+        <div class="taskbar-windowlist"></div>
+        <div class="taskbar-clock"></div>
+        `;
+
         /** @type {import('./StartMenu.js').default | null} */
         this.startMenu = null;
-        // create taskbar from template
-        let taskbarTemplate = document.getElementById('taskbar_template');
-        let newTaskbar = taskbarTemplate.content.cloneNode(true);
-        this.taskbarElement = newTaskbar.querySelector('.taskbar');
         this.taskbarWindowList = this.taskbarElement.querySelector('.taskbar-windowlist');
         this.addStartMenu();
         this.clock = new Clock();

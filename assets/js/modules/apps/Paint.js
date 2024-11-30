@@ -551,8 +551,8 @@ export default class Paint {
         this.canvas.style.transformOrigin = 'top left';
         
         // Adjust container size to accommodate zoomed canvas
-        container.style.width = `${this.canvas.width * this.zoomLevel}px`;
-        container.style.height = `${this.canvas.height * this.zoomLevel}px`;
+        //container.style.width = `${this.canvas.width * this.zoomLevel}px`;
+        //container.style.height = `${this.canvas.height * this.zoomLevel}px`;
     }
 
     /**
@@ -644,12 +644,25 @@ border-color: var(--outset-border-color);
 }
 
 .paint-canvas-container {
+    --checker-size: 25px;
+    --checker-color: rgba(0,0,0,0.05);
     overflow: auto;
     position: relative;
     flex: 1;
     height: calc(100% - 40px);
     border: 2px inset #bbb;
     background: #fff;
+    background-image:
+        linear-gradient(45deg, var(--checker-color) 25%, transparent 25%),
+        linear-gradient(135deg, var(--checker-color) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--checker-color) 75%),
+        linear-gradient(135deg, transparent 75%, var(--checker-color) 75%);
+    background-size: var(--checker-size) var(--checker-size);
+    background-position:
+        0 0,
+        calc(var(--checker-size)/2) 0,
+        calc(var(--checker-size)/2) calc(-1*var(--checker-size)/2),
+        0 calc(var(--checker-size)/2); 
 }
 
 .paint-canvas-container canvas {

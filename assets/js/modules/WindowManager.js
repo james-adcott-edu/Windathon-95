@@ -74,7 +74,7 @@ export default class WindowManager {
      * @param {WindowObject} windowObj - The window to focus
      */
     setFocus(windowObj) {
-        if (windowObj.isMinimized) windowObj.restore();
+        if (windowObj.isMinimized) windowObj.show();
         windowObj.windowElement.classList.remove('minimized');
         this.windows.forEach((win) => {
             win.windowElement.classList.remove('window-focus');

@@ -26,6 +26,7 @@ export default class WindowObject {
         this.resizable = false;
         this.hasFocus = true;
         this.isMinimized = false;
+        this.isMaximized = false;
         this.windowElement = this.createWindowElement();
         this.uuid = 'window-'+self.crypto.randomUUID();
         this.windowManager = windowManager;
@@ -36,6 +37,7 @@ export default class WindowObject {
         this.x = Math.max(0, (viewportWidth - this.width) / 2);
         this.y = Math.max(0, (viewportHeight - this.height) / 2);
 
+        this.windowContent = this.windowElement.querySelector('.window-content');
         if (windowArgs) {
             // Apply custom window arguments
             for (let key in windowArgs) {
@@ -60,8 +62,8 @@ export default class WindowObject {
         this.dialogs = [];
         this.stylesheetManager = null;
         if (this.resizable) {
-            this.windowElement.querySelector('.window-content').style.overflow = 'auto';
-            this.windowElement.querySelector('.window-content').style.resize = 'both';
+            this.windowContent.style.overflow = 'hidden';
+            this.windowContent.style.resize = 'both';
         }
     }
     
@@ -71,9 +73,20 @@ export default class WindowObject {
      * @returns {HTMLElement} The window element
      */
     createWindowElement() {
-        let windowTemplate = document.getElementById('window_template');
-        let newWindow = windowTemplate.content.cloneNode(true);
-        return newWindow.querySelector('.window');
+        const win = document.createElement('div');
+        win.className = 'window';
+        win.innerHTML = `
+        <div class="window-titlebar">
+            <div class="window-title">Title</div>
+            <div class="window-controls">
+                <div class="window-control window-control-minimize">_</div>
+                <div class="window-control window-control-close">X</div>
+            </div>
+        </div>
+        <div class="window-menubar"> </div>
+        <div class="window-content"></div>
+        `;
+        return win;
     }
 
     /**
@@ -120,6 +133,51 @@ export default class WindowObject {
         this.windowManager.setFocus(this);
         this.setActive(true);
         document.body.appendChild(this.windowElement);
+
+
+
+        // test
+        titleBar.addEventListener('dblclick', e => {
+            if (!this.resizable) return;
+            if (this.isMaximized === false) {
+                this.maximize();
+                return;
+            }
+            this.restore();
+        });
+    }
+
+    maximize() {
+        let windowRect = this.windowElement.getBoundingClientRect();
+        let windowContentRect = this.windowContent.getBoundingClientRect();
+        const offset = {
+            x: windowRect.width - windowContentRect.width,
+            y: windowRect.height - windowContentRect.height
+        }
+
+        // set these directly to avoid triggering resize
+        // used to restore window to previous size
+        this.x = windowRect.x;
+        this.y = windowRect.y;
+        this.width = windowContentRect.width;
+        this.height = windowContentRect.height;
+
+        this.windowElement.style.left = '0';
+        this.windowElement.style.top = '0';
+
+        const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        const viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+        const taskbarHeight = document.querySelector('.taskbar').offsetHeight;
+        this.windowContent.style.width = (viewportWidth - offset.x) + 'px';
+        this.windowContent.style.height = (viewportHeight - taskbarHeight - offset.y) + 'px';
+
+        this.isMaximized = true;
+    }
+
+    restore() {
+        this.setPosition(this.x, this.y);
+        this.setSize(this.width, this.height);
+        this.isMaximized = false;
     }
 
     /**
@@ -169,7 +227,7 @@ export default class WindowObject {
     /**
      * Restores the window from minimized state
      */
-    restore() {
+    show() {
         this.isMinimized = false;
     }
 

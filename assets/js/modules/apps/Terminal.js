@@ -4,16 +4,18 @@
     const stylesheet = `
     :root {
         background-color: #000;
+        padding: 0;
     }
 
     .terminal {
+        box-sizing: border-box;
         width: 100%;
         height: 100%;
         background-color: #000;
         color: #c0c0c0;
         font-family: 'DOS', 'Consolas', monospace;
         font-size: 16px;
-        padding: 2px;
+        padding: 4px;
         overflow-y: auto;
         cursor: text;
         white-space: pre;
