@@ -50,9 +50,6 @@ export default class DesktopSettings {
             this.currentSettings.behaviour
         );
 
-        let app = this.windowContent.querySelector("#app");
-        this.windowObject.setSize(app.offsetWidth, app.offsetHeight);
-
         this.windowContent.querySelector("#cancel").addEventListener("click", () => {
             this.windowObject.closeWindow();
         });
@@ -94,6 +91,9 @@ export default class DesktopSettings {
                 event.target.value
             );
         });
+
+        let app = this.windowContent.querySelector("#app");
+        this.windowObject.setSize(app.offsetWidth, app.offsetHeight);
     }
 
     saveSettings() {
@@ -197,6 +197,7 @@ const css = `
 background: transparent;
 border: none;
 padding: 1em;
+box-sizing: content-box;
 }
 
 #demo {
