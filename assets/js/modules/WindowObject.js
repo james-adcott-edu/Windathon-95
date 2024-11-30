@@ -190,12 +190,11 @@ export default class WindowObject {
     closeWindow() {
         this.windowElement.remove();
         if (this.stylesheetManager) {
-            this.stylesheetManager.removeSheet();
+            this.stylesheetManager.removeAllSheets();
         }
         if (this.dialogs.length > 0) {
             this.dialogs.forEach(d => d.close());
         }
-        //unset this object
         this.windowManager.remove(this);
         delete this;
     }
@@ -257,9 +256,34 @@ export default class WindowObject {
     /**
      * Adds a stylesheet to the window
      * @param {string} cssStr - CSS string to add
+     * @param {string} [id='default'] - Optional identifier for the stylesheet
      */
-    addStylesheet(cssStr) {
-        this.stylesheetManager = new StylesheetManager(this, cssStr);
+    addStylesheet(cssStr, id = 'default') {
+        if (!this.stylesheetManager) {
+            this.stylesheetManager = new StylesheetManager(this);
+        }
+        this.stylesheetManager.addSheet(id, cssStr);
+    }
+
+    /**
+     * Removes a specific stylesheet from the window
+     * @param {string} id - The stylesheet identifier to remove
+     */
+    removeStylesheet(id) {
+        if (this.stylesheetManager) {
+            this.stylesheetManager.removeSheet(id);
+        }
+    }
+
+    /**
+     * Updates an existing stylesheet
+     * @param {string} id - The stylesheet identifier to update
+     * @param {string} cssStr - The new CSS content
+     */
+    updateStylesheet(id, cssStr) {
+        if (this.stylesheetManager) {
+            this.stylesheetManager.updateSheet(id, cssStr);
+        }
     }
 }
 
