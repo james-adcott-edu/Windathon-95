@@ -23,14 +23,14 @@ export default class DesktopEnvironment {
             /** @type {WindowManager} Manages window creation and handling */
             this.windowManager = new WindowManager(this);
 
+            /** @type {JsonFs} Manages the file system */
+            this.fileSystem = new JsonFs();
+
             /** @type {Desktop} Manages desktop icons and interactions */
             this.desktop = new Desktop(this);
 
             /** @type {Taskbar} Manages the taskbar and start menu */
             this.taskbar = new Taskbar(this, this.windowManager);
-
-            /** @type {JsonFs} Manages the file system */
-            this.fileSystem = new JsonFs();
 
             // Initialize event listeners
             this.initializeEventListeners();
