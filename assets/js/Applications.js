@@ -39,7 +39,11 @@ const Applications = [
         id: 'about',
         name: 'About',
         icon: 'about.png',
-        windowArgs: { width: 800, height: 600 },
+        windowArgs: {
+            x: 250,
+            width: 630,
+            height: 550,
+        },
         module: About
     },
     {
