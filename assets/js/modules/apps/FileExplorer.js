@@ -177,8 +177,8 @@ export default class FileExplorer {
         
         this.window.setCloseRequest(() => this.window.closeWindow());
         
-        this.window.addStylesheet(stylesheet);
-        this.window.addStylesheet(FileExplorer.styles);
+        this.window.addStylesheet(stylesheet, 'default');
+        this.window.addStylesheet(FileExplorer.styles, 'styles');
         // First set up the main UI
         this.setupUI();
         

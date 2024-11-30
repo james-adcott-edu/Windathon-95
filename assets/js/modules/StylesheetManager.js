@@ -1,23 +1,18 @@
 /**
  * StylesheetManager
  *
- * Manages a stylesheet for a window
+ * Manages stylesheets for a window
  * @param {Window} windowObj - The window object
- * @param {string} stylesheet - The stylesheet to manage
  * @returns {StylesheetManager} - The StylesheetManager object
  */
 export default class StylesheetManager {
-    constructor(windowObj, stylesheet) {
+    constructor(windowObj) {
         this.windowObj = windowObj;
-        this.stylesheet = stylesheet;
-        this.processedStylesheet = this.processStylesheet();
-        this.sheet = document.createElement('style');
-        this.sheet.innerHTML = this.processedStylesheet;
-        this.addSheet();
+        this.sheets = new Map(); // Store multiple stylesheets
     }
     
-    processStylesheet() {
-        let str = this.stylesheet;
+    processStylesheet(stylesheet) {
+        let str = stylesheet;
         str = str.replace(/\/\*.*?\*\//g, ''); // remove comments
         str = str.replace(/(\r\n|\n)/g, ' '); // remove newlines
         str = str.replace(/\s+/g, ' '); // remove extra whitespace
@@ -28,18 +23,50 @@ export default class StylesheetManager {
         return str;
     }
 
-    addRule() {
-        // TODO
-    }   
-    
-    addSheet() {
-        this.removeSheet();
-        document.head.appendChild(this.sheet);
+    /**
+     * Add a new stylesheet
+     * @param {string} id - Unique identifier for this stylesheet
+     * @param {string} stylesheet - The CSS to add
+     */
+    addSheet(id, stylesheet) {
+        // Remove existing sheet with same ID if it exists
+        this.removeSheet(id);
+        
+        const sheet = document.createElement('style');
+        sheet.innerHTML = this.processStylesheet(stylesheet);
+        this.sheets.set(id, sheet);
+        document.head.appendChild(sheet);
     }
 
-    removeSheet() {
-        if (document.head.contains(this.sheet)) {
-            document.head.removeChild(this.sheet);
+    /**
+     * Remove a specific stylesheet by ID
+     * @param {string} id - The stylesheet identifier to remove
+     */
+    removeSheet(id) {
+        const sheet = this.sheets.get(id);
+        if (sheet && document.head.contains(sheet)) {
+            document.head.removeChild(sheet);
+            this.sheets.delete(id);
+        }
+    }
+
+    /**
+     * Remove all stylesheets managed by this instance
+     */
+    removeAllSheets() {
+        for (const [id, sheet] of this.sheets) {
+            this.removeSheet(id);
+        }
+    }
+
+    /**
+     * Update an existing stylesheet
+     * @param {string} id - The stylesheet identifier to update
+     * @param {string} stylesheet - The new CSS content
+     */
+    updateSheet(id, stylesheet) {
+        if (this.sheets.has(id)) {
+            this.addSheet(id, stylesheet);
         }
     }
 }
