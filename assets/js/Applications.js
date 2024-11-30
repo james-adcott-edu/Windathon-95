@@ -36,6 +36,78 @@ import WebBrowser from './modules/apps/WebBrowser.js';
  */
 const Applications = [
     {
+        id: 'about',
+        name: 'About',
+        icon: 'about.png',
+        windowArgs: { width: 800, height: 600 },
+        module: About
+    },
+    {
+        id: 'explorer',
+        name: "File Explorer",
+        icon: "explorer.webp",
+        windowArgs: {
+            width: 800,
+            height: 600,
+            x: 100,
+            y: 100
+        },
+        module: Explorer
+    },
+    {
+        id: 'terminal',
+        name: "MS-DOS Prompt",
+        icon: "msdos.png",
+        windowArgs: {
+            resizable: true,
+            width: 640,
+            height: 400,
+            x: 100,
+            y: 100
+        },
+        module: Terminal
+    },
+    {
+        id: 'webbrowser',
+        name: 'Web Browser',
+        icon: 'webbrowser.png',
+        windowArgs: {
+            resizable: true,
+        },
+        module: WebBrowser
+    },
+    {
+        id: 'desktopsettings',
+        name: "Desktop Settings",
+        icon: "displaysettings.png",
+        windowArgs: {
+            width: 400,
+            height: 300,
+            x: 300,
+            y: 300
+        },
+        module: DesktopSettings
+    },
+    {
+        id: 'notepad',
+        name: "Notepad",
+        icon: "notepad.png",
+        windowArgs: {
+            resizable: true,
+            width: 600,
+            height: 400,
+            x: 120,
+            y: 120
+        },
+        module: Notepad
+    },
+    {
+        id: 'minesweeper',
+        name: "Minesweeper",
+        icon: "minesweeper.png",
+        module: Minesweeper
+    },
+    {
         id: 'tetravex',
         name: "Tetravex",
         icon: "tetravex.png",
@@ -55,80 +127,6 @@ const Applications = [
         module: Paint
     },
     {
-        id: 'notepad',
-        name: "Notepad",
-        icon: "notepad.png",
-        windowArgs: {
-            resizable: true,
-            width: 600,
-            height: 400,
-            x: 120,
-            y: 120
-        },
-        module: Notepad
-    },
-    {
-        id: 'terminal',
-        name: "MS-DOS Prompt",
-        icon: "msdos.png",
-        windowArgs: {
-            resizable: true,
-            width: 640,
-            height: 400,
-            x: 100,
-            y: 100
-        },
-        module: Terminal
-    },
-    {
-        id: 'minesweeper',
-        name: "Minesweeper",
-        icon: "minesweeper.png",
-        module: Minesweeper
-    },
-    {
-        id: 'desktopsettings',
-        name: "Desktop Settings",
-        icon: "displaysettings.png",
-        windowArgs: {
-            width: 400,
-            height: 300,
-            x: 300,
-            y: 300
-        },
-        module: DesktopSettings
-    },
-    {
-        id: 'explorer',
-        name: "File Explorer",
-        icon: "explorer.webp",
-        windowArgs: {
-            width: 800,
-            height: 600,
-            x: 100,
-            y: 100
-        },
-        module: Explorer
-    },
-    {
-        id: 'about',
-        name: 'About',
-        icon: 'about.png',
-        windowArgs: { width: 800, height: 600 },
-        module: About
-    },
-    {
-        id: 'clock',
-        name: 'Clock',
-        icon: 'clock.png',
-        windowArgs: { 
-            width: 300, 
-            height: 400,
-            resizable: false
-        },
-        module: Clock
-    },
-    {
         id: 'calculator',
         name: 'Calculator',
         icon: 'calculator.png',
@@ -142,14 +140,16 @@ const Applications = [
         module: Calculator
     },
     {
-        id: 'webbrowser',
-        name: 'Web Browser',
-        icon: 'webbrowser.png',
-        windowArgs: {
-            resizable: true,
+        id: 'clock',
+        name: 'Clock',
+        icon: 'clock.png',
+        windowArgs: { 
+            width: 300, 
+            height: 400,
+            resizable: false
         },
-        module: WebBrowser
-    }
+        module: Clock
+    },
 ];
 
 if (environment === 'development') {
