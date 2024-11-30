@@ -23,7 +23,7 @@ export default class DesktopSettings {
         try {
             this.currentSettings = JSON.parse(this.fs.readFile(this.filename));
         } catch (e) {
-            console.log("Error reading settings", e);
+            console.log("[desktop_settings] failed to load desktop settings, this is likely because no settings have been saved yet.");
         }
 
         this.windowObject.setTitle("Desktop Settings");
@@ -100,7 +100,7 @@ export default class DesktopSettings {
         try {
             this.fs.createDirectory('C:\\settings');
         } catch (e) {
-            console.log("Settings directory already exists");
+            console.log("[desktop_settings] settings directory already exists.");
         }
         const fileContents = JSON.stringify({
             color: this.windowContent.querySelector("#color").value,
