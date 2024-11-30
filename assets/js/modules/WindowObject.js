@@ -39,7 +39,7 @@ export default class WindowObject {
         this.dialogs = [];
         this.stylesheetManager = null;
         if (this.resizable) {
-            this.windowElement.querySelector('.window-content').style.overflow = 'auto';
+            this.windowElement.querySelector('.window-content').style.overflow = 'hidden';
             this.windowElement.querySelector('.window-content').style.resize = 'both';
         }
     }
