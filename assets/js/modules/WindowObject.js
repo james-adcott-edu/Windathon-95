@@ -23,8 +23,6 @@ export default class WindowObject {
         this.title = "Starting Window...";
         this.width = 800;
         this.height = 600;
-        this.x = 69;
-        this.y = 69;
         this.resizable = false;
         this.hasFocus = true;
         this.isMinimized = false;
@@ -32,12 +30,35 @@ export default class WindowObject {
         this.windowElement = this.createWindowElement();
         this.uuid = 'window-'+self.crypto.randomUUID();
         this.windowManager = windowManager;
+
+        // Calculate center position
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        this.x = Math.max(0, (viewportWidth - this.width) / 2);
+        this.y = Math.max(0, (viewportHeight - this.height) / 2);
+
         this.windowContent = this.windowElement.querySelector('.window-content');
         if (windowArgs) {
+            // Apply custom window arguments
             for (let key in windowArgs) {
                 this[key] = windowArgs[key];
             }
+            
+            // Recalculate center position if width/height were provided in args
+            if (windowArgs.width || windowArgs.height) {
+                this.x = Math.max(0, (viewportWidth - this.width) / 2);
+                this.y = Math.max(0, (viewportHeight - this.height) / 2);
+            }
+            
+            // Only use provided x/y if explicitly set
+            if (!windowArgs.hasOwnProperty('x')) {
+                this.x = Math.max(0, (viewportWidth - this.width) / 2);
+            }
+            if (!windowArgs.hasOwnProperty('y')) {
+                this.y = Math.max(0, (viewportHeight - this.height) / 2);
+            }
         }
+
         this.dialogs = [];
         this.stylesheetManager = null;
         if (this.resizable) {
@@ -227,12 +248,11 @@ export default class WindowObject {
     closeWindow() {
         this.windowElement.remove();
         if (this.stylesheetManager) {
-            this.stylesheetManager.removeSheet();
+            this.stylesheetManager.removeAllSheets();
         }
         if (this.dialogs.length > 0) {
             this.dialogs.forEach(d => d.close());
         }
-        //unset this object
         this.windowManager.remove(this);
         delete this;
     }
@@ -294,9 +314,34 @@ export default class WindowObject {
     /**
      * Adds a stylesheet to the window
      * @param {string} cssStr - CSS string to add
+     * @param {string} [id='default'] - Optional identifier for the stylesheet
      */
-    addStylesheet(cssStr) {
-        this.stylesheetManager = new StylesheetManager(this, cssStr);
+    addStylesheet(cssStr, id = 'default') {
+        if (!this.stylesheetManager) {
+            this.stylesheetManager = new StylesheetManager(this);
+        }
+        this.stylesheetManager.addSheet(id, cssStr);
+    }
+
+    /**
+     * Removes a specific stylesheet from the window
+     * @param {string} id - The stylesheet identifier to remove
+     */
+    removeStylesheet(id) {
+        if (this.stylesheetManager) {
+            this.stylesheetManager.removeSheet(id);
+        }
+    }
+
+    /**
+     * Updates an existing stylesheet
+     * @param {string} id - The stylesheet identifier to update
+     * @param {string} cssStr - The new CSS content
+     */
+    updateStylesheet(id, cssStr) {
+        if (this.stylesheetManager) {
+            this.stylesheetManager.updateSheet(id, cssStr);
+        }
     }
 }
 

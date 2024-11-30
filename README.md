@@ -206,6 +206,19 @@ This is a simple clock application that shows the current time and date. It has 
 ![About screenshot](./assets/images/showcase/about.png)
 - A simple about application that shows information about the operating system.
 
+## Known Bugs 🐛
+- The web browsers history is not saved between sessions. 
+- The web browsers history can easily be corrupted, meaning it can stop navigating back and forth properly.
+- Using a square brush in paint causes some strange rendering issues. (The squares jump around the line)
+- Sometimes (The trigger is unknown) the notepad textarea will not accept any input, and will require a hard reload to fix.
+
+## Future Improvements 🧠
+
+- Make the desktop integrated with the file system, so applications can be deleted and installed to the desktop easily.
+- Make the window resizing more intuitive.
+- Make the taskbar more integrated with the file system, so that applications can be pinned to the taskbar.
+- Implement a proper security system, so that the web browser can detect if a website is secure or not.
+
 ## 📦 Deployment
 
 ### GitHub Pages Deployment
@@ -303,6 +316,12 @@ export default class NewApp {
 - Window management system tested for proper focus handling and dragging.
 - Start menu and taskbar interactions verified across different scenarios
 - File system operations tested for data persistence and proper error handling
+
+In the development environment, there's a large red bar at the top of the page to signify it's the development environment. This is to help with debugging, and will not be present in the production environment.
+
+For testing, you just run the development server (`python -m http.server 8000` or similar) and navigate to the site at (`localhost:YOUR_PORT_NUMBER` - with `YOUR_PORT_NUMBER` being the port number you used to run the server).
+
+Everything is client side, so just press Ctrl+Shift+I to open the dev tools and you can test everything that the user would be able to test. We used the console when debugging applications. 
 
 ### Responsive Testing
 - Interface tested across multiple screen sizes and resolutions, however the experience is not optimal on mobile devices. This is designed to be a retro desktop experience after all.
