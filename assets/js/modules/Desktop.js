@@ -40,7 +40,7 @@ export default class Desktop {
                     break;
             }
         } catch (e) {
-            console.log("Error reading desktop settings");
+            console.log("[desktop] failed to load desktop settings, this is likely because no settings have been saved yet.");
         }
 
         this.render();

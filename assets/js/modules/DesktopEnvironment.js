@@ -60,7 +60,7 @@ export default class DesktopEnvironment {
         // Example: Alt+Tab window switching
         if (event.altKey && event.key === 'Tab') {
             event.preventDefault();
-            console.log("Alt+Tab - Cycle Windows?");
+            console.log("[desktop_env] TODO: Alt+Tab was pressed, cycle windows?");
         }
         // Example: Windows key for start menu
         if (event.key === 'Meta') {

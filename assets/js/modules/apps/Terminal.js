@@ -750,7 +750,7 @@
                     path : 
                     `${this.currentPath}\\${path}`;
 
-                console.log('[terminal] Creating directory:', fullPath);
+                console.log('[terminal] creating directory:', fullPath);
                 this.fs.createDirectory(fullPath);
             } catch (error) {
                 this.writeOutput(error.message);
