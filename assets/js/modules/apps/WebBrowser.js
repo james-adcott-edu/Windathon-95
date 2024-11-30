@@ -1,3 +1,5 @@
+import { web_root } from '../../Config.js';
+
 export default class WebBrowser {
     constructor(windowObject, windowContent, args) {
         /** @type {import('../WindowObject.js').default} */
@@ -206,6 +208,8 @@ export default class WebBrowser {
                     body {
                         font-family: "MS Sans Serif", sans-serif;
                         background-color: #c0c0c0;
+                        background-image: url(${web_root}/assets/images/Setup_Windows_95.png);
+                        background-size: cover;
                         margin: 0;
                         padding: 20px;
                     }
@@ -246,8 +250,13 @@ export default class WebBrowser {
                         border-style: inset;
                     }
                     h1 {
-                        color: #000080;
-                        font-size: 24px;
+                        /*color: #000080;
+                        font-size: 24px;*/
+                        color: #FFF;
+                        font-size: 36px;
+                        text-shadow: 2px 2px #000;
+                        font-style: italic;
+                        font-weight: 900;
                         margin-bottom: 10px;
                     }
                     .tips {
