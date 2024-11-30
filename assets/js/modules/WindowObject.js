@@ -117,25 +117,29 @@ export default class WindowObject {
 
         // test
         titleBar.addEventListener('dblclick', e => {
-            if (this.resizable) {
+            if (!this.resizable) return;
+            if (this.isMaximized === false) {
                 this.maximize();
+                return;
             }
+            this.restore();
         });
     }
 
     maximize() {
-        const offset = (() => {
-            let windowContentRect = this.windowContent.getBoundingClientRect();
-            let windowRect = this.windowElement.getBoundingClientRect();
-            let menuBarRect = this.windowElement.querySelector('.window-menubar').getBoundingClientRect();
-            console.log(windowRect, windowContentRect, menuBarRect);
-            let rtnoffset = {
-                x: windowRect.width - windowContentRect.width,
-                y: windowRect.height - windowContentRect.height
-            }
-            console.log(rtnoffset);
-            return rtnoffset;
-        })();
+        let windowRect = this.windowElement.getBoundingClientRect();
+        let windowContentRect = this.windowContent.getBoundingClientRect();
+        const offset = {
+            x: windowRect.width - windowContentRect.width,
+            y: windowRect.height - windowContentRect.height
+        }
+
+        // set these directly to avoid triggering resize
+        // used to restore window to previous size
+        this.x = windowRect.x;
+        this.y = windowRect.y;
+        this.width = windowContentRect.width;
+        this.height = windowContentRect.height;
 
         this.windowElement.style.left = '0';
         this.windowElement.style.top = '0';
@@ -145,6 +149,14 @@ export default class WindowObject {
         const taskbarHeight = document.querySelector('.taskbar').offsetHeight;
         this.windowContent.style.width = (viewportWidth - offset.x) + 'px';
         this.windowContent.style.height = (viewportHeight - taskbarHeight - offset.y) + 'px';
+
+        this.isMaximized = true;
+    }
+
+    restore() {
+        this.setPosition(this.x, this.y);
+        this.setSize(this.width, this.height);
+        this.isMaximized = false;
     }
 
     /**
