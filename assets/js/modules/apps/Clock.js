@@ -6,7 +6,10 @@ export default class Clock {
         this.window = windowObject;
         /** @type {HTMLElement} */
         this.windowContent = windowContent;
-        this.width = 300; 
+        /** @type {import('../DesktopEnvironment.js').default} */
+        this.desktopEnvironment = args.desktopEnvironment;
+        
+        this.width = 300;
         
         this.window.setTitle('Clock');
         this.setupUI();
@@ -18,31 +21,35 @@ export default class Clock {
         });
 
         this.window.setSize(this.width, this.windowContent.querySelector('.clock-app').clientHeight);
-
     }
 
     setupUI() {
         const content = `
         <div class="clock-app">
-        <fieldset> 
-            <legend> Current Time </legend>
-            <div id="current-time" class="digital-display"></div>
-        </fieldset>
-        <fieldset>
-            <legend> Stopwatch </legend>
-            <div id="stopwatch-display" class="digital-display">0.0</div>
-            <div class="controls">
-                <button id="start-stop">Start</button>
-                <button id="reset">Reset</button>
-            </div>
-        </fieldset>
-        </div>
-            `;
+            <fieldset> 
+                <legend> Current Time </legend>
+                <div id="current-time" class="digital-display"></div>
+            </fieldset>
+            <fieldset>
+                <legend> Stopwatch </legend>
+                <div id="stopwatch-display" class="digital-display">0.0</div>
+                <div class="controls">
+                    <button id="start-stop">Start</button>
+                    <button id="reset">Reset</button>
+                </div>
+            </fieldset>
+        </div>`;
 
         const styles = `
             :root {
                 background: transparent;
                 border: none;
+            }
+
+            .clock-app {
+                padding: 8px;
+                box-sizing: border-box;
+                width: 100%;
             }
 
             .digital-display {
@@ -54,6 +61,8 @@ export default class Clock {
                 text-align: center;
                 margin-bottom: 16px;
                 border: 2px solid var(--inset-border-color);
+                width: calc(100% - 16px);
+                box-sizing: border-box;
             }
 
             .controls {
@@ -62,8 +71,12 @@ export default class Clock {
                 gap: 16px;
             }
 
+            fieldset {
+                margin-bottom: 16px;
+                width: 100%;
+                box-sizing: border-box;
+            }
         `;
-
 
         this.window.addStylesheet(styles);
         this.windowContent.innerHTML = content;
