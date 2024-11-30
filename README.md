@@ -6,6 +6,8 @@ A faithful recreation of the Windows 95 operating system in vanilla JavaScript, 
 
 You can view the live site [here](https://james-adcott-edu.github.io/Windathon-95/).
 
+![Lighthouse score](./assets/images/showcase/lighthouse.png)
+
 ## 🚀 Features
 
 - Classic Windows 95 UI with working windows, taskbar, and start menu
