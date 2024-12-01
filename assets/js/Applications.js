@@ -39,6 +39,7 @@ const Applications = [
         id: 'about',
         name: 'About',
         icon: 'question.png',
+        hideFromStartMenu: true,
         windowArgs: {
             x: 250,
             width: 630,
@@ -147,6 +148,7 @@ const Applications = [
         id: 'clock',
         name: 'Clock',
         icon: 'clock.png',
+        hideFromStartMenu: true,
         windowArgs: { 
             width: 300, 
             height: 250,
@@ -161,6 +163,7 @@ if (environment === 'development') {
         id: 'testgame',
         name: "Test Game",
         icon: "testgame.png",
+        hideFromStartMenu: true,
         windowArgs: {
             width: 800,
             height: 600,

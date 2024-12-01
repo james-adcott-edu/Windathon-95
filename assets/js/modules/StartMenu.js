@@ -63,10 +63,11 @@ export default class StartMenu {
         menuArea.classList.add('startmenu-items');
 
         this.applicationList.forEach((app) => {
+            if (app.hideFromStartMenu) return;
             let applicationButton = document.createElement('div');
             applicationButton.classList.add('startmenu-item');
             applicationButton.innerHTML = `
-                <img src="${web_root}/assets/images/${app.icon}" alt="${app.name} icon" height="16" width="16">
+                <img src="${web_root}/assets/images/${app.icon}" alt="${app.name} icon" height="32" width="32" style="vertical-align:middle; margin: 0 8px">
                 <span>${app.name}</span>
             `;
             applicationButton.addEventListener('click', () => {
@@ -75,6 +76,23 @@ export default class StartMenu {
             });
             menuArea.appendChild(applicationButton);
         });
+
+        const shutdownButton = document.createElement('div');
+        shutdownButton.classList.add('startmenu-item');
+        shutdownButton.style.borderTop = '3px groove #fff';
+        shutdownButton.innerHTML = `
+            <img src="${web_root}/assets/images/shut_down_with_computer-0.png" alt="Shutdown icon" height="32" width="32" style="vertical-align:middle; margin: 0 8px">
+            <span>Shutdown</span>
+        `;
+        shutdownButton.addEventListener('click', () => {
+            document.body.innerHTML = '';
+            document.body.style.height = '100vh';
+            document.body.style.background = '#000 url(assets/images/safetoturnoff.webp) no-repeat center center';
+            document.body.style.backgroundSize = '656px';
+            document.body.style.cursor = 'none';
+        });
+
+        menuArea.appendChild(shutdownButton);
 
         startMenu.appendChild(menuArea);
         startMenuDiv.appendChild(startMenu);
