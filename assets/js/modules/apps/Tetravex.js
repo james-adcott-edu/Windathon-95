@@ -101,19 +101,14 @@ export default class Tetravex {
         </tr>
         `;
         this.highScores.forEach(score => {
-            highScoreTable.innerHTML += `
-                <tr>
-                    <td>${score.size}x${score.size}</td>
-                    <td>${score.time+' seconds' ?? 'not set'}</td>
-                </tr>`;
+            highScoreTable.innerHTML += `<tr><td>${score.size}x${score.size}</td><td>${score.time ?? 'not set'}</td></tr>`;
         });
 
         let highScoreDialog = this.windowObject.makeDialog(`
-            <div style="text-align: center">
-                <h1 style="margin: 1rem 0">High Scores</h1>
-                ${highScoreTable.outerHTML}
-                <button id="close-high-scores">Close</button>
-            </div>
+        <div style="text-align: center">
+        <h1 style="margin: 1rem 0">High Scores</h1>
+        ${highScoreTable.outerHTML}
+        <button id="close-high-scores">Close</button></div>
         `);
         highScoreDialog.getContent().querySelector('#close-high-scores').addEventListener('click', () => {
             highScoreDialog.close();
