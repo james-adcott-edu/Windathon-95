@@ -93,21 +93,22 @@ export default class Tetravex {
 
     showHighScores() {
         let highScoreTable = document.createElement('table');
+        highScoreTable.style.margin = '1rem auto';
         highScoreTable.innerHTML = `
-        <tr><th>Size</th><th>Time</th></tr>
+        <tr>
+            <th style="min-width: 100px">Size</th>
+            <th style="min-width: 100px">Time</th>
+        </tr>
         `;
         this.highScores.forEach(score => {
-            highScoreTable.innerHTML += `<tr><td>${score.size}x${score.size}</td><td>${score.time}</td></tr>`;
+            highScoreTable.innerHTML += `<tr><td>${score.size}x${score.size}</td><td>${score.time ?? 'not set'}</td></tr>`;
         });
 
         let highScoreDialog = this.windowObject.makeDialog(`
         <div style="text-align: center">
-        <h1>High Scores</h1>
-        </div>
-        <div style="text-align: center">
+        <h1 style="margin: 1rem 0">High Scores</h1>
         ${highScoreTable.outerHTML}
-        </div>
-        <div style="text-align: center"><button id="close-high-scores">Close</button></div>
+        <button id="close-high-scores">Close</button></div>
         `);
         highScoreDialog.getContent().querySelector('#close-high-scores').addEventListener('click', () => {
             highScoreDialog.close();
@@ -136,10 +137,10 @@ export default class Tetravex {
         } catch (e) {
             console.log("[tetravex] failed to load high scores, this is likely because no high scores have been saved yet.");
             this.highScores = [
-                {size: 2, time: '99999'},
-                {size: 3, time: '99999'},
-                {size: 4, time: '99999'},
-                {size: 5, time: '99999'},
+                {size: 2, time: null},
+                {size: 3, time: null},
+                {size: 4, time: null},
+                {size: 5, time: null},
             ];
         }
 
@@ -346,7 +347,8 @@ export default class Tetravex {
 
         let newHighScore = false;
         // check if the time is a new high score
-        if (this.timer.getTime() < Number(this.highScores.find(g => g.size === this.gameSize).time)) {
+        let currentHighScore = this.highScores.find(g => g.size === this.gameSize);
+        if (!currentHighScore.time || this.timer.getTime() < Number(currentHighScore.time)) {
             newHighScore = true;
             let newscore = {size: this.gameSize, time: Number(this.timer.getTime())};
             this.highScores[this.highScores.findIndex(g => g.size === this.gameSize)] = newscore;
