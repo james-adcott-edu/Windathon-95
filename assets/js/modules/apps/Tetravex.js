@@ -100,7 +100,7 @@ export default class Tetravex {
             highScoreTable.innerHTML += `<tr><td>${score.size}x${score.size}</td><td>${score.time}</td></tr>`;
         });
 
-        const highScoreDialog = this.windowObject.makeDialog(`
+        let highScoreDialog = this.windowObject.makeDialog(`
         <div style="text-align: center">
         <h1>High Scores</h1>
         </div>
@@ -346,9 +346,9 @@ export default class Tetravex {
 
         let newHighScore = false;
         // check if the time is a new high score
-        if (this.timer.getTime() < this.highScores.find(g => g.size === this.gameSize).time) {
+        if (this.timer.getTime() < Number(this.highScores.find(g => g.size === this.gameSize).time)) {
             newHighScore = true;
-            let newscore = {size: this.gameSize, time: this.timer.getTime()};
+            let newscore = {size: this.gameSize, time: Number(this.timer.getTime())};
             this.highScores[this.highScores.findIndex(g => g.size === this.gameSize)] = newscore;
             try {
                 this.fs.createDirectory('C:\\games'); 
