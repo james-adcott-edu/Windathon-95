@@ -97,7 +97,7 @@ export default class Tetravex {
         highScoreTable.innerHTML = `
         <tr>
             <th style="min-width: 100px">Size</th>
-            <th style="min-width: 100px">Time</th>
+            <th style="min-width: 100px">Time (seconds)</th>
         </tr>
         `;
         this.highScores.forEach(score => {
