@@ -28,15 +28,15 @@ export default class WindowManager {
      * @returns {WindowObject} The created window object
      */
     start(module, moduleArgs = {}, windowArgs = {}) {
-        const window = new WindowObject(this, windowArgs);
+        const windowObj = new WindowObject(this, windowArgs);
         const args = {
             ...moduleArgs,
             desktopEnvironment: this.desktopEnvironment
         };
-        window.startProgram(module, args);
-        this.windows.push(window);
-        this.desktopEnvironment.taskbar.addTask(window);
-        return window;
+        windowObj.startProgram(module, args);
+        this.windows.push(windowObj);
+        this.desktopEnvironment.taskbar.addTask(windowObj);
+        return windowObj;
     }
 
     /**
