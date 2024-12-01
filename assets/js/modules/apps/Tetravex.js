@@ -33,8 +33,18 @@ export default class Tetravex {
         
         this.disableChecking = false; // don't check the win condition if providing the solution
 
+        // High Score Saving
+        // Add reference to desktop environment
+        /** @type {import('../DesktopEnvironment.js').default} */
+        this.desktopEnvironment = args.desktopEnvironment;
+        /** @type {import('../JsonFs.js').default} */
+        this.fs = args.desktopEnvironment.fileSystem;
+        this.filename = "C:\\games\\tetravex.ini";
+
         // default game size is 3x3
         this.gameSize = 3;
+
+        this.highScores = [];
 
         this.windowObject.setTitle("Tetravex");
         this.windowObject.setCloseRequest( () => {
@@ -62,6 +72,7 @@ export default class Tetravex {
             'Game': {
                 'New': () => this.init(),
                 'Show Solution': () => this.showSolution(),
+                'High Scores': () => this.showHighScores(),
                 'Exit': () => this.windowObject.closeWindow(),
             },
             'Size': {
@@ -80,6 +91,30 @@ export default class Tetravex {
         this.init();
     }
 
+    showHighScores() {
+        let highScoreTable = document.createElement('table');
+        highScoreTable.innerHTML = `
+        <tr><th>Size</th><th>Time</th></tr>
+        `;
+        this.highScores.forEach(score => {
+            highScoreTable.innerHTML += `<tr><td>${score.size}x${score.size}</td><td>${score.time}</td></tr>`;
+        });
+
+        const highScoreDialog = this.windowObject.makeDialog(`
+        <div style="text-align: center">
+        <h1>High Scores</h1>
+        </div>
+        <div style="text-align: center">
+        ${highScoreTable.outerHTML}
+        </div>
+        <div style="text-align: center"><button id="close-high-scores">Close</button></div>
+        `);
+        highScoreDialog.getContent().querySelector('#close-high-scores').addEventListener('click', () => {
+            highScoreDialog.close();
+        });
+        highScoreDialog.render();
+    }
+
     /**
      * Set the game size
      * @param {number} size - the size of the game
@@ -95,6 +130,19 @@ export default class Tetravex {
      * @returns {void}
      */
     init() {
+
+        try {
+            this.highScores = JSON.parse(this.fs.readFile(this.filename));
+        } catch (e) {
+            console.log("[tetravex] failed to load high scores, this is likely because no high scores have been saved yet.");
+            this.highScores = [
+                {size: 2, time: '99999'},
+                {size: 3, time: '99999'},
+                {size: 4, time: '99999'},
+                {size: 5, time: '99999'},
+            ];
+        }
+
         this.solution = [...Array(this.gameSize)].map(_=>Array(this.gameSize))
         this.tiles = [];
         this.generateSolution();
@@ -295,10 +343,26 @@ export default class Tetravex {
             }
         }
         this.gameOff();
+
+        let newHighScore = false;
+        // check if the time is a new high score
+        if (this.timer.getTime() < this.highScores.find(g => g.size === this.gameSize).time) {
+            newHighScore = true;
+            let newscore = {size: this.gameSize, time: this.timer.getTime()};
+            this.highScores[this.highScores.findIndex(g => g.size === this.gameSize)] = newscore;
+            try {
+                this.fs.createDirectory('C:\\games'); 
+            } catch (e) {
+                console.log("[tetravex] failed to create directory, this is likely because it already exists.");
+            }
+            this.fs.createFile(this.filename, JSON.stringify(this.highScores));
+        }
+
         const winDialog = this.windowObject.makeDialog(`
         <div style="text-align: center">
         <h1>You Win!</h1>
-        <p>I'm not sure if that was a high score because I didn't time it, but well done!</p>
+        <p>Your time: ${this.timer.getTime()}</p>
+        ${newHighScore ? `<p>New High Score!</p>` : ''}
         <button id="new-game">New Game</button>
         </div>
         `);

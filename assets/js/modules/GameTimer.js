@@ -32,6 +32,10 @@ export default class GameTimer {
         }
     }
 
+    getTime() {
+        return this.formatTime(this.elapsedTime);
+    }
+
     formatTime(ms) {
         const totalSeconds = Math.floor(ms / 1000);
         const fractionSeconds = Math.floor(ms / 100) % 10;
