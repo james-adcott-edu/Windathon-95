@@ -326,32 +326,26 @@ button:active {
 }
 
 .taskbar-right-section {
-    display: flex;
-    align-items: center;
+    display: grid;
     margin-left: auto;
-    border-left: 1px solid #808080;
+    grid-template-columns: auto 1fr
 }
 
 .system-tray {
     display: flex;
     align-items: center;
-    gap: 2px;
-    padding: 0 4px;
+    padding: 5px;
+    border: 2px solid;
+    border-color: var(--inset-border-color);
 }
 
 .tray-icon {
     width: 16px;
     height: 16px;
     cursor: pointer;
-    padding: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     user-select: none;
-}
-
-.tray-icon:hover {
-    background-color: #dfdfdf;
+    display: inline-block;
+    margin: 0 4px;
 }
 
 .audio-slider {
@@ -360,7 +354,7 @@ button:active {
     border: 2px solid;
     border-color: #ffffff #808080 #808080 #ffffff;
     padding: 8px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
     z-index: 9999;
 }
 
@@ -375,14 +369,8 @@ button:active {
 
 .network-icon {
     font-family: 'Segoe UI Symbol', sans-serif;
-    font-size: 14px;
     margin-right: 8px;
     cursor: help;
-}
-
-.tray-icon {
-    display: inline-block;
-    padding: 0 4px;
 }
 
 .menu-dropdown-item.has-submenu {
