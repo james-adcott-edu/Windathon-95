@@ -108,6 +108,15 @@ export default class WindowObject {
         let windowContent = this.windowElement.querySelector('.window-content');  
         windowContent.setAttribute('id', this.uuid);
         this.setSize(this.width, this.height);
+        let winSameCoords = [];
+        winSameCoords = this.windowManager.listVisible().filter(win => win.x === this.x && win.y === this.y);
+        // this could feasibly push windows off the screen but it's unlikely
+        while (winSameCoords.length > 0) {
+            this.x += 30;
+            this.y += 30;
+            winSameCoords = this.windowManager.listVisible().filter(win => win.x === this.x && win.y === this.y);
+        }
+        console.log(winSameCoords);
         this.setPosition(this.x, this.y);
         this.setTitle(this.title);
 
