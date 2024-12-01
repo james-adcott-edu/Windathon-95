@@ -1,4 +1,5 @@
 import GameTimer from '../GameTimer.js';
+import Dialog from '../Dialog.js';
 
 /**
  * Minesweeper
@@ -156,6 +157,27 @@ export default class Minesweeper {
         this.flags = [...this.hints].map(x => Array(this.gameSize.rows));
         this.revealed = [...this.hints].map(x => Array(this.gameSize.rows));
 
+        const board = this.windowContent.querySelector('#board');
+        board.addEventListener('mousedown', e => {
+            let x = e.target.cellIndex;
+            let y = e.target.parentNode.rowIndex;
+            if (e.which == 1) { // left click
+                if (this.firstClick) {
+                    this.goodStart(x, y);
+                    this.timer.start();
+                    this.firstClick = 0;
+                }
+                this.revealCell(x, y);
+            }
+            else if (e.which == 2) this.quickClick(x, y); // middle click
+            else if (e.which == 3) this.plantFlag(x, y); // right click
+        });
+        board.addEventListener('dblclick', e => { // double click
+            let x = e.target.cellIndex;
+            let y = e.target.parentNode.rowIndex;
+            this.quickClick(x, y);
+        });
+
         this.reset();
     }
 
@@ -205,27 +227,27 @@ export default class Minesweeper {
         [this.hints, this.flags, this.revealed].forEach(a => a.map(m => m.fill(0)));
         this.generateBoard();
         this.windowContent.querySelector('#board').innerHTML = ('<tr>'+'<td></td>'.repeat(this.gameSize.cols)+'</tr>').repeat(this.gameSize.rows);
-        this.windowContent.querySelectorAll('#board td').forEach(cell => {
-            cell.addEventListener('mousedown', e => {
-                let x = e.currentTarget.cellIndex;
-                let y = e.currentTarget.parentNode.rowIndex;
-                if (e.which == 1) {
-                    if (this.firstClick) {
-                        this.goodStart(x, y);
-                        this.timer.start();
-                        this.firstClick = 0;
-                    }
-                    this.revealCell(x, y);
-                }
-                else if (e.which == 2) this.quickClick(x, y);
-                else if (e.which == 3) this.plantFlag(x, y);
-            });
-            cell.addEventListener('dblclick', e => {
-                let x = e.currentTarget.cellIndex;
-                let y = e.currentTarget.parentNode.rowIndex;
-                this.quickClick(x, y);
-            });
-        });
+        //this.windowContent.querySelectorAll('#board td').forEach(cell => {
+        //    cell.addEventListener('mousedown', e => {
+        //        let x = e.currentTarget.cellIndex;
+        //        let y = e.currentTarget.parentNode.rowIndex;
+        //        if (e.which == 1) {
+        //            if (this.firstClick) {
+        //                this.goodStart(x, y);
+        //                this.timer.start();
+        //                this.firstClick = 0;
+        //            }
+        //            this.revealCell(x, y);
+        //        }
+        //        else if (e.which == 2) this.quickClick(x, y);
+        //        else if (e.which == 3) this.plantFlag(x, y);
+        //    });
+        //    cell.addEventListener('dblclick', e => {
+        //        let x = e.currentTarget.cellIndex;
+        //        let y = e.currentTarget.parentNode.rowIndex;
+        //        this.quickClick(x, y);
+        //    });
+        //});
         let boardDimensions = {
             width: this.windowContent.querySelector('#game-area').offsetWidth,
             height: this.windowContent.querySelector('#game-area').offsetHeight
