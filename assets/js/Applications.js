@@ -18,6 +18,7 @@ import WebBrowser from './modules/apps/WebBrowser.js';
  * @property {number} height - The initial height of the window
  * @property {number} x - The initial x position of the window
  * @property {number} y - The initial y position of the window
+ * @property {boolean} resizable - Whether the window is resizable
  */
 
 /**
