@@ -21,6 +21,10 @@ export default class StartMenu {
         this.startMenuDiv = null;
     }
 
+    /**
+     * Toggles the visibility of the Start Menu
+     * @returns {void}
+     */
     toggleVisibility() {
         this.startMenu.classList.toggle('hidden');
         // If the start menu is not hidden, add an event listener to close it when clicking outside
