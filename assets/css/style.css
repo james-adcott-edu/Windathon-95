@@ -213,8 +213,6 @@ button:active {
 }
 
 .taskbar-clock {
-    border: 2px solid;
-    border-color: var(--inset-border-color);
     padding: 5px;
 }
 
@@ -328,15 +326,15 @@ button:active {
 .taskbar-right-section {
     display: grid;
     margin-left: auto;
-    grid-template-columns: auto 1fr
+    grid-template-columns: auto 1fr;
+    border: 2px solid;
+    border-color: var(--inset-border-color);
 }
 
 .system-tray {
     display: flex;
     align-items: center;
     padding: 5px;
-    border: 2px solid;
-    border-color: var(--inset-border-color);
 }
 
 .tray-icon {
