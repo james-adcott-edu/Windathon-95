@@ -133,6 +133,10 @@ export default class TaskBar {
         const systemTray = document.createElement('div');
         systemTray.className = 'system-tray';
 
+        let noConnectionImg = new Image();
+        noConnectionImg.src = `${web_root}/assets/images/conn_pcs_no_network.png`;
+        noConnectionImg.onload = () => console.log('"No Connection" Image loaded');
+
         // Network Icon
         const networkIcon = document.createElement('div');
         networkIcon.className = 'tray-icon network-icon';
