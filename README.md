@@ -34,7 +34,8 @@ NOTE: Results were recorded on a powerful machine, your results may vary.
 - Have fun building it!
 
 ### Design Choices
-- We tried to go as close to Windows-95 as possible.
+- We tried to go as close as possibe to the Windows-95 look and feel.
+    - some liberties were taken to add in things like Tetravex (originally a Windows 3.x game), the Bliss wallpaper (from Windows XP) and status icons next to the clock (from Windows 98).
 - We haven't focused on a mobile experience, as it's a desktop operating system.
 
 ### User Stories
@@ -44,12 +45,11 @@ NOTE: Results were recorded on a powerful machine, your results may vary.
 We kept the user stories in the kanban board, which can be found [here](https://github.com/users/james-adcott-edu/projects/5).
 
 ### Wireframes
-- Initial wireframes were created to map out the desktop layout, taskbar, and application windows.
-- Iterative design process to refine the user interface based on feedback.
+
+One advantage of emulating the look and feel of an existing user interface is that you already have a design to work from. We used the original Windows 95 interface as a reference and took some liberties to make it more modern, user-friendly, and easier to code.
 
 ### Additional Information
 - The design process focused on balancing authenticity with modern web standards.
-- User feedback was incorporated to improve usability and functionality.
 
 ## 🛠️ Technical Details
 
