@@ -136,7 +136,6 @@ export default class TaskBar {
         // Network Icon
         const networkIcon = document.createElement('div');
         networkIcon.className = 'tray-icon network-icon';
-        //networkIcon.innerHTML = '🖧';
         networkIcon.innerHTML = `<img src="${web_root}/assets/images/conn_pcs_off_off.png" alt="Network Status: on" style="width: 16px; height: 16px;">`;
         networkIcon.title = 'Network Status';
         this.updateNetworkStatus(networkIcon);
@@ -145,12 +144,11 @@ export default class TaskBar {
         window.addEventListener('online', () => this.updateNetworkStatus(networkIcon));
         window.addEventListener('offline', () => this.updateNetworkStatus(networkIcon));
 
-        // Audio Icon (existing)
+        // Audio Icon (removed functionality, just static icon now)
         const audioIcon = document.createElement('div');
         audioIcon.className = 'tray-icon audio-icon';
         audioIcon.innerHTML = `<img src="${web_root}/assets/images/loudspeaker_rays-1.png" alt="Audio Icon" style="width: 16px; height: 16px;">`;
         audioIcon.style.fontSize = '14px';
-        audioIcon.addEventListener('click', (e) => this.toggleAudioSlider(e));
 
         // Add icons to system tray
         systemTray.appendChild(networkIcon);
@@ -180,42 +178,5 @@ export default class TaskBar {
             networkIcon.title = 'No Network Connection';
             networkIcon.innerHTML = `<img src="${web_root}/assets/images/conn_pcs_no_network.png" alt="Network Status: on" style="width: 16px; height: 16px;">`;
         }
-    }
-
-    /**
-     * Toggles the audio slider visibility
-     * @private
-     * @param {Event} event - The click event
-     */
-    toggleAudioSlider(event) {
-        let slider = document.querySelector('.audio-slider');
-        if (!slider) {
-            slider = document.createElement('div');
-            slider.className = 'audio-slider';
-            slider.innerHTML = `
-                <input type="range" min="0" max="100" value="50">
-            `;
-            document.body.appendChild(slider);
-
-            // Position the slider above the audio icon
-            const rect = event.target.getBoundingClientRect();
-            slider.style.position = 'absolute';
-            slider.style.left = `${rect.left}px`;
-            slider.style.bottom = '30px'; // Position above taskbar
-        } else {
-            slider.remove();
-        }
-
-        // Close slider when clicking outside
-        const closeSlider = (e) => {
-            if (!slider.contains(e.target) && !event.target.contains(e.target)) {
-                slider.remove();
-                document.removeEventListener('click', closeSlider);
-            }
-        };
-        
-        setTimeout(() => {
-            document.addEventListener('click', closeSlider);
-        }, 0);
     }
 }
