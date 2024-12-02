@@ -8,7 +8,9 @@ export default class Clock {
      * @constructor
      */
     constructor() {
+        /** @type {HTMLElement} */
         this.output = document.createElement('div');
+        /** @type {number|null} */
         this.intervalId = null;
     }
     

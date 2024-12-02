@@ -11,13 +11,21 @@ export default class Dialog {
      * @param {Object} dialogArgs - The arguments for the dialog
      */
     constructor(windowOwner, dialogArgs) {
+        /** @type {Window} */
         this.windowOwner = windowOwner;
+        /** @type {string} */
         this.title = "";
+        /** @type {number} */
         this.width = 400;
+        /** @type {number} */
         this.height = 300;
+        /** @type {number} */
         this.x = this.windowOwner.x+30;
+        /** @type {number} */
         this.y = this.windowOwner.y+30;
+        /** @type {boolean} */
         this.hasFocus = true;
+        /** @type {HTMLElement} */
         this.dialogElement = this.createDialogElement();
         if (dialogArgs) {
             for (let key in dialogArgs) {
@@ -28,6 +36,7 @@ export default class Dialog {
         this.setSize(this.width, this.height);
         this.setPosition(this.x, this.y);
         this.setTitle(this.title);
+        /** @type {HTMLElement} */
         this.content = this.dialogElement.querySelector('.window-content');
 
         // Window Dragging

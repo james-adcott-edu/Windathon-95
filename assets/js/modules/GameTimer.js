@@ -12,10 +12,15 @@ export default class GameTimer {
      * @constructor
      */
     constructor(callback) {
+        /** @type {number} */
         this.startTime = 0;
+        /** @type {number} */
         this.elapsedTime = 0;
+        /** @type {number} */
         this.timerInterval = null;
+        /** @type {boolean} */
         this.isPaused = true;
+        /** @type {function} */
         this.callback = callback;
     }
 

@@ -13,7 +13,9 @@ export default class StartMenu {
      * @property {import('../Applications.js').Application[]} applicationList - List of available applications from Applications.js
      */
     constructor(desktopEnvironment) {
+        /** @type {import('./DesktopEnvironment.js').default} */
         this.desktopEnvironment = desktopEnvironment;
+        /** @type {import('../Applications.js').Application[]} */
         this.applicationList = Applications;
         /** @type {HTMLDivElement | null} */
         this.startMenu = null;

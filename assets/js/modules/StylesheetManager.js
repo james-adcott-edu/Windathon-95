@@ -7,10 +7,17 @@
  */
 export default class StylesheetManager {
     constructor(windowObj) {
+        /** @type {import('./WindowObject.js').default} */
         this.windowObj = windowObj;
+        /** @type {Map<string, HTMLElement>} */
         this.sheets = new Map(); // Store multiple stylesheets
     }
     
+    /**
+     * Process the stylesheet by removing comments, newlines, extra whitespace, and adding a uuid to all selectors
+     * @param {string} stylesheet - The stylesheet to process
+     * @returns {string} - The processed stylesheet
+     */
     processStylesheet(stylesheet) {
         let str = stylesheet;
         str = str.replace(/\/\*.*?\*\//g, ''); // remove comments

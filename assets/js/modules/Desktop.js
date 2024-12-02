@@ -2,6 +2,13 @@ import Applications from '../Applications.js';
 import { web_root } from '../Config.js';
 
 /**
+ * @typedef {Object} DesktopSettings
+ * @property {string} color - The color of the desktop background
+ * @property {string} wallpaper - The wallpaper of the desktop background
+ * @property {string} behaviour - The behaviour of the desktop background
+ */
+
+/**
  * A class that manages the desktop environment and its icons
  * @class
  */
@@ -12,13 +19,18 @@ export default class Desktop {
      * @param {import('./DesktopEnvironment.js').default} desktopEnvironment - The main desktop environment instance
      */
     constructor(desktopEnvironment) {
+        /** @type {import('./DesktopEnvironment.js').default} */
         this.desktopEnvironment = desktopEnvironment;
+        /** @type {import('../Applications.js').Application[]} */
         this.applicationList = Applications;
+        /** @type {Map<string, HTMLElement>} */
         this.icons = new Map(); // Track icon elements
+        /** @type {HTMLElement|null} */
         this.desktopElement = null;
-
+        /** @type {import('./JsonFs.js').default} */
         this.fs = desktopEnvironment.fileSystem;
         try {
+            /** @type {DesktopSettings} */
             this.currentSettings = JSON.parse(this.fs.readFile("C:\\settings\\desktop.ini"));
             document.body.style.backgroundColor = this.currentSettings.color;
             if (this.currentSettings.wallpaper === "none") {

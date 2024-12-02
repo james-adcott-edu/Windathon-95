@@ -42,16 +42,6 @@ export default class JsonFs {
     }
 
     /**
-     * Starts auto-save functionality
-     * @private
-     */
-    startAutoSave() {
-        this.autoSaveInterval = setInterval(() => {
-            this.save();
-        }, 15000);
-    }
-
-    /**
      * Saves the data to local storage
      * @throws {Error} If save fails
      */

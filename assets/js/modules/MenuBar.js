@@ -18,9 +18,13 @@ export default class MenuBar {
             throw new Error('MenuBar requires a valid menu configuration object');
         }
 
+        /** @type {import('./WindowObject.js').default} */
         this.windowObject = windowObj;
+        /** @type {Object} */
         this.menu = menuObj;
+        /** @type {Map<HTMLElement, function>} */
         this.menuItems = new Map(); // Track menu items and their handlers
+        /** @type {HTMLElement|null} */
         this.activeSubmenu = null;
         
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
