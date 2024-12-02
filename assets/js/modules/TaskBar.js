@@ -1,5 +1,6 @@
 import StartMenu from './StartMenu.js';
 import Clock from './Clock.js';
+import { web_root } from '../Config.js';
 
 /**
  * Creates and manages the Windows 95-style taskbar
@@ -133,7 +134,8 @@ export default class TaskBar {
         // Network Icon
         const networkIcon = document.createElement('div');
         networkIcon.className = 'tray-icon network-icon';
-        networkIcon.innerHTML = '🖧';
+        //networkIcon.innerHTML = '🖧';
+        networkIcon.innerHTML = `<img src="${web_root}/assets/images/conn_pcs_off_off.png" alt="Network Status: on" style="width: 16px; height: 16px;">`;
         networkIcon.title = 'Network Status';
         this.updateNetworkStatus(networkIcon);
 
@@ -144,7 +146,7 @@ export default class TaskBar {
         // Audio Icon (existing)
         const audioIcon = document.createElement('div');
         audioIcon.className = 'tray-icon audio-icon';
-        audioIcon.innerHTML = '🔊';
+        audioIcon.innerHTML = `<img src="${web_root}/assets/images/loudspeaker_rays-1.png" alt="Audio Icon" style="width: 16px; height: 16px;">`;
         audioIcon.style.fontSize = '14px';
         audioIcon.addEventListener('click', (e) => this.toggleAudioSlider(e));
 
@@ -170,9 +172,11 @@ export default class TaskBar {
         if (navigator.onLine) {
             networkIcon.style.color = '#0000FF';
             networkIcon.title = 'Connected to Network';
+            networkIcon.innerHTML = `<img src="${web_root}/assets/images/conn_pcs_off_off.png" alt="Network Status: on" style="width: 16px; height: 16px;">`;
         } else {
             networkIcon.style.color = '#FF0000';
             networkIcon.title = 'No Network Connection';
+            networkIcon.innerHTML = `<img src="${web_root}/assets/images/conn_pcs_no_network.png" alt="Network Status: on" style="width: 16px; height: 16px;">`;
         }
     }
 
