@@ -73,7 +73,7 @@ export default class Tetravex {
                 'New': () => this.init(),
                 'Show Solution': () => this.showSolution(),
                 'High Scores': () => this.showHighScores(),
-                'Exit': () => this.windowObject.closeWindow(),
+                'Close': () => this.windowObject.closeWindow(),
             },
             'Size': {
                 '2x2': () => this.setGameSize(2),
