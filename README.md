@@ -39,6 +39,8 @@ NOTE: Results were recorded on a powerful machine, your results may vary.
 
 ### User Stories
 
+![Kanban board](./assets/images/showcase/kanban.png)
+
 We kept the user stories in the kanban board, which can be found [here](https://github.com/users/james-adcott-edu/projects/5).
 
 ### Wireframes
