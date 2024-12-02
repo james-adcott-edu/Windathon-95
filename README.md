@@ -367,7 +367,7 @@ Everything is client side, so just press Ctrl+Shift+I to open the dev tools and 
 
 ### Future Improvements
 - Add more applications, such as Internet Explorer (using an iframe)
-- Allow windows to be resized at the users will.
+- Allow windows to be resized from any side.
 
 ## 📝 License
 
@@ -384,3 +384,4 @@ This project is intended for educational purposes only. Windows 95 is a trademar
   - [Free Icons](https://freeicons.io)
   - [FreePik](https://freepik.com)
   - [SVG Repo](https://www.svgrepo.com)
+- The terminal font: [Perfect DOS VGA 437](https://www.dafont.com/perfect-dos-vga-437.font)
