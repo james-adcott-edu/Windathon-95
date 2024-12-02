@@ -1,3 +1,5 @@
+import Dialog from '../Dialog.js';
+
 export default class Notepad {
     /**
      * Creates a new Notepad application instance
@@ -152,43 +154,17 @@ export default class Notepad {
     }
 
     /**
-     * Creates a base dialog window within the notepad window
-     * @private
-     * @param {string} title - Dialog title
-     * @param {string} content - Dialog HTML content
-     * @returns {HTMLElement} The dialog element
-     */
-    createDialog(title, content) {
-        const existingDialog = this.windowContent.querySelector('.notepad-dialog');
-        if (existingDialog) existingDialog.remove();
-
-        const dialog = document.createElement('div');
-        dialog.className = 'notepad-dialog';
-        dialog.innerHTML = `
-            <div class="dialog-titlebar">
-                <div class="dialog-title">${title}</div>
-                <button class="dialog-close">×</button>
-            </div>
-            <div class="dialog-content">
-                ${content}
-            </div>
-        `;
-
-        // Close button functionality
-        dialog.querySelector('.dialog-close').addEventListener('click', () => {
-            dialog.remove();
-        });
-
-        this.windowContent.appendChild(dialog);
-        return dialog;
-    }
-
-    /**
      * Shows the find dialog
      * @private
      */
-    showFindDialog() {
-        const dialog = this.createDialog('Find', `
+    async showFindDialog() {
+        const dialog = new Dialog(this.window, {
+            title: 'Find',
+            width: 350,
+            height: 150
+        });
+        
+        const content = `
             <div class="dialog-row">
                 <label>Find what:</label>
                 <input type="text" class="find-input" />
@@ -201,24 +177,28 @@ export default class Notepad {
                 <button class="find-next">Find Next</button>
                 <button class="cancel">Cancel</button>
             </div>
-        `);
-
-        const findInput = dialog.querySelector('.find-input');
-        const matchCase = dialog.querySelector('.match-case');
-        const wrapAround = dialog.querySelector('.wrap-around');
+        `;
+        
+        const dialogContent = dialog.setContent(content);
+        
+        const findInput = dialogContent.querySelector('.find-input');
+        const matchCase = dialogContent.querySelector('.match-case');
+        const wrapAround = dialogContent.querySelector('.wrap-around');
         
         findInput.value = this.lastSearch || '';
         findInput.select();
         findInput.focus();
 
-        dialog.querySelector('.find-next').addEventListener('click', () => {
+        dialogContent.querySelector('.find-next').addEventListener('click', () => {
             this.lastSearch = findInput.value;
             this.findNext(findInput.value, matchCase.checked, wrapAround.checked);
         });
 
-        dialog.querySelector('.cancel').addEventListener('click', () => {
-            dialog.remove();
+        dialogContent.querySelector('.cancel').addEventListener('click', () => {
+            dialog.close();
         });
+
+        dialog.render();
     }
 
     /**
@@ -226,7 +206,13 @@ export default class Notepad {
      * @private
      */
     showReplaceDialog() {
-        const dialog = this.createDialog('Replace', `
+        const dialog = new Dialog(this.window, {
+            title: 'Replace',
+            width: 350,
+            height: 200
+        });
+        
+        const content = `
             <div class="dialog-row">
                 <label>Find what:</label>
                 <input type="text" class="find-input" />
@@ -244,32 +230,36 @@ export default class Notepad {
                 <button class="replace-all">Replace All</button>
                 <button class="cancel">Cancel</button>
             </div>
-        `);
+        `;
 
-        const findInput = dialog.querySelector('.find-input');
-        const replaceInput = dialog.querySelector('.replace-input');
-        const matchCase = dialog.querySelector('.match-case');
+        const dialogContent = dialog.setContent(content);
+        
+        const findInput = dialogContent.querySelector('.find-input');
+        const replaceInput = dialogContent.querySelector('.replace-input');
+        const matchCase = dialogContent.querySelector('.match-case');
 
         findInput.value = this.lastSearch || '';
         findInput.select();
         findInput.focus();
 
-        dialog.querySelector('.find-next').addEventListener('click', () => {
+        dialogContent.querySelector('.find-next').addEventListener('click', () => {
             this.lastSearch = findInput.value;
             this.findNext(findInput.value, matchCase.checked);
         });
 
-        dialog.querySelector('.replace').addEventListener('click', () => {
+        dialogContent.querySelector('.replace').addEventListener('click', () => {
             this.replace(findInput.value, replaceInput.value, matchCase.checked);
         });
 
-        dialog.querySelector('.replace-all').addEventListener('click', () => {
+        dialogContent.querySelector('.replace-all').addEventListener('click', () => {
             this.replaceAll(findInput.value, replaceInput.value, matchCase.checked);
         });
 
-        dialog.querySelector('.cancel').addEventListener('click', () => {
-            dialog.remove();
+        dialogContent.querySelector('.cancel').addEventListener('click', () => {
+            dialog.close();
         });
+
+        dialog.render();
     }
 
     /**
@@ -279,7 +269,13 @@ export default class Notepad {
     showGoToDialog() {
         const totalLines = this.textarea.value.split('\n').length;
         
-        const dialog = this.createDialog('Go To Line', `
+        const dialog = new Dialog(this.window, {
+            title: 'Go To Line',
+            width: 300,
+            height: 150
+        });
+        
+        const content = `
             <div class="dialog-row">
                 <label>Line number (1-${totalLines}):</label>
                 <input type="number" class="line-input" min="1" max="${totalLines}" />
@@ -288,24 +284,27 @@ export default class Notepad {
                 <button class="go-to">Go To</button>
                 <button class="cancel">Cancel</button>
             </div>
-        `);
+        `;
 
-        const lineInput = dialog.querySelector('.line-input');
+        const dialogContent = dialog.setContent(content);
+        const lineInput = dialogContent.querySelector('.line-input');
         lineInput.focus();
 
-        dialog.querySelector('.go-to').addEventListener('click', () => {
+        dialogContent.querySelector('.go-to').addEventListener('click', () => {
             const lineNumber = parseInt(lineInput.value);
             if (lineNumber >= 1 && lineNumber <= totalLines) {
                 this.goToLine(lineNumber);
-                dialog.remove();
+                dialog.close();
             } else {
                 alert(`Please enter a number between 1 and ${totalLines}`);
             }
         });
 
-        dialog.querySelector('.cancel').addEventListener('click', () => {
-            dialog.remove();
+        dialogContent.querySelector('.cancel').addEventListener('click', () => {
+            dialog.close();
         });
+
+        dialog.render();
     }
 
     /**
@@ -313,7 +312,13 @@ export default class Notepad {
      * @private
      */
     showFontDialog() {
-        const dialog = this.createDialog('Font', `
+        const dialog = new Dialog(this.window, {
+            title: 'Font',
+            width: 400,
+            height: 300
+        });
+        
+        const content = `
             <div class="font-section">
                 <label>Font:</label>
                 <select class="font-family">
@@ -338,11 +343,13 @@ export default class Notepad {
                 <button class="ok-button">OK</button>
                 <button class="cancel-button">Cancel</button>
             </div>
-        `);
+        `;
 
-        const familySelect = dialog.querySelector('.font-family');
-        const sizeSelect = dialog.querySelector('.font-size');
-        const preview = dialog.querySelector('.font-preview');
+        const dialogContent = dialog.setContent(content);
+        
+        const familySelect = dialogContent.querySelector('.font-family');
+        const sizeSelect = dialogContent.querySelector('.font-size');
+        const preview = dialogContent.querySelector('.font-preview');
 
         // Set current values
         familySelect.value = this.fontSettings.family;
@@ -358,16 +365,18 @@ export default class Notepad {
         sizeSelect.addEventListener('change', updatePreview);
         updatePreview();
 
-        dialog.querySelector('.ok-button').addEventListener('click', () => {
+        dialogContent.querySelector('.ok-button').addEventListener('click', () => {
             this.fontSettings.family = familySelect.value;
             this.fontSettings.size = parseInt(sizeSelect.value);
             this.applyFontSettings();
-            dialog.remove();
+            dialog.close();
         });
 
-        dialog.querySelector('.cancel-button').addEventListener('click', () => {
-            dialog.remove();
+        dialogContent.querySelector('.cancel-button').addEventListener('click', () => {
+            dialog.close();
         });
+
+        dialog.render();
     }
 
     /**
@@ -375,7 +384,13 @@ export default class Notepad {
      * @private
      */
     showAbout() {
-        const dialog = this.createDialog('About Notepad', `
+        const dialog = new Dialog(this.window, {
+            title: 'About Notepad',
+            width: 400,
+            height: 300
+        });
+        
+        const content = `
             <div class="about-content">
                 <div class="about-header">Windows 95 Notepad</div>
                 <div class="about-version">Version 1.0</div>
@@ -388,11 +403,15 @@ export default class Notepad {
             <div class="dialog-buttons">
                 <button class="ok-button">OK</button>
             </div>
-        `);
+        `;
 
-        dialog.querySelector('.ok-button').addEventListener('click', () => {
-            dialog.remove();
+        const dialogContent = dialog.setContent(content);
+
+        dialogContent.querySelector('.ok-button').addEventListener('click', () => {
+            dialog.close();
         });
+
+        dialog.render();
     }
 
     /**

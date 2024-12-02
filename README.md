@@ -362,6 +362,10 @@ Everything is client side, so just press Ctrl+Shift+I to open the dev tools and 
 #### W3C CSS validation
 ![W3C CSS validation](./assets/images/showcase/w3c-css-validation-result.png)
 
+#### JavaScript Validator
+
+We've tested every JavaScript file with [The JavaScript Validator](https://jshint.com/) and it has come back all valid.
+
 ### Known Bugs
 - Window maximize behavior may be inconsistent on some screen sizes
 - Some keyboard shortcuts may conflict with browser defaults
