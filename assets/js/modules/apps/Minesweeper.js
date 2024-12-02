@@ -88,7 +88,7 @@ export default class Minesweeper {
         <div style="text-align: center;">
         <h1 style="margin: 1rem 0;">High Scores</h1>
         ${highScoreTable.outerHTML}
-        <buttom id="close-hiscores">Close</button>
+        <button id="close-hiscores">Close</button>
         </div>
         `);
 
