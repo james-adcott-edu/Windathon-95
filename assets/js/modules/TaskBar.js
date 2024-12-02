@@ -1,6 +1,5 @@
 import StartMenu from './StartMenu.js';
 import Clock from './Clock.js';
-import { web_root } from '../Config.js';
 
 /**
  * Creates and manages the Windows 95-style taskbar
