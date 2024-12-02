@@ -120,11 +120,10 @@ export default class DesktopSettings {
 
         switch (behaviour) {
             case "tile":
-                target.style.backgroundSize = "auto";
                 target.style.backgroundRepeat = "repeat";
+                target.backgroundPosition = "0 0";
                 break;
             case "center":
-                target.style.backgroundSize = "auto";
                 target.style.backgroundRepeat = "no-repeat";
                 target.style.backgroundPosition = "center";
                 break;
@@ -134,6 +133,14 @@ export default class DesktopSettings {
             default:
                 console.error("Unknown behaviour", behaviour);
                 break;
+        }
+        if (target === this.demoWindow && behaviour !== "stretch") {
+            let screenWidth = window.innerWidth;
+            const imgElem = new Image();
+            imgElem.src = `${web_root}/assets/images/wallpapers/${img}`;
+            imgElem.onload = () => {
+                target.style.backgroundSize = target.clientWidth*imgElem.naturalWidth/screenWidth + "px";
+            }
         }
     }
 
