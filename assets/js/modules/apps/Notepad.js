@@ -359,6 +359,7 @@ export default class Notepad {
         const updatePreview = () => {
             preview.style.fontFamily = familySelect.value;
             preview.style.fontSize = `${sizeSelect.value}px`;
+            dialog.render();
         };
         
         familySelect.addEventListener('change', updatePreview);
