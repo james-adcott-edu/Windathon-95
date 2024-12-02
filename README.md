@@ -4,7 +4,7 @@ A faithful recreation of the Windows 95 operating system in vanilla JavaScript, 
 
 ![Screenshot of the Windows 95 Web Clone](./assets/images/showcase.png)
 
-You can view the live site [here](https://james-adcott-edu.github.io/Windathon-95/).
+# You can view the live site [here](https://james-adcott-edu.github.io/Windathon-95/).
 
 ![Lighthouse score](./assets/images/showcase/lighthouse.png)
 NOTE: Results were recorded on a powerful machine, your results may vary.
