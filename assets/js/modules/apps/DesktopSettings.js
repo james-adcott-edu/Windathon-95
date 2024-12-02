@@ -42,6 +42,7 @@ export default class DesktopSettings {
 
         this.demoWindow = this.windowContent.querySelector("#demo");
 
+        this.demoWindow.style.height = (window.innerHeight/window.innerWidth)*250 + "px";
 
         this.applyBackground(
             this.demoWindow,
@@ -120,10 +121,12 @@ export default class DesktopSettings {
 
         switch (behaviour) {
             case "tile":
+                target.style.backgroundSize = "auto";
                 target.style.backgroundRepeat = "repeat";
                 target.backgroundPosition = "0 0";
                 break;
             case "center":
+                target.style.backgroundSize = "auto";
                 target.style.backgroundRepeat = "no-repeat";
                 target.style.backgroundPosition = "center";
                 break;
