@@ -16,10 +16,22 @@ export default class Minesweeper {
         this.windowObject.setTitle('Minesweeper');
         this.windowObject.setCloseRequest(() => this.windowObject.closeWindow());
 
+
+        // High Score Saving
+        // Add reference to desktop environment
+        /** @type {import('../DesktopEnvironment.js').default} */
+        this.desktopEnvironment = args.desktopEnvironment;
+        /** @type {import('../JsonFs.js').default} */
+        this.fs = args.desktopEnvironment.fileSystem;
+        this.filename = "C:\\games\\minesweeper.ini";
+
+        this.hiScores = [];
+
         this.windowObject.setMenu({
             'Game': {
                 'New': () => this.reset(),
-                'Exit': () => this.windowObject.closeWindow(),
+                'High Scores': () => this.showHiScores(),
+                'Close': () => this.windowObject.closeWindow(),
             },
             'Difficulty': {
                 'Beginner': () => this.setGameSize(9,9,10), // 9x9, 10 mines
@@ -53,6 +65,40 @@ export default class Minesweeper {
         this.init();
     }
 
+    showHiScores() {
+        let highScoreTable = document.createElement('table');
+        highScoreTable.style.margin = '0 auto';
+        highScoreTable.innerHTML = `
+        <tr>
+            <th>Size</th>
+            <th>Time (seconds)</th>
+        </tr>
+        `;
+
+        this.hiScores.forEach(score => {
+            let row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${score.difficulty}</td>
+            <td>${score.time ?? 'not set'}</td>
+            `;
+            highScoreTable.appendChild(row);
+        });
+
+        let dialog = this.windowObject.makeDialog(`
+        <div style="text-align: center;">
+        <h1 style="margin: 1rem 0;">High Scores</h1>
+        ${highScoreTable.outerHTML}
+        <buttom id="close-hiscores">Close</button>
+        </div>
+        `);
+
+        dialog.getContent().querySelector('#close-hiscores').addEventListener('click', () => {
+            dialog.close();
+        });
+        dialog.render();
+    }
+
+
     setGameSize(rows, cols, mines) {
         this.gameSize = {
             rows: rows,
@@ -68,15 +114,44 @@ export default class Minesweeper {
         let mineClass = 'flag';
         if (hasWon) {
             this.printRemaining(0);
-            // TODO - Hi Scores
-            //if (hiScore == undefined || timer.getTime() < hiScore.t) {
-            //    let hiScores = JSON.parse(localStorage.getItem('hiscores')) || [];
-            //    hiScores.push({x: cols, y: rows, m: mines, t: timer.getTime()});
-            //    localStorage.setItem('hiscores', JSON.stringify(hiScores));
-            //    $('#debug').innerHTML += JSON.stringify(hiScores);
-            //} else {
-            //    $('#debug').innerHTML += '\n Not Hi Score';
-            //}
+
+            // check if it's a high score
+            let difficulty = '';
+            if (this.gameSize.rows == 9 && this.gameSize.cols == 9 && this.gameSize.mines == 10) {
+                difficulty = 'Beginner';
+            }
+            else if (this.gameSize.rows == 16 && this.gameSize.cols == 16 && this.gameSize.mines == 40) {
+                difficulty = 'Intermediate';
+            }
+            else if (this.gameSize.rows == 16 && this.gameSize.cols == 30 && this.gameSize.mines == 99) {
+                difficulty = 'Expert';
+            }
+
+            console.log(difficulty);
+            console.log(this.hiScores);
+
+            let currentHighScore = this.hiScores.find(s => s.difficulty == difficulty);
+            console.log(currentHighScore);
+            if (!currentHighScore.time || this.timer.getTime() < Number(currentHighScore.time)) {
+                this.hiScores[this.hiScores.findIndex(s => s.difficulty == difficulty)] = {
+                    difficulty: difficulty,
+                    time: this.timer.getTime()
+                };
+                this.fs.createFile(this.filename, JSON.stringify(this.hiScores));
+
+                const newHighScoreDialog = this.windowObject.makeDialog(`
+                <div style="text-align: center;">
+                <h1>Congratulations!</h1>
+                <p>You have a new high score for ${difficulty} difficulty!</p>
+                <p>Your time: ${this.timer.getTime()}</p>
+                <button id="close">Close</button>
+                </div>
+                `);
+                newHighScoreDialog.getContent().querySelector('#close').addEventListener('click', () => {
+                    newHighScoreDialog.close();
+                });
+                newHighScoreDialog.render();
+            }
         } else {
             mineClass = 'mine';
             this.listFlags().forEach(f => { // check for incorrect flags
@@ -227,32 +302,21 @@ export default class Minesweeper {
         [this.hints, this.flags, this.revealed].forEach(a => a.map(m => m.fill(0)));
         this.generateBoard();
         this.windowContent.querySelector('#board').innerHTML = ('<tr>'+'<td></td>'.repeat(this.gameSize.cols)+'</tr>').repeat(this.gameSize.rows);
-        //this.windowContent.querySelectorAll('#board td').forEach(cell => {
-        //    cell.addEventListener('mousedown', e => {
-        //        let x = e.currentTarget.cellIndex;
-        //        let y = e.currentTarget.parentNode.rowIndex;
-        //        if (e.which == 1) {
-        //            if (this.firstClick) {
-        //                this.goodStart(x, y);
-        //                this.timer.start();
-        //                this.firstClick = 0;
-        //            }
-        //            this.revealCell(x, y);
-        //        }
-        //        else if (e.which == 2) this.quickClick(x, y);
-        //        else if (e.which == 3) this.plantFlag(x, y);
-        //    });
-        //    cell.addEventListener('dblclick', e => {
-        //        let x = e.currentTarget.cellIndex;
-        //        let y = e.currentTarget.parentNode.rowIndex;
-        //        this.quickClick(x, y);
-        //    });
-        //});
         let boardDimensions = {
             width: this.windowContent.querySelector('#game-area').offsetWidth,
             height: this.windowContent.querySelector('#game-area').offsetHeight
         };
         this.windowObject.setSize(boardDimensions.width, boardDimensions.height);
+
+        try {
+            this.hiScores = JSON.parse(this.fs.readFile(this.filename));
+        } catch (e) {
+            this.hiScores = [
+                {difficulty: 'Beginner', time: null},
+                {difficulty: 'Intermediate', time: null},
+                {difficulty: 'Expert', time: null},
+            ];
+        }
     }
 
     revealCell(x, y) {
