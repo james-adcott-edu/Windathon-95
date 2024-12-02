@@ -250,6 +250,18 @@ export default class JsonFs {
                 throw new Error('Invalid filesystem data structure');
             }
 
+            // Count total links (files and directories)
+            const countLinks = (obj) => {
+                let count = 0;
+                for (const [_, value] of Object.entries(obj)) {
+                    count++; // Count current item
+                    if (value && typeof value === 'object') {
+                        count += countLinks(value); // Recursively count children
+                    }
+                }
+                return count;
+            };
+
             // Validate directory structure
             for (const [path, content] of Object.entries(parsedData)) {
                 // Validate path
@@ -263,6 +275,8 @@ export default class JsonFs {
 
             // All validation passed, update data
             this.data = parsedData;
+            const totalLinks = countLinks(parsedData);
+            console.log(`[jsonfs] Successfully synced filesystem, ${totalLinks} files/directories resolved.`);
             
         } catch (error) {
             console.error('[jsonfs] Failed to sync filesystem:', error);

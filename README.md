@@ -4,7 +4,7 @@ A faithful recreation of the Windows 95 operating system in vanilla JavaScript, 
 
 ![Screenshot of the Windows 95 Web Clone](./assets/images/showcase.png)
 
-You can view the live site [here](https://james-adcott-edu.github.io/Windathon-95/).
+# You can view the live site [here](https://james-adcott-edu.github.io/Windathon-95/).
 
 ![Lighthouse score](./assets/images/showcase/lighthouse.png)
 NOTE: Results were recorded on a powerful machine, your results may vary.
@@ -19,9 +19,15 @@ NOTE: Results were recorded on a powerful machine, your results may vary.
   - Paint
   - Tetravex
   - File Explorer
+  - Web Browser
+  - Calculator
+  - Clock
+  - About
 - Draggable and resizable windows
 - File system simulation using localStorage
 - Authentic Windows 95 styling and interactions
+- Different processes can communicate with eachother, such as the terminal and notepad.
+- Scoped styles for applications to have their own look and feel without leaking into other applications.
 
 ### Site Goals
 - Provide a semi-faithful recreation of the Windows 95 experience
@@ -367,7 +373,7 @@ Everything is client side, so just press Ctrl+Shift+I to open the dev tools and 
 
 ### Future Improvements
 - Add more applications, such as Internet Explorer (using an iframe)
-- Allow windows to be resized at the users will.
+- Allow windows to be resized from any side.
 
 ## 📝 License
 
@@ -384,3 +390,4 @@ This project is intended for educational purposes only. Windows 95 is a trademar
   - [Free Icons](https://freeicons.io)
   - [FreePik](https://freepik.com)
   - [SVG Repo](https://www.svgrepo.com)
+- The terminal font: [Perfect DOS VGA 437](https://www.dafont.com/perfect-dos-vga-437.font)
