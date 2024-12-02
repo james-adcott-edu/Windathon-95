@@ -21,8 +21,10 @@ export default class TaskBar {
         this.desktopEnvironment = desktopEnvironment;
         /** @type {import('./WindowManager.js').default} */
         this.windowManager = windowManager;
+        /** @type {import('./WindowObject.js').default[]} */
         this.tasks = [];
 
+        /** @type {HTMLElement} */
         this.taskbarElement = document.createElement('div');
         this.taskbarElement.className = 'taskbar';
         this.taskbarElement.innerHTML = `
