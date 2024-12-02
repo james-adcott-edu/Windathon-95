@@ -20,23 +20,36 @@ export default class WindowObject {
      * @param {boolean} [windowArgs.resizable=false] - Whether window is resizable
      */
     constructor(windowManager, windowArgs) {
+        /** @type {string} */
         this.title = "Starting Window...";
+        /** @type {number} */
         this.width = 800;
+        /** @type {number} */
         this.height = 600;
+        /** @type {boolean} */
         this.resizable = false;
+        /** @type {boolean} */
         this.hasFocus = true;
+        /** @type {boolean} */
         this.isMinimized = false;
+        /** @type {boolean} */
         this.isMaximized = false;
+        /** @type {HTMLElement} */
         this.windowElement = this.createWindowElement();
+        /** @type {string} */
         this.uuid = 'window-'+self.crypto.randomUUID();
+        /** @type {import('./WindowManager.js').default} */
         this.windowManager = windowManager;
 
         // Calculate center position
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
+        /** @type {number} */
         this.x = Math.max(0, (viewportWidth - this.width) / 2);
+        /** @type {number} */
         this.y = Math.max(0, (viewportHeight - this.height) / 2);
 
+        /** @type {HTMLElement} */
         this.windowContent = this.windowElement.querySelector('.window-content');
         if (windowArgs) {
             // Apply custom window arguments
@@ -59,7 +72,9 @@ export default class WindowObject {
             }
         }
 
+        /** @type {Dialog[]} */
         this.dialogs = [];
+        /** @type {StylesheetManager|null} */
         this.stylesheetManager = null;
         this.enableResizing();
     }
