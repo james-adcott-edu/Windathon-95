@@ -128,7 +128,6 @@ export default class WindowObject {
             this.y += 30;
             winSameCoords = this.windowManager.listVisible().filter(win => win.x === this.x && win.y === this.y);
         }
-        console.log(winSameCoords);
         this.setPosition(this.x, this.y);
         this.setTitle(this.title);
 
