@@ -19,9 +19,15 @@ NOTE: Results were recorded on a powerful machine, your results may vary.
   - Paint
   - Tetravex
   - File Explorer
+  - Web Browser
+  - Calculator
+  - Clock
+  - About
 - Draggable and resizable windows
 - File system simulation using localStorage
 - Authentic Windows 95 styling and interactions
+- Different processes can communicate with eachother, such as the terminal and notepad.
+- Scoped styles for applications to have their own look and feel without leaking into other applications.
 
 ### Site Goals
 - Provide a semi-faithful recreation of the Windows 95 experience
