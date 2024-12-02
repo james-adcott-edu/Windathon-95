@@ -161,6 +161,12 @@ export default class TaskBar {
         this.taskbarElement.appendChild(rightSection);
     }
 
+    /**
+     * Updates the network status icon based on online/offline status
+     * @private
+     * @param {HTMLElement} networkIcon - The network icon element
+     * @returns {void}
+     */
     updateNetworkStatus(networkIcon) {
         if (navigator.onLine) {
             networkIcon.style.color = '#0000FF';

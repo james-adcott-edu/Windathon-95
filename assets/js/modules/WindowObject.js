@@ -64,6 +64,12 @@ export default class WindowObject {
         this.enableResizing();
     }
 
+    /**
+     * Enables window resizing
+     * used for when window is maximized
+     * @private
+     * @returns {void}
+     */
     enableResizing() {
         if (this.resizable) {
             this.windowContent.style.overflow = 'hidden';
@@ -71,6 +77,12 @@ export default class WindowObject {
         }
     }
 
+    /**
+     * Disables window resizing
+     * used for when window is maximized
+     * @private
+     * @returns {void}
+     */
     disableResizing() {
         this.windowContent.style.overflow = 'auto';
         this.windowContent.style.resize = 'none';

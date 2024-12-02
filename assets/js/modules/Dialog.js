@@ -1,4 +1,15 @@
+/**
+ * Dialog class
+ * @param {Window} windowOwner - The window that owns the dialog
+ * @param {Object} dialogArgs - The arguments for the dialog
+ */
 export default class Dialog {
+
+    /**
+     * Constructor
+     * @param {Window} windowOwner - The window that owns the dialog
+     * @param {Object} dialogArgs - The arguments for the dialog
+     */
     constructor(windowOwner, dialogArgs) {
         this.windowOwner = windowOwner;
         this.title = "";
@@ -29,6 +40,11 @@ export default class Dialog {
         });
     }
 
+    /**
+     * Create the dialog element
+     * @returns {HTMLElement} - The dialog element
+     * @private
+     */
     createDialogElement() {
         const win = document.createElement('div');
         win.className = 'window';
@@ -46,6 +62,11 @@ export default class Dialog {
         return win;
     }
 
+    /**
+     * Render the dialog
+     * @public
+     * @returns {void}
+     */
     render() {
         document.body.appendChild(this.dialogElement);
         const contentHeight = this.dialogElement.querySelector('.window-content > div').offsetHeight;
@@ -53,6 +74,12 @@ export default class Dialog {
         this.windowOwner.windowElement.classList.add('dimmed');
     }
 
+    /**
+     * Drag handler for the dialog
+     * @param {MouseEvent} e - The mouse event
+     * @private
+     * @returns {void}
+     */
     dragHandler(e) {
         let oldx = e.clientX;
         let oldy = e.clientY;
@@ -71,6 +98,11 @@ export default class Dialog {
         document.addEventListener('mouseup', mouseup);
     }
 
+    /**
+     * Close the dialog
+     * @public
+     * @returns {void}
+     */
     close() {
         this.windowOwner.windowElement.classList.remove('dimmed');
         this.dialogElement.remove();
@@ -79,6 +111,11 @@ export default class Dialog {
         delete this;
     }
 
+    /**
+     * Set the content of the dialog
+     * @param {string} content - The content to set
+     * @returns {HTMLElement} - The dialog content
+     */
     setContent(content) {
         let contentDiv = document.createElement('div');
         contentDiv.innerHTML = content;
@@ -86,15 +123,30 @@ export default class Dialog {
         return this.content;
     }
 
+    /**
+     * Get the content of the dialog
+     * @returns {HTMLElement} - The dialog content
+     */
     getContent() {
         return this.content;
     }
 
+    /**
+     * Set the title of the dialog
+     * @param {string} title - The title to set
+     * @returns {void}
+     */
     setTitle(title) {
         this.title = title;
         this.dialogElement.querySelector('.window-title').textContent = this.title;
     }
 
+    /**
+     * Set the position of the dialog
+     * @param {number} x - The x position
+     * @param {number} y - The y position
+     * @returns {void}
+     */
     setPosition(x, y) {
         this.x = x;
         this.y = y;
@@ -102,6 +154,12 @@ export default class Dialog {
         this.dialogElement.style.top = this.y + 'px';
     }
 
+    /**
+     * Set the size of the dialog
+     * @param {number} width - The width
+     * @param {number} height - The height
+     * @returns {void}
+     */
     setSize(width, height) {
         this.width = width;
         this.height = height;

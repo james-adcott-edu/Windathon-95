@@ -1,4 +1,16 @@
+/**
+ * GameTimer class
+ * @class
+ * @classdesc A class for a game timer.
+ * @param {function} callback - The callback function to call when the timer updates.
+ */
 export default class GameTimer {
+
+    /**
+     * Create a GameTimer.
+     * @param {function} callback - The callback function to call when the timer updates.
+     * @constructor
+     */
     constructor(callback) {
         this.startTime = 0;
         this.elapsedTime = 0;
@@ -7,6 +19,11 @@ export default class GameTimer {
         this.callback = callback;
     }
 
+    /**
+     * Start the timer.
+     * @method
+     * @returns {void}
+     */
     start() {
         if (this.isPaused) {
             this.startTime = Date.now() - this.elapsedTime;
@@ -18,6 +35,11 @@ export default class GameTimer {
         }
     }
 
+    /**
+     * Stop the timer.
+     * @method
+     * @returns {void}
+     */
     stop() {
         clearInterval(this.timerInterval);
         this.elapsedTime = 0;
@@ -25,6 +47,11 @@ export default class GameTimer {
         this.callback(this.formatTime(this.elapsedTime));
     }
 
+    /**
+     * Pause the timer.
+     * @method
+     * @returns {void}
+     */
     pause() {
         if (!this.isPaused) {
             clearInterval(this.timerInterval);
@@ -32,16 +59,34 @@ export default class GameTimer {
         }
     }
 
+    /**
+     * Get the current time.
+     * @method
+     * @returns {string} The current time in the format "ss.s".
+     */
     getTime() {
         return this.formatTime(this.elapsedTime);
     }
 
+    /**
+     * Format the time.
+     * @private
+     * @param {number} ms - The time in milliseconds.
+     * @returns {string} The formatted time in the format "ss.s".
+     */
     formatTime(ms) {
         const totalSeconds = Math.floor(ms / 1000);
         const fractionSeconds = Math.floor(ms / 100) % 10;
         return `${totalSeconds}.${this.pad(fractionSeconds, 1)}`;
     }
 
+    /**
+     * Pad a number with zeros.
+     * @private
+     * @param {number} number - The number to pad.
+     * @param {number} length - The length of the padded number.
+     * @returns {string} The padded number.
+     */
     pad(number, length) {
         return number.toString().padStart(length, '0');
     }
